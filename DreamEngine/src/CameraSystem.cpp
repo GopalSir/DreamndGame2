@@ -135,7 +135,7 @@ namespace DREAM
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_W].first == true)
                         {
-                            // Move up
+                            // Move u
                             if(DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false)
                             physicsComponent->velocity = Vec4<float>(0, 40, 0, 0);
                             else
