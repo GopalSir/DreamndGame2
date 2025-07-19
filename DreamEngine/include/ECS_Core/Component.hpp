@@ -3,7 +3,7 @@
 
 class Component
 {
-    private:
+    protected:
 
     //The entity to which this component belongs. 
     Entity* entity;

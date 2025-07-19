@@ -60,7 +60,7 @@ namespace DREAM {
         void setGameState(bool _gameState);
         void setTriangleEntity();
         bool initializeShaders();
-        void     setUpCamera();
+        void     setUpCameraSystem();
 
 
     };

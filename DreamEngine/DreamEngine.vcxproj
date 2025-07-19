@@ -132,7 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CameraComponent.h" />
+    <ClInclude Include="include\Component\CameraComponent.h" />
     <ClInclude Include="include\Component\DrawableComponent.hpp" />
     <ClInclude Include="include\Component\MVPComponent.hpp" />
     <ClInclude Include="include\Component\PhysicsComponent.hpp" />
@@ -167,7 +167,7 @@
     <ClInclude Include="include\Shape.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraComponent.cpp" />
+    <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="include\Entity\CameraEntity.cpp" />
     <ClCompile Include="KeyStates.cpp" />
     <ClCompile Include="Scene.cpp" />

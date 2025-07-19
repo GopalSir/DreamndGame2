@@ -4,7 +4,8 @@
 #include "../Vec3.hpp"
 #include "../EVENTS.hpp"
 #include "../System/EventSystem.hpp"
-#include "../Entity/CameraEntity.hpp"
+//#include "../Entity/CameraEntity.hpp"
+#include "../Component/CameraComponent.h"
 #include "../IEventHandler.hpp"
 #include "../Shader.hpp"
 #include "../KeyStates.h"
@@ -26,6 +27,7 @@ namespace DREAM {
 
         int PrintCamera(EventInfo* _eventInfo);
         int handleEvent(EventInfo* _eventInfo) override;
+		static Entity* createDefaultCameraEntity();
 
 
     };

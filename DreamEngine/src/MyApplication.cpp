@@ -52,7 +52,7 @@ namespace DREAM
 
         initializeShaders();
         //setTriangleEntity();
-        setUpCamera();
+        setUpCameraSystem();
 
         glfwSetFramebufferSizeCallback(glfwWindow, GLFW_WindowResize_Callback_Handler);
         glfwSetMouseButtonCallback(glfwWindow, [](GLFWwindow* _window, int _button, int _action, int mods) {
@@ -214,23 +214,22 @@ namespace DREAM
         return true;
     }
 
-    void MyApplication::setUpCamera()
+    void MyApplication::setUpCameraSystem()
     {
 
 
-        cameraEntity = new CameraEntity(
-            new PhysicsComponent(
-                Vec4<float>(0, 0, 0, 0), Vec4<float>(0, 0, 0, 0), Vec4<float>(0, 0, 0, 0), Vec4<float>(0, 0, 0, 0)),
-            new MVPComponent()
-        );
-        cameraEntity->active = true;
+        //cameraEntity = new CameraEntity(
+        //    new PhysicsComponent(
+        //        Vec4<float>(0, 0, 0, 0), Vec4<float>(0, 0, 0, 0), Vec4<float>(0, 0, 0, 0), Vec4<float>(0, 0, 0, 0)),
+        //    new MVPComponent()
+        //);
+        //cameraEntity->active = true;
 
         cameraSystem = new CameraSystem(programShader);
-        cameraSystem->addEntity(cameraEntity);
+        //cameraSystem->addEntity(cameraEntity);
 
-        EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), cameraSystem);
-        EventSystem::registerEvent(DREAM::KeyReleaseEvent::GetEventTypeCode(), cameraSystem);
-        glfwSetWindowUserPointer(glfwWindow, this);
+
+        //glfwSetWindowUserPointer(glfwWindow, this);
         glfwSetKeyCallback(glfwWindow, GLFW_KeyPress_Callback_Handler);
         
 
