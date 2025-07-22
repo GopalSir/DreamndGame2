@@ -18,70 +18,54 @@ namespace DREAM
                 cameraComponent->calculateViewMatrix();
                 cameraComponent->CalculateProjectionMatrix();
                 cameraComponent->CalculateMVP();
+
+
+                CameraComponent* tempCameraComponent = tempEntity->getComponent<CameraComponent>();
+                PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
+
+                if (tempCameraComponent && physicsComponent)
+                {
+                    // Get the PhysicsComponent of the CameraEntity
+
+
+
+                        // Update the position using the velocity
+                    physicsComponent->position.x -= physicsComponent->velocity.x;
+                    physicsComponent->position.y -= physicsComponent->velocity.y;
+                    physicsComponent->position.z -= physicsComponent->velocity.z;
+                    physicsComponent->position.w = 1; // Usually w remains unchanged
+
+                    physicsComponent->rotation.x -= physicsComponent->rotation_velocity.x;
+                    physicsComponent->rotation.y -= physicsComponent->rotation_velocity.y;
+                    physicsComponent->rotation.z -= physicsComponent->rotation_velocity.z;
+                    physicsComponent->rotation.w -= 0;
+
+
+
+                    Mat4<float> tempMVP = tempCameraComponent->getMVP();
+
+                    //Logging MVP
+                    std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
+                    std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
+                    std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
+                    std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
+                    /*std::cout << mvpComponent->getPerspective().r1.x << " " << mvpComponent->getPerspective().r1.y << " " << mvpComponent->getPerspective().r1.z << " " << mvpComponent->getPerspective().r1.w << "\n";
+                    std::cout << mvpComponent->getPerspective().r2.x << " " << mvpComponent->getPerspective().r2.y << " " << mvpComponent->getPerspective().r2.z << " " << mvpComponent->getPerspective().r2.w << "\n";
+                    std::cout << mvpComponent->getPerspective().r3.x << " " << mvpComponent->getPerspective().r3.y << " " << mvpComponent->getPerspective().r3.z << " " << mvpComponent->getPerspective().r3.w << "\n";
+                    std::cout << mvpComponent->getPerspective().r4.x << " " << mvpComponent->getPerspective().r4.y << " " << mvpComponent->getPerspective().r4.z << " " << mvpComponent->getPerspective().r4.w << "\n";*/
+
+                    shader->setUniform("mvp", tempMVP);
+
+                    //std::cout << "CameraPos: "<<physicsComponent->position.x<<" "<<physicsComponent->position.y<<" "<< physicsComponent->position.z<<"\n";
+
+
+                }
             }
             
 
 
-     //       // Check if the entity is a CameraEntity and is active
-     //       CameraEntity* tempCameraEntity = dynamic_cast<CameraEntity*>(tempEntity);
-     //       if (tempCameraEntity && tempCameraEntity->active)
-     //       {
-     //           // Get the PhysicsComponent of the CameraEntity
-     //           PhysicsComponent* physicsComponent = tempCameraEntity->getComponent<PhysicsComponent>();
-     //           MVPComponent* mvpComponent = tempCameraEntity->getComponent<MVPComponent>();
-     //           if (physicsComponent)
-     //           {
-
-     //               // Update the position using the velocity
-     //               physicsComponent->position.x -= physicsComponent->velocity.x;
-     //               physicsComponent->position.y -= physicsComponent->velocity.y;
-     //               physicsComponent->position.z -= physicsComponent->velocity.z;
-     //               physicsComponent->position.w = 1; // Usually w remains unchanged
-
-     //               physicsComponent->rotation.x -= physicsComponent->rotation_velocity.x;
-     //               physicsComponent->rotation.y -= physicsComponent->rotation_velocity.y;
-     //               physicsComponent->rotation.z -= physicsComponent->rotation_velocity.z;
-     //               physicsComponent->rotation.w -= 0;
-
-     //               mvpComponent->setRotation(physicsComponent->rotation.x,
-     //                   physicsComponent->rotation.y,
-     //                   physicsComponent->rotation.z);
-
-     //               mvpComponent->setPosition(physicsComponent->position.x,
-     //                   physicsComponent->position.y,
-     //                   physicsComponent->position.z);
-
-     //               float fov = 45.0f * (3.1415926f / 180.0f);
-
-					//int windowWidth, windowHeight;
-					//GLFWwindow* currentWindow = glfwGetCurrentContext();
-					//glfwGetFramebufferSize(currentWindow, &windowWidth, &windowHeight);
-
-     //               float aspect = (float)windowWidth / windowHeight;
-     //               float near = 0.1f;
-     //               float far =300.0f;
-
-     //               Mat4<float> projMatrix = MVPComponent::CreatePerspective(fov, aspect, near, far);
-					//mvpComponent->setPerspective(projMatrix);
-
-     //               Mat4<float> tempMVP = mvpComponent->getMVP();
-
-     //               //Logging MVP
-					//std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
-					//std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
-					//std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
-					//std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
-					///*std::cout << mvpComponent->getPerspective().r1.x << " " << mvpComponent->getPerspective().r1.y << " " << mvpComponent->getPerspective().r1.z << " " << mvpComponent->getPerspective().r1.w << "\n";
-					//std::cout << mvpComponent->getPerspective().r2.x << " " << mvpComponent->getPerspective().r2.y << " " << mvpComponent->getPerspective().r2.z << " " << mvpComponent->getPerspective().r2.w << "\n";
-					//std::cout << mvpComponent->getPerspective().r3.x << " " << mvpComponent->getPerspective().r3.y << " " << mvpComponent->getPerspective().r3.z << " " << mvpComponent->getPerspective().r3.w << "\n";
-					//std::cout << mvpComponent->getPerspective().r4.x << " " << mvpComponent->getPerspective().r4.y << " " << mvpComponent->getPerspective().r4.z << " " << mvpComponent->getPerspective().r4.w << "\n";*/
-
-     //               shader->setUniform("mvp", tempMVP);
-
-     //               //std::cout << "CameraPos: "<<physicsComponent->position.x<<" "<<physicsComponent->position.y<<" "<< physicsComponent->position.z<<"\n";
-
-     //           }
-     //       }
+            // Check if the entity is a CameraEntity and is active
+			
         }
     }
 
@@ -122,7 +106,7 @@ namespace DREAM
         Entity* defaultCameraEntity = new Entity();
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // position
-			Vec4<float>(0, 0, 0, 0), // velocity
+			Vec4<float>(0, 0, -100, 0), // velocity
 			Vec4<float>(0, 0, 0, 0), // rotation
 			Vec4<float>(0, 0, 0, 1)  // rotation_velocity
 		);

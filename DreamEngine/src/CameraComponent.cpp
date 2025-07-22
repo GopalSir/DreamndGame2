@@ -94,8 +94,9 @@ namespace DREAM
 		PhysicsComponent* physicsComponent = this->entity->getComponent<PhysicsComponent>();
 		if (physicsComponent)
 		{
+            setRotation(physicsComponent->rotation.x, physicsComponent->rotation.y, physicsComponent->rotation.z);
 			setPosition(physicsComponent->position.x, physicsComponent->position.y, physicsComponent->position.z);
-			setRotation(physicsComponent->rotation.x, physicsComponent->rotation.y, physicsComponent->rotation.z);
+			
 		}
 		else
 		{
