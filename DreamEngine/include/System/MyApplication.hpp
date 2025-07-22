@@ -53,6 +53,7 @@ namespace DREAM {
 
         //Methods exposed to cliend side implementation 
         RenderSystem* GetRenderSystem();
+		CameraSystem* GetCameraSystem();
         //EventSystem* GetEventSystem();
 
         void updateSystems();

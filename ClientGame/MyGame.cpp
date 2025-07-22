@@ -33,9 +33,11 @@ MyGame::MyGame()
 		int index1 = this->GetRenderSystem()->addEntity(basicCube);
 		this->GetRenderSystem()->initEntityBuffers(index1);
 
+		Entity* basicCamera = DREAM::CameraSystem::createDefaultCameraEntity();
+		basicCamera->addComponent(new DREAM::CameraControllerComponent());
+		GetCameraSystem()->addEntity(basicCamera);
 
-	
+		DREAM::EventSystem::registerEvent(DREAM::MouseClickEvent::GetEventTypeCode(), basicCamera->getComponent<DREAM::CameraControllerComponent>());
+		DREAM::EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), basicCamera->getComponent<DREAM::CameraControllerComponent>());
+		DREAM::EventSystem::registerEvent(DREAM::KeyReleaseEvent::GetEventTypeCode(), basicCamera->getComponent<DREAM::CameraControllerComponent>());
 }
-
-
-

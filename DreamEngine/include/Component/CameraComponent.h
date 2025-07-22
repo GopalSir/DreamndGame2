@@ -22,7 +22,7 @@ namespace DREAM
 		Mat4<float> mvp;
 
 
-		CameraComponent() = default;
+		CameraComponent(float fov, float aspect,float  near, float far) ;
 	
 		void setRotation(float _x, float _y, float _z);
 		void setRotation(Mat4<float> _roation);
@@ -37,7 +37,8 @@ namespace DREAM
 		Mat4<float> getMVP();
 		void calculateViewMatrix();
 		void CalculateProjectionMatrix();
-		void CalculateMVP() ;
+		void CalculateMVP();
+		
 	};
 }
 

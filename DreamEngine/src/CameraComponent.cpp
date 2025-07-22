@@ -2,6 +2,19 @@
 
 namespace DREAM
 {
+    CameraComponent::CameraComponent(float fov, float aspect, float far , float near)
+    {
+		this->fov = fov;
+		this->aspect_ratio = aspect;
+		this->near = near;
+		this->far = far;
+		perspective = CreatePerspective(fov, aspect, far, near);
+		mvp = Mat4<float>(Vec4<float>(1, 0, 0, 0),
+			Vec4<float>(0, 1, 0, 0),
+			Vec4<float>(0, 0, 1, 0),
+			Vec4<float>(0, 0, 0, 1));
+		setRotation(0, 0, 0); // Initialize rotation to identity
+    }
     void CameraComponent::setRotation(float _x, float _y, float _z)
     {
         rz = Mat4<float>(
@@ -71,7 +84,7 @@ namespace DREAM
 
     Mat4<float> CameraComponent::getMVP()
     {
-        return perspective * mvp;
+        return mvp;
     }
     void CameraComponent::calculateViewMatrix()
     {
@@ -102,8 +115,13 @@ namespace DREAM
 
 	}
 
+    void CameraComponent::CalculateMVP()
+    {
+        mvp =  perspective * mvp;
+    }
 
-    CameraComponent::CameraComponent()
+
+   /* CameraComponent::CameraComponent()
     {
         rz = Mat4<float>(
             Vec4<float>(1, 0, 0, 0),
@@ -125,7 +143,7 @@ namespace DREAM
             Vec4<float>(0, 1, 0, 0),
             Vec4<float>(0, 0, 1, 0),
             Vec4<float>(0, 0, 0, 0));
-    };
+    };*/
 
 }
 

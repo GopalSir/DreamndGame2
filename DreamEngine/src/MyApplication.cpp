@@ -240,5 +240,10 @@ namespace DREAM
         return renderSystem;
     }
 
+    CameraSystem* MyApplication::GetCameraSystem()
+    {
+        return cameraSystem;
+    }
+
 }
 
