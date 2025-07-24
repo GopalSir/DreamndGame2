@@ -242,7 +242,9 @@ namespace DREAM
 
     CameraSystem* MyApplication::GetCameraSystem()
     {
+        
         return cameraSystem;
+
     }
 
 }

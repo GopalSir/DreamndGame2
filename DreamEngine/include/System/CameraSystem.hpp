@@ -28,7 +28,7 @@ namespace DREAM {
         int PrintCamera(EventInfo* _eventInfo);
         int handleEvent(EventInfo* _eventInfo) override;
 		static Entity* createDefaultCameraEntity();
-
+        Mat4<float> cameraTransformInverse(const Mat4<float>& rotationMatrix);
 
     };
 

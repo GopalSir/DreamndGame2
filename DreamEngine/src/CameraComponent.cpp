@@ -122,6 +122,7 @@ namespace DREAM
     }
 
 
+
    /* CameraComponent::CameraComponent()
     {
         rz = Mat4<float>(

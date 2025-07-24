@@ -15,7 +15,12 @@ namespace DREAM
             }
             else
             {
+				// Calculates the view matrix based on the camera's position and rotation
                 cameraComponent->calculateViewMatrix();
+
+				// Invert the camera's rotation matrix to get the inverse transformation
+				cameraComponent->mvp = cameraTransformInverse(cameraComponent->getMVP());
+
                 cameraComponent->CalculateProjectionMatrix();
                 cameraComponent->CalculateMVP();
 
@@ -128,5 +133,32 @@ namespace DREAM
 		defaultCameraEntity->addComponent(cameraComponent);
 
         return defaultCameraEntity;
+    }
+
+   
+
+    // Member function to calculate inverse of the rotation matrix
+    Mat4<float> CameraSystem::cameraTransformInverse(const Mat4<float>& rotationMatrix) {
+        //first we'll transpose the 3*3 part to get the inverse of the rotation matrix
+        Mat3<float> rotationMatrix3x3Inverse(
+            Vec3<float>(rotationMatrix.r1.x, rotationMatrix.r2.x, rotationMatrix.r3.x),
+            Vec3<float>(rotationMatrix.r1.y, rotationMatrix.r2.y, rotationMatrix.r3.y),
+            Vec3<float>(rotationMatrix.r1.z, rotationMatrix.r2.z, rotationMatrix.r3.z)
+        );
+
+        //Now the translation component is also added. It's value is -R * T
+        Vec3<float> translation(
+            Vec3<float>::dot(-rotationMatrix3x3Inverse.r1, Vec3<float>(rotationMatrix.r1.w, rotationMatrix.r2.w, rotationMatrix.r3.w)),
+            Vec3<float>::dot(-rotationMatrix3x3Inverse.r2, Vec3<float>(rotationMatrix.r1.w, rotationMatrix.r2.w, rotationMatrix.r3.w)),
+            Vec3<float>::dot(-rotationMatrix3x3Inverse.r3, Vec3<float>(rotationMatrix.r1.w, rotationMatrix.r2.w, rotationMatrix.r3.w))
+        );
+
+        Mat4<float> result(rotationMatrix3x3Inverse, translation);
+
+
+        //The complete inverse rotation matrix is then constructed by [rotationMatrix3x3 inverse, -rotationMatrix3x3 inverse *translation vector
+        //                                                                      0                ,               1                ]
+        // Now we combine the 3*3 rotation matrix with the translation vector
+        return result;
     }
 }

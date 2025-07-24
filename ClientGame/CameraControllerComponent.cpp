@@ -12,8 +12,25 @@ namespace DREAM
 
         if (_eventInfo->getEventTypeCode() == DREAM::KeyPressEvent::GetEventTypeCode())
         {
-                        
+			if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == true)
+			{
+				std::cout << "Left Control and right arrow Pressed" << std::endl;
+                //now we add to rotational speed around the flat axis of the camera. 
+                //for now let's experiment with global-y rotation
+				physicsComponent->rotation_velocity = Vec4<float>(0, 0.1, 0, 0);
 
+
+			}
+            else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_LEFT].first == true)
+            {
+                std::cout << "Left Control and right arrow Pressed" << std::endl;
+                //now we add to rotational speed around the flat axis of the camera. 
+                //for now let's experiment with global-y rotation
+                physicsComponent->rotation_velocity = Vec4<float>(0, -0.1, 0, 0);
+
+
+            }
+            
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_A].first == true)
                         {
                             // Move left
@@ -68,6 +85,15 @@ namespace DREAM
         else if (_eventInfo->getEventTypeCode() == DREAM::KeyReleaseEvent::GetEventTypeCode())
         {
             // std::cout<<"key removed boo"<<std::endl;
+            if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false || DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == false)
+            {
+                std::cout << "Left Control and right arrow Pressed" << std::endl;
+                //now we add to rotational speed around the flat axis of the camera. 
+                //for now let's experiment with global-y rotation
+                physicsComponent->rotation_velocity = Vec4<float>(0, 0, 0, 0);
+
+
+            }
            
                         if (physicsComponent == nullptr)
                         {
