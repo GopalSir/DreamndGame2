@@ -1,5 +1,6 @@
 #pragma once
-#include "Entity.hpp"
+
+class Entity;  // Forward declaration
 
 class Component
 {
@@ -10,4 +11,7 @@ class Component
     public:
     void setEntity(Entity* _entity);
     virtual ~Component() = default;  // At least one virtual function
+	virtual void doPostConstruct() {
+		// Default implementation does nothing, can be overridden by derived classes
+	}
 };

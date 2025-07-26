@@ -43,6 +43,8 @@ namespace DREAM {
 
         std::chrono::nanoseconds calculateRequiredFrameTime(int _gameFPS);
         int playerEntityID, enemyEntityID;
+        void bridgeSystems();
+        void completePostConstruct();
 
     public:
         MyApplication();
@@ -62,7 +64,8 @@ namespace DREAM {
         void setTriangleEntity();
         bool initializeShaders();
         void     setUpCameraSystem();
-
+        void setUpOrigin();
+        bool showOrigin;
 
     };
 }

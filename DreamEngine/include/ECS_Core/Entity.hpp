@@ -1,8 +1,7 @@
 #pragma once
 #include <typeindex>
 #include <vector>
-
-class Component;
+#include <ECS_Core/Component.hpp>
 
 class Entity
 {
@@ -11,6 +10,7 @@ class Entity
 
     public:
     int getEntity();
+
     template<typename T>
     T* getComponent()
     {
@@ -25,6 +25,11 @@ class Entity
     }
 
     void addComponent(Component* _component);
+    void doPostConstruct() {
+		for (auto* component : components) {
+			component->doPostConstruct();
+		}
+    }
     virtual ~Entity(){};
 };
 

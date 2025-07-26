@@ -27,9 +27,10 @@ namespace DREAM
 
         }
 
-
-        renderSystem = new RenderSystem(glfwWindow);
-
+        initializeShaders();
+        setUpCameraSystem();
+        /*Render System is expecting a camera active already. It won't search again once construcor is done. Will fix it later*/
+        renderSystem = new RenderSystem(glfwWindow,programShader);
 
 
 
@@ -50,9 +51,9 @@ namespace DREAM
         requiredFrameTime = calculateRequiredFrameTime(gameFPS);
         Log::LogMessage("Required frame time" + std::to_string(requiredFrameTime.count()));
 
-        initializeShaders();
+        
         //setTriangleEntity();
-        setUpCameraSystem();
+      
 
         glfwSetFramebufferSizeCallback(glfwWindow, GLFW_WindowResize_Callback_Handler);
         glfwSetMouseButtonCallback(glfwWindow, [](GLFWwindow* _window, int _button, int _action, int mods) {
@@ -78,6 +79,7 @@ namespace DREAM
 
     void MyApplication::updateSystems()
     {
+
         cameraSystem->update();
         renderSystem->update();
 
@@ -99,6 +101,8 @@ namespace DREAM
 
     void MyApplication::run()
     {
+        completePostConstruct();
+        bridgeSystems();
         while (gamestate)
         {
             glClear(GL_COLOR_BUFFER_BIT);
@@ -235,6 +239,13 @@ namespace DREAM
 
     }
 
+	// Set up simple rectangles strips in 3 directions with different colors and arrow at the end. 
+	// First, I need to parametrize the Shape Class members to draw at different locations.
+    void MyApplication::setUpOrigin()
+    {
+
+    }
+
     RenderSystem* MyApplication::GetRenderSystem()
     {
         return renderSystem;
@@ -246,6 +257,29 @@ namespace DREAM
         return cameraSystem;
 
     }
+
+    void MyApplication::bridgeSystems()
+    {
+        // This function is used to bridge the systems together, if needed.
+        // For now, it does nothing but can be extended in the future.
+        Log::LogMessage("Bridging systems together", LogLevel::INFO_LEVEL);
+        if (renderSystem && cameraSystem)
+        {
+            Log::LogMessage("RenderSystem and CameraSystem are available for bridging", LogLevel::INFO_LEVEL);
+            renderSystem->SetActiveCamera(cameraSystem->getActiveCamera());
+        }
+        else
+        {
+            Log::LogMessage("RenderSystem or CameraSystem is not initialized properly", LogLevel::ERROR_LEVEL);
+        }
+    }
+	void MyApplication::completePostConstruct()
+	{
+        for (auto entity : cameraSystem->entities)
+        {
+			entity->doPostConstruct();
+        }
+	}
 
 }
 

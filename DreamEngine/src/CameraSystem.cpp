@@ -1,6 +1,38 @@
 #include "../include/System/CameraSystem.hpp"
 namespace DREAM
 {
+
+
+
+
+    /*
+	* Camera System is responsible for managing camera entities in the ECS.
+    * The update function will go through all the registered entities and 
+    * use the information available in camera componenet to generate 
+    * View Matrix
+    * Projection Matrix
+	* because both these depend on the camera's position and rotation,
+	* but camera's position and rotation are stored in the physics component, it's not intrinsic to the camera
+    * 
+    */
+
+    CameraComponent* CameraSystem::getActiveCamera()
+    {
+		// Iterate over all entities managed by the system
+		for (auto* tempEntity : entities)
+		{
+			CameraComponent* cameraComponent = tempEntity->getComponent<CameraComponent>();
+			if (cameraComponent && cameraComponent->active)
+			{
+				Log::LogMessage("Active Camera Found", LogLevel::INFO_LEVEL);
+                return cameraComponent;
+			}
+		}
+		Log::LogMessage("No Active Camera Found", LogLevel::ERROR_LEVEL);
+        return nullptr;
+    }
+
+
     void CameraSystem::update()
     {
         // Iterate over all entities managed by the system
@@ -15,20 +47,22 @@ namespace DREAM
             }
             else
             {
+				cameraComponent->cameraWorldTransform = calculateCameraWorldTransform(tempEntity->getComponent<PhysicsComponent>());
 				// Calculates the view matrix based on the camera's position and rotation
-                cameraComponent->calculateViewMatrix();
+                
+                cameraComponent->cameraViewMatrix = calculateCameraViewMatrix(cameraComponent->cameraWorldTransform);
 
 				// Invert the camera's rotation matrix to get the inverse transformation
-				cameraComponent->mvp = cameraTransformInverse(cameraComponent->getMVP());
+				//cameraComponent->mvp = cameraTransformInverse(cameraComponent->getMVP());
 
-                cameraComponent->CalculateProjectionMatrix();
-                cameraComponent->CalculateMVP();
+                cameraComponent->projection =  CalculateProjectionMatrix(cameraComponent->fov,cameraComponent->aspect_ratio,cameraComponent->far,cameraComponent->near);
+                
 
 
-                CameraComponent* tempCameraComponent = tempEntity->getComponent<CameraComponent>();
+                
                 PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
 
-                if (tempCameraComponent && physicsComponent)
+                if (cameraComponent && physicsComponent)
                 {
                     // Get the PhysicsComponent of the CameraEntity
 
@@ -47,21 +81,8 @@ namespace DREAM
 
 
 
-                    Mat4<float> tempMVP = tempCameraComponent->getMVP();
 
-                    //Logging MVP
-                    std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
-                    std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
-                    std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
-                    std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
-                    /*std::cout << mvpComponent->getPerspective().r1.x << " " << mvpComponent->getPerspective().r1.y << " " << mvpComponent->getPerspective().r1.z << " " << mvpComponent->getPerspective().r1.w << "\n";
-                    std::cout << mvpComponent->getPerspective().r2.x << " " << mvpComponent->getPerspective().r2.y << " " << mvpComponent->getPerspective().r2.z << " " << mvpComponent->getPerspective().r2.w << "\n";
-                    std::cout << mvpComponent->getPerspective().r3.x << " " << mvpComponent->getPerspective().r3.y << " " << mvpComponent->getPerspective().r3.z << " " << mvpComponent->getPerspective().r3.w << "\n";
-                    std::cout << mvpComponent->getPerspective().r4.x << " " << mvpComponent->getPerspective().r4.y << " " << mvpComponent->getPerspective().r4.z << " " << mvpComponent->getPerspective().r4.w << "\n";*/
-
-                    shader->setUniform("mvp", tempMVP);
-
-                    //std::cout << "CameraPos: "<<physicsComponent->position.x<<" "<<physicsComponent->position.y<<" "<< physicsComponent->position.z<<"\n";
+                    
 
 
                 }
@@ -74,20 +95,22 @@ namespace DREAM
         }
     }
 
-
+    Mat4<float> CameraSystem::CalculateProjectionMatrix(float fov, float aspect, float far, float near)
+    {
+        float f = 1.0f / tan(fov / 2.0f);
+        Mat4<float> proj;
+        proj.r1 = Vec4<float>(f / aspect, 0, 0, 0);
+        proj.r2 = Vec4<float>(0, f, 0, 0);
+        proj.r3 = Vec4<float>(0, 0, (far + near) / (near - far), (2 * far * near) / (near - far));
+        proj.r4 = Vec4<float>(0, 0, -1, 0);
+        return proj;
+    }
 
     CameraSystem::CameraSystem(Shader* _shader)
     {
         Log::LogMessage("Constructor of CameraSystem Called");
         // EventSystem::registerEvent(EVENTS::KEY_PRESSED,this);
         shader = _shader;
-        cam_x = 0;
-        cam_y = 0;
-
-        cam_x_velocity = 0.0f;
-        cam_y_velocity = 0.0f;
-
-
     }
 
     int CameraSystem::PrintCamera(EventInfo* _eventInfo)
@@ -124,10 +147,10 @@ namespace DREAM
 
                float aspect = (float)windowWidth / windowHeight;
                float near = 0.1f;
-               float far =300.0f;
+               float far =1000.0f;
 
         CameraComponent* cameraComponent = new CameraComponent(fov, aspect, near, far);
-
+		cameraComponent->active = true; // Set the camera as active
 		
 		defaultCameraEntity->addComponent(physicsComponent);
 		defaultCameraEntity->addComponent(cameraComponent);
@@ -135,22 +158,72 @@ namespace DREAM
         return defaultCameraEntity;
     }
 
-   
+    Mat4<float> CameraSystem::calculateCameraWorldTransform(const PhysicsComponent* _physicsComponent)
+    {
+        /*
+		We'll set the cameraWorldTransform to the following matrix, using the rotation and translation from physics Component
+		[R  T]
+		[0  1]
+		where R is the rotation matrix and T is the translation vector.
+        */
 
-    // Member function to calculate inverse of the rotation matrix
-    Mat4<float> CameraSystem::cameraTransformInverse(const Mat4<float>& rotationMatrix) {
+		float _x = _physicsComponent->rotation.x;
+		float _y = _physicsComponent->rotation.y;
+		float _z = _physicsComponent->rotation.z;
+
+        Mat4<float> rz = Mat4<float>(
+            Vec4<float>(cos(_z), -sin(_z), 0, 0),
+            Vec4<float>(sin(_z), cos(_z), 0, 0),
+            Vec4<float>(0, 0, 1, 0),
+            Vec4<float>(0, 0, 0, 1)
+
+        );
+
+        Mat4<float> ry = Mat4<float>(
+            Vec4<float>(cos(_y), 0, sin(_y), 0),
+            Vec4<float>(0, 1, 0, 0),
+            Vec4<float>(-sin(_y), 0, cos(_y), 0),
+            Vec4<float>(0, 0, 0, 1)
+
+        );
+
+        Mat4<float> rx = Mat4<float>(
+            Vec4<float>(1, 0, 0, 0),
+            Vec4<float>(0, cos(_x), -sin(_x), 0),
+            Vec4<float>(0, sin(_x), cos(_x), 0),
+            Vec4<float>(0, 0, 0, 1)
+
+        );
+
+		// Combine the rotation matrices by multiplying and then finally change 'w' component to translation 
+		Mat4<float> rotationMatrix = rz * ry * rx;
+        Mat4<float> result = rotationMatrix;
+		result.r1.w = _physicsComponent->position.x;
+		result.r2.w = _physicsComponent->position.y;
+		result.r3.w = _physicsComponent->position.z;
+		result.r4 = Vec4<float>(0, 0, 0, 1); // Last row is always [0, 0, 0, 1] for homogeneous coordinates
+		return result;
+
+
+    }
+
+	Mat4<float> CameraSystem::calculateCameraViewMatrix(const Mat4<float>& _cameraWorldTransform) {
+		/*
+		The view matrix is the inverse of the camera's world transform.
+		It transforms points from world space to camera space.
+		*/
         //first we'll transpose the 3*3 part to get the inverse of the rotation matrix
         Mat3<float> rotationMatrix3x3Inverse(
-            Vec3<float>(rotationMatrix.r1.x, rotationMatrix.r2.x, rotationMatrix.r3.x),
-            Vec3<float>(rotationMatrix.r1.y, rotationMatrix.r2.y, rotationMatrix.r3.y),
-            Vec3<float>(rotationMatrix.r1.z, rotationMatrix.r2.z, rotationMatrix.r3.z)
+            Vec3<float>(_cameraWorldTransform.r1.x, _cameraWorldTransform.r2.x, _cameraWorldTransform.r3.x),
+            Vec3<float>(_cameraWorldTransform.r1.y, _cameraWorldTransform.r2.y, _cameraWorldTransform.r3.y),
+            Vec3<float>(_cameraWorldTransform.r1.z, _cameraWorldTransform.r2.z, _cameraWorldTransform.r3.z)
         );
 
         //Now the translation component is also added. It's value is -R * T
         Vec3<float> translation(
-            Vec3<float>::dot(-rotationMatrix3x3Inverse.r1, Vec3<float>(rotationMatrix.r1.w, rotationMatrix.r2.w, rotationMatrix.r3.w)),
-            Vec3<float>::dot(-rotationMatrix3x3Inverse.r2, Vec3<float>(rotationMatrix.r1.w, rotationMatrix.r2.w, rotationMatrix.r3.w)),
-            Vec3<float>::dot(-rotationMatrix3x3Inverse.r3, Vec3<float>(rotationMatrix.r1.w, rotationMatrix.r2.w, rotationMatrix.r3.w))
+            Vec3<float>::dot(-rotationMatrix3x3Inverse.r1, Vec3<float>(_cameraWorldTransform.r1.w, _cameraWorldTransform.r2.w, _cameraWorldTransform.r3.w)),
+            Vec3<float>::dot(-rotationMatrix3x3Inverse.r2, Vec3<float>(_cameraWorldTransform.r1.w, _cameraWorldTransform.r2.w, _cameraWorldTransform.r3.w)),
+            Vec3<float>::dot(-rotationMatrix3x3Inverse.r3, Vec3<float>(_cameraWorldTransform.r1.w, _cameraWorldTransform.r2.w, _cameraWorldTransform.r3.w))
         );
 
         Mat4<float> result(rotationMatrix3x3Inverse, translation);
@@ -160,5 +233,7 @@ namespace DREAM
         //                                                                      0                ,               1                ]
         // Now we combine the 3*3 rotation matrix with the translation vector
         return result;
-    }
+		
+	}
+
 }

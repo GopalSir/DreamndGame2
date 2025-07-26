@@ -14,31 +14,18 @@ namespace DREAM
 		float aspect_ratio;
 		float near;
 		float far;
+		bool active;
+		
+		Mat4<float> cameraWorldTransform; //homogenous rotation plus translation of the camera in world space
+		Mat4<float> cameraViewMatrix;
+		Mat4<float> projection;
+		//Mat4<float> rx, ry, rz;
+		//Mat4<float> position;
 
-		Mat4<float> perspective;
-		Mat4<float> rx, ry, rz;
-		Mat4<float> position;
-
-		Mat4<float> mvp;
+		//Mat4<float> mvp;
 
 
 		CameraComponent(float fov, float aspect,float  near, float far) ;
-	
-		void setRotation(float _x, float _y, float _z);
-		void setRotation(Mat4<float> _roation);
-
-		void setPosition(float _x, float _y, float _z);
-
-		static Mat4<float> CreatePerspective(float fov, float aspect, float near, float far);
-		void setPerspective(Mat4<float> _perspective);
-
-		Mat4<float> getPerspective();
-
-		Mat4<float> getMVP();
-		void calculateViewMatrix();
-		void CalculateProjectionMatrix();
-		void CalculateMVP();
-		
 	};
 }
 

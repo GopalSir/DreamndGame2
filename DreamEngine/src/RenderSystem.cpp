@@ -2,7 +2,7 @@
 
 namespace DREAM
 {
-    RenderSystem::RenderSystem(GLFWwindow* _glfwWindow)
+    RenderSystem::RenderSystem(GLFWwindow* _glfwWindow,Shader* _shader)
     {
         if (_glfwWindow == nullptr)
         {
@@ -11,9 +11,23 @@ namespace DREAM
         }
         else
         {
+			glfwWindow = _glfwWindow;
+			shader = _shader;
+
+
             Log::LogMessage("RenderSystem Info: glfw window ok", LogLevel::INFO_LEVEL);
 
+      
+
+
+
         }
+    }
+
+    Mat4<float> RenderSystem::CalculateMVP(Mat4<float>& _projection, Mat4<float>& _view, Mat4<float>& _model = Mat4<float>::identity)
+    {
+		Mat4<float> resultMVP = _projection * _view * _model;
+        return resultMVP;
     }
 
     void RenderSystem::update()
@@ -27,11 +41,21 @@ namespace DREAM
             int tempVBO = tempEntities->getComponent<DrawableComponent>()->VBO;
             int tempVAO = tempEntities->getComponent<DrawableComponent>()->VAO;
 
+			
+
             int verticesCount = tempEntities->getComponent<VerticesComponent<float>>()->vertices.size();
             glEnableVertexAttribArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, tempVBO);
             glBindVertexArray(tempVAO);
 
+            Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix);
+            shader->setUniform("mvp", tempMVP);
+
+            //Logging MVP
+            std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
+            std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
+            std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
+            std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
 
             // third parameter is the number of vertices to render. 
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

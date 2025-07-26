@@ -16,7 +16,7 @@ Entity* Shape::GetShape(SHAPE_TYPE _shapeType)
 	Entity* result = new Entity();
 	if (_shapeType == SHAPE_TYPE::TRIANGLE)
 	{
-		//Default values will be normalized
+		
 		verticesComponent->vertices.push_back( PositionComponent<float>(100, 100, 0));
 		verticesComponent->vertices.push_back(PositionComponent<float>(100, 200, 0));
 		verticesComponent->vertices.push_back(PositionComponent<float>(200, 200, 0));
