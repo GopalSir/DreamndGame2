@@ -69,14 +69,14 @@ namespace DREAM
 
 
                         // Update the position using the velocity
-                    physicsComponent->position.x -= physicsComponent->velocity.x;
-                    physicsComponent->position.y -= physicsComponent->velocity.y;
-                    physicsComponent->position.z -= physicsComponent->velocity.z;
+                    physicsComponent->position.x += physicsComponent->velocity.x;
+                    physicsComponent->position.y += physicsComponent->velocity.y;
+                    physicsComponent->position.z += physicsComponent->velocity.z;
                     physicsComponent->position.w = 1; // Usually w remains unchanged
 
-                    physicsComponent->rotation.x -= physicsComponent->rotation_velocity.x;
-                    physicsComponent->rotation.y -= physicsComponent->rotation_velocity.y;
-                    physicsComponent->rotation.z -= physicsComponent->rotation_velocity.z;
+                    physicsComponent->rotation.x += physicsComponent->rotation_velocity.x;
+                    physicsComponent->rotation.y += physicsComponent->rotation_velocity.y;
+                    physicsComponent->rotation.z += physicsComponent->rotation_velocity.z;
                     physicsComponent->rotation.w -= 0;
 
 
@@ -134,7 +134,7 @@ namespace DREAM
         Entity* defaultCameraEntity = new Entity();
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // position
-			Vec4<float>(0, 0, -100, 0), // velocity
+			Vec4<float>(0, 0, 100, 0), // velocity
 			Vec4<float>(0, 0, 0, 0), // rotation
 			Vec4<float>(0, 0, 0, 1)  // rotation_velocity
 		);

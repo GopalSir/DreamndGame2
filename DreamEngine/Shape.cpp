@@ -17,9 +17,10 @@ Entity* Shape::GetShape(SHAPE_TYPE _shapeType)
 	if (_shapeType == SHAPE_TYPE::TRIANGLE)
 	{
 		
-		verticesComponent->vertices.push_back( PositionComponent<float>(100, 100, 0));
-		verticesComponent->vertices.push_back(PositionComponent<float>(100, 200, 0));
-		verticesComponent->vertices.push_back(PositionComponent<float>(200, 200, 0));
+		verticesComponent->vertices.push_back(PositionComponent<float>(-33.33, -66.67, 0));
+		verticesComponent->vertices.push_back(PositionComponent<float>(-33.33, 33.33, 0));
+		verticesComponent->vertices.push_back(PositionComponent<float>(66.67, 33.33, 0));
+
 
 		
 		result->addComponent(verticesComponent);
