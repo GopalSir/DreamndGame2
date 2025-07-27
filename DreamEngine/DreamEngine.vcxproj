@@ -163,10 +163,12 @@
     <ClInclude Include="include\Vec3.hpp" />
     <ClInclude Include="include\VertexAttribPointerGenerator.hpp" />
     <ClInclude Include="KeyStates.h" />
+    <ClInclude Include="include\System\PhysicsSystem.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="include\Shape.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\PhysicsSystem.cpp" />
     <ClCompile Include="src\CameraComponent.cpp" />
     <ClCompile Include="include\Entity\CameraEntity.cpp" />
     <ClCompile Include="KeyStates.cpp" />

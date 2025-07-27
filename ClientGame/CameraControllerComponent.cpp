@@ -4,7 +4,8 @@ namespace DREAM
 {
 	CameraControllerComponent::CameraControllerComponent()
 	{
-
+		cameraComponent = nullptr;
+		physicsComponent = nullptr;
 		Log::LogMessage("CameraControllerComponent Constructor Called", LogLevel::INFO_LEVEL);
 
 	}

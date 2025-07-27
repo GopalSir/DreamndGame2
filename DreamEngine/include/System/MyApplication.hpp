@@ -13,6 +13,7 @@
 #include "CameraSystem.hpp"
 #include "RenderSystem.hpp"
 #include "EventSystem.hpp"
+#include "PhysicsSystem.h"
 #include "../glfwKeyCallBacks.hpp"
 #include "../VertexAttribPointerGenerator.hpp"
 #include <iostream>
@@ -29,6 +30,7 @@ namespace DREAM {
         Log log;
         CameraSystem* cameraSystem;
         RenderSystem* renderSystem;
+		PhysicsSystem* physicsSystem;
 
         std::vector<System*> gameSystems;
         bool gamestate;
@@ -40,6 +42,7 @@ namespace DREAM {
         std::chrono::nanoseconds actualFrameTime;
         std::chrono::nanoseconds requiredFrameTime;
         std::chrono::nanoseconds requiredSleepTime;
+		float deltaTime;
 
         std::chrono::nanoseconds calculateRequiredFrameTime(int _gameFPS);
         int playerEntityID, enemyEntityID;

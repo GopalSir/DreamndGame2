@@ -31,6 +31,7 @@ namespace DREAM
         setUpCameraSystem();
         /*Render System is expecting a camera active already. It won't search again once construcor is done. Will fix it later*/
         renderSystem = new RenderSystem(glfwWindow,programShader);
+		physicsSystem = new PhysicsSystem(&deltaTime);
 
 
 
@@ -82,6 +83,7 @@ namespace DREAM
 
         cameraSystem->update();
         renderSystem->update();
+		physicsSystem->update();
 
         //for (auto i : gameSystems)
         //{
@@ -124,6 +126,8 @@ namespace DREAM
 
             auto frameEnd = std::chrono::high_resolution_clock::now();
             actualFrameTime = frameEnd - frameStart;
+            //Time of last frame in seconds
+			deltaTime = std::chrono::duration<float>(actualFrameTime).count();
             if (actualFrameTime < requiredFrameTime)
             {
                 requiredSleepTime = requiredFrameTime - actualFrameTime;
