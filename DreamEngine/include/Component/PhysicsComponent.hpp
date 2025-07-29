@@ -21,6 +21,8 @@ class PhysicsComponent: public Component
   PhysicsComponent(Vec4<float> _velocity, Vec4<float> _position, Vec4<float> _rotation, Vec4<float> _rotationVelocity);
   PhysicsComponent(PhysicsComponent *_physicsComponent);
 
+  
+
 
 
 };

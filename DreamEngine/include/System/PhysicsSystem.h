@@ -1,4 +1,6 @@
 #pragma once
+#define _USE_MATH_DEFINES
+#include <cmath>
 #include <ECS_Core/Core.hpp>
 #include <functional>
 #include <map>
@@ -24,6 +26,7 @@ public:
 	}
 
 	static Mat4<float> GetRotatioMatrixfromRotation( float _deltaRotation, AXIS _rotationAxis);
+	static Vec4<float> GetEulerRotationfromRotationMatrix(const Mat4<float>& _rotationMatrix);
 	void update() override;
 
 };

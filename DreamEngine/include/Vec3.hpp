@@ -12,6 +12,28 @@ struct Vec4
 	static T dot(const Vec4<T>& v1, const Vec4<T>& v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 	}
+
+	//Negation operator overlaod
+	Vec4 operator-() const {
+		return Vec4(-x, -y, -z, -w);
+	}
+
+	//Addition operator overload to add two Vec4<T>
+	Vec4 operator+(const Vec4& other) const {
+		return Vec4(x + other.x, y + other.y, z + other.z, w + other.w);
+	}
+
+	//Minus operator overload to subtract two Vec4<T>
+	Vec4 operator-(const Vec4& other) const {
+		return Vec4(x - other.x, y - other.y, z - other.z, w - other.w);
+	}
+
+	//Multiplication operator overload to multiply a Vec4<T> by a scalar
+	Vec4 operator*(const T scalar) const {
+		return Vec4(x * scalar, y * scalar, z * scalar, w );
+	}
+
+
 };
 
 template<typename T>
@@ -35,6 +57,22 @@ struct Vec3
 		if (length == 0) return Vec3<T>(0, 0, 0); // Avoid division by zero
 		return Vec3<T>(v.x / length, v.y / length, v.z / length);
 	}
+
+	// Addition operator overload to add two Vec3<T>
+	Vec3 operator+(const Vec3& other) const {
+		return Vec3(x + other.x, y + other.y, z + other.z);
+	}
+
+	// Minus operator overload to subtract two Vec3<T>
+	Vec3 operator-(const Vec3& other) const {
+		return Vec3(x - other.x, y - other.y, z - other.z);
+	}
+
+	// Multiplication operator overload to multiply a Vec3<T> by a scalar
+	Vec3 operator*(const T scalar) const {
+		return Vec3(x * scalar, y * scalar, z * scalar);
+	}
+
 };
 
 template<typename T>

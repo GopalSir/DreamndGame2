@@ -35,32 +35,15 @@ namespace DREAM
 
     void CameraSystem::update()
     {
+        //std::cout << *dt_pointer << std::endl;
         // Iterate over all entities managed by the system
         for (auto* tempEntity : entities)
         {
 
             //We'll only update view matrices here. 
             CameraComponent* cameraComponent = tempEntity->getComponent<CameraComponent>();
-            if (cameraComponent == nullptr)
-            {
-                Log::LogMessage("null camera returned in CameraSystem Update", LogLevel::ERROR_LEVEL);
-            }
-            else
-            {
-				cameraComponent->cameraWorldTransform = calculateCameraWorldTransform(tempEntity->getComponent<PhysicsComponent>());
-				// Calculates the view matrix based on the camera's position and rotation
-                
-                cameraComponent->cameraViewMatrix = calculateCameraViewMatrix(cameraComponent->cameraWorldTransform);
+            PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
 
-				// Invert the camera's rotation matrix to get the inverse transformation
-				//cameraComponent->mvp = cameraTransformInverse(cameraComponent->getMVP());
-
-                cameraComponent->projection =  CalculateProjectionMatrix(cameraComponent->fov,cameraComponent->aspect_ratio,cameraComponent->far,cameraComponent->near);
-                
-
-
-                
-                PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
 
                 if (cameraComponent && physicsComponent)
                 {
@@ -68,25 +51,29 @@ namespace DREAM
 
 
 
-                        // Update the position using the velocity
-                    physicsComponent->position.x += physicsComponent->velocity.x;
-                    physicsComponent->position.y += physicsComponent->velocity.y;
-                    physicsComponent->position.z += physicsComponent->velocity.z;
-                    physicsComponent->position.w = 1; // Usually w remains unchanged
+					// Update the position using the velocity    
+					updateCameraPosition(physicsComponent);
 
-                    physicsComponent->rotation.x += physicsComponent->rotation_velocity.x;
-                    physicsComponent->rotation.y += physicsComponent->rotation_velocity.y;
-                    physicsComponent->rotation.z += physicsComponent->rotation_velocity.z;
-                    physicsComponent->rotation.w -= 0;
+					// Update the rotation using the rotation matrix
+					//updateCameraRotation(physicsComponent, cameraComponent);
 
 
+                    cameraComponent->cameraWorldTransform = calculateCameraWorldTransform(physicsComponent,cameraComponent);
+                    // Calculates the view matrix based on the camera's position and rotation
 
+                    cameraComponent->cameraViewMatrix = calculateCameraViewMatrix(cameraComponent->cameraWorldTransform);
 
-                    
+                    // Invert the camera's rotation matrix to get the inverse transformation
+                    //cameraComponent->mvp = cameraTransformInverse(cameraComponent->getMVP());
 
+                    cameraComponent->projection = CalculateProjectionMatrix(cameraComponent->fov, cameraComponent->aspect_ratio, cameraComponent->far, cameraComponent->near);
+				}
+				else
+				{
+					Log::LogMessage("CameraComponent or PhysicsComponent is null in CameraSystem update", LogLevel::ERROR_LEVEL);
 
                 }
-            }
+            
             
 
 
@@ -106,11 +93,33 @@ namespace DREAM
         return proj;
     }
 
-    CameraSystem::CameraSystem(Shader* _shader)
+    void CameraSystem::updateCameraPosition(PhysicsComponent* _physicsComponent)
+    {
+		_physicsComponent->position = _physicsComponent->position +  (_physicsComponent->velocity * (*dt_pointer));
+    }
+
+    void CameraSystem::updateCameraRotation(PhysicsComponent* _physicsComponent, CameraComponent* _cameraComponent)
+    {
+        //Need to extract back the rotation of the camera using it's world transform matrix
+		Mat4<float> cameraWorldTransform = _cameraComponent->cameraWorldTransform;
+
+		Vec4<float> new_euler_rotation = PhysicsSystem::GetEulerRotationfromRotationMatrix(cameraWorldTransform);
+
+		// Update the rotation of the physics component based on the new euler rotation
+		_physicsComponent->rotation.x = new_euler_rotation.x;
+		_physicsComponent->rotation.y = new_euler_rotation.y;
+		_physicsComponent->rotation.z = new_euler_rotation.z;
+
+
+
+
+    }
+    CameraSystem::CameraSystem(Shader* _shader, const float* _dt_pointer)
     {
         Log::LogMessage("Constructor of CameraSystem Called");
         // EventSystem::registerEvent(EVENTS::KEY_PRESSED,this);
         shader = _shader;
+		dt_pointer = _dt_pointer; // Store the pointer to delta time
     }
 
     int CameraSystem::PrintCamera(EventInfo* _eventInfo)
@@ -158,50 +167,35 @@ namespace DREAM
         return defaultCameraEntity;
     }
 
-    Mat4<float> CameraSystem::calculateCameraWorldTransform(const PhysicsComponent* _physicsComponent)
+    Mat4<float> CameraSystem::calculateCameraWorldTransform(const PhysicsComponent* _physicsComponent, CameraComponent* _cameraComponent)
     {
-        /*
-		We'll set the cameraWorldTransform to the following matrix, using the rotation and translation from physics Component
-		[R  T]
-		[0  1]
-		where R is the rotation matrix and T is the translation vector.
-        */
+    
 
-		float _x = _physicsComponent->rotation.x;
-		float _y = _physicsComponent->rotation.y;
-		float _z = _physicsComponent->rotation.z;
+		float local_rotation_x = _physicsComponent->rotation_velocity.x * (*dt_pointer);
+		float local_rotation_y = _physicsComponent->rotation_velocity.y * (*dt_pointer);
+		float local_rotation_z = _physicsComponent->rotation_velocity.z * (*dt_pointer);
 
-        Mat4<float> rz = Mat4<float>(
-            Vec4<float>(cos(_z), -sin(_z), 0, 0),
-            Vec4<float>(sin(_z), cos(_z), 0, 0),
-            Vec4<float>(0, 0, 1, 0),
-            Vec4<float>(0, 0, 0, 1)
+		Mat4<float> deltaRotationMatrix_x = PhysicsSystem::GetRotatioMatrixfromRotation(local_rotation_x, AXIS::X_AXIS );
+		Mat4<float> deltaRotationMatrix_y = PhysicsSystem::GetRotatioMatrixfromRotation(local_rotation_y, AXIS::Y_AXIS);
+		Mat4<float> deltaRotationMatrix_z = PhysicsSystem::GetRotatioMatrixfromRotation(local_rotation_z, AXIS::Z_AXIS);
 
-        );
+		// Combine the delta rotation matrices
+		Mat4<float> deltaRotationMatrix = deltaRotationMatrix_z * deltaRotationMatrix_y * deltaRotationMatrix_x;
 
-        Mat4<float> ry = Mat4<float>(
-            Vec4<float>(cos(_y), 0, sin(_y), 0),
-            Vec4<float>(0, 1, 0, 0),
-            Vec4<float>(-sin(_y), 0, cos(_y), 0),
-            Vec4<float>(0, 0, 0, 1)
 
-        );
+		Mat4<float> result = _cameraComponent->cameraWorldTransform; // Start with the camera's world transform
 
-        Mat4<float> rx = Mat4<float>(
-            Vec4<float>(1, 0, 0, 0),
-            Vec4<float>(0, cos(_x), -sin(_x), 0),
-            Vec4<float>(0, sin(_x), cos(_x), 0),
-            Vec4<float>(0, 0, 0, 1)
-
-        );
-
-		// Combine the rotation matrices by multiplying and then finally change 'w' component to translation 
-		Mat4<float> rotationMatrix = rz * ry * rx;
-        Mat4<float> result = rotationMatrix;
+		// Now we combine the rotation matrix with the translation vector3
+		// The translation vector is the position of the camera in world space
+		result = result * deltaRotationMatrix; // Apply delta rotation to the camera's world transform
+		
+		//Finally set the positition of the camera to the physics component's position 
 		result.r1.w = _physicsComponent->position.x;
 		result.r2.w = _physicsComponent->position.y;
 		result.r3.w = _physicsComponent->position.z;
-		result.r4 = Vec4<float>(0, 0, 0, 1); // Last row is always [0, 0, 0, 1] for homogeneous coordinates
+		// The w component of the translation vector is set to 1 for homogeneous coordinates
+		result.r4 = Vec4<float>(0, 0, 0, 1); // Last row for homogeneous coordinates
+
 		return result;
 
 

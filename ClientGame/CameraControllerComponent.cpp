@@ -48,7 +48,7 @@ namespace DREAM
                 
                 //Mat3<float> x_axis = 
 				//physicsComponent->rotation_velocity = Vec4<float>(0, 0.1, 0, 0);
-                physicsComponent->rotation_velocity = Vec4<float>(-y_axis.x/10,-y_axis.y/10,-y_axis.z/10,0 );
+                physicsComponent->rotation_velocity = Vec4<float>(0,-50.0f,0,0);
 
 
 			}
@@ -58,8 +58,7 @@ namespace DREAM
                 //now we add to rotational speed around the flat axis of the camera. 
 
 
-                physicsComponent->rotation_velocity = Vec4<float>(y_axis.x / 10, y_axis.y / 10, y_axis.z / 10, 0);
-
+                physicsComponent->rotation_velocity = Vec4<float>(0, 50.0f, 0, 0);
 
             }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_UP].first == true)
@@ -67,7 +66,7 @@ namespace DREAM
                 std::cout << "Left Control and up arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
-                physicsComponent->rotation_velocity = Vec4<float>(x_axis.x/10,x_axis.y/10,x_axis.z/10,0);
+                physicsComponent->rotation_velocity = Vec4<float>(50.0f, 0, 0, 0);
 
 
             }
@@ -76,7 +75,7 @@ namespace DREAM
                 std::cout << "Left Control and down arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
-                physicsComponent->rotation_velocity = Vec4<float>(-x_axis.x / 10, -x_axis.y / 10, -x_axis.z / 10, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(-50.0f, 0, 0, 0);
 
 
             }
@@ -109,7 +108,7 @@ namespace DREAM
                 }
                 else
                 {
-                    physicsComponent->velocity = Vec4<float>(z_axis.x * 40, z_axis.y * 40, z_axis.z * 40, 0);
+                    physicsComponent->velocity = Vec4<float>(z_axis.x * 1000, z_axis.y * 1000, z_axis.z * 1000, 0);
                     
                 }
                         }
@@ -123,7 +122,7 @@ namespace DREAM
                 }
                             else
                             {
-                    physicsComponent->velocity = Vec4<float>(-z_axis.x * 40, -z_axis.y * 40, -z_axis.z * 40, 0);
+                    physicsComponent->velocity = Vec4<float>(-z_axis.x * 1000, -z_axis.y * 1000, -z_axis.z * 1000, 0);
 								
                             }
 
@@ -131,20 +130,12 @@ namespace DREAM
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_E].first == true)
                         {
-                            // Move up
+                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, -50.f, 0);
 
-                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, 10, 0);
-                            physicsComponent->rotation_velocity.x = (22.0 / (7 * 180)) * physicsComponent->rotation_velocity.x;
-                            physicsComponent->rotation_velocity.y = (22.0 / (7 * 180)) * physicsComponent->rotation_velocity.y;
-                            physicsComponent->rotation_velocity.z = (22.0 / (7 * 180)) * physicsComponent->rotation_velocity.z;
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_Q].first == true)
                         {
-                            // Move up
-                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, -10, 0);
-                            physicsComponent->rotation_velocity.x = (22.0 / (7 * 180)) * physicsComponent->rotation_velocity.x;
-                            physicsComponent->rotation_velocity.y = (22.0 / (7 * 180)) * physicsComponent->rotation_velocity.y;
-                            physicsComponent->rotation_velocity.z = (22.0 / (7 * 180)) * physicsComponent->rotation_velocity.z;
+                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, 50.f, 0);
                         }
                     
                 

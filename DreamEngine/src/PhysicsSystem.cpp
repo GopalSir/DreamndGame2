@@ -35,6 +35,29 @@ Mat4<float> DREAM::PhysicsSystem::GetRotatioMatrixfromRotation( float _deltaRota
     return result;
 }
 
+Vec4<float> PhysicsSystem::GetEulerRotationfromRotationMatrix(const Mat4<float>& m)
+{
+    Vec4<float> euler;
+
+    if (fabs(m.r3.x) < 1.0f)
+    {
+        euler.y = asinf(-m.r3.x); // pitch
+        euler.x = atan2f(m.r3.y, m.r3.z); // roll
+        euler.z = atan2f(m.r1.x, m.r2.x); // yaw
+		euler.w = 0.0f; // w component is not used in this context, set to 0
+    }
+    else
+    {
+        // Gimbal lock at ±90 degrees
+        euler.y = (m.r3.x < 0) ? (float)M_PI_2 : -(float)M_PI_2;
+        euler.x = atan2f(-m.r1.z, m.r1.y);
+        euler.z = 0.0f;
+		euler.w = 0.0f; // w component is not used in this context, set to 0
+    }
+
+    return euler;
+}
+
 void PhysicsSystem::update()
 {
     //for (auto* tempEntity : entities)

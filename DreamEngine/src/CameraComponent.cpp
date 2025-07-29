@@ -9,6 +9,7 @@ namespace DREAM
         this->near = near;
         this->far = far;
 
+		this->cameraWorldTransform = Mat4<float>::identity; // Initialize to identity matrix
     }
 
 }

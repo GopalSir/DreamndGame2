@@ -26,6 +26,8 @@ namespace DREAM
 
 
         }
+        glEnable(GL_DEPTH_TEST);
+
 
         initializeShaders();
         setUpCameraSystem();
@@ -107,7 +109,9 @@ namespace DREAM
         bridgeSystems();
         while (gamestate)
         {
-            glClear(GL_COLOR_BUFFER_BIT);
+            //glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // or your background color
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             frameStart = std::chrono::high_resolution_clock::now();
             if (glfwWindowShouldClose(glfwWindow))
             {
@@ -233,7 +237,7 @@ namespace DREAM
         //);
         //cameraEntity->active = true;
 
-        cameraSystem = new CameraSystem(programShader);
+        cameraSystem = new CameraSystem(programShader,&deltaTime);
         //cameraSystem->addEntity(cameraEntity);
 
 
