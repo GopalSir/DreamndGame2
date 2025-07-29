@@ -148,7 +148,7 @@ namespace DREAM
 			Vec4<float>(0, 0, 0, 1)  // rotation_velocity
 		);
 
-               float fov = 45.0f * (3.1415926f / 180.0f);
+               float fov = 60.0f * (3.1415926f / 180.0f);
 
                int windowWidth, windowHeight;
                GLFWwindow* currentWindow = glfwGetCurrentContext();
