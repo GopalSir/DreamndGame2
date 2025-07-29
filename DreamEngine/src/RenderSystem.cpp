@@ -52,10 +52,23 @@ namespace DREAM
             shader->setUniform("mvp", tempMVP);
 
             //Logging MVP
-            std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
-            std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
-            std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
-            std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
+            //std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
+            //std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
+            //std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
+            //std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
+
+           // Logging Projection matrix
+			std::cout << activeCameraComponent->projection.r1.x << " " << activeCameraComponent->projection.r1.y << " " << activeCameraComponent->projection.r1.z << " " << activeCameraComponent->projection.r1.w << "\n";
+			std::cout << activeCameraComponent->projection.r2.x << " " << activeCameraComponent->projection.r2.y << " " << activeCameraComponent->projection.r2.z << " " << activeCameraComponent->projection.r2.w << "\n";
+			std::cout << activeCameraComponent->projection.r3.x << " " << activeCameraComponent->projection.r3.y << " " << activeCameraComponent->projection.r3.z << " " << activeCameraComponent->projection.r3.w << "\n";
+			std::cout << activeCameraComponent->projection.r4.x << " " << activeCameraComponent->projection.r4.y << " " << activeCameraComponent->projection.r4.z << " " << activeCameraComponent->projection.r4.w << "\n";
+
+			//Logging View matrix
+		/*	std::cout << activeCameraComponent->cameraViewMatrix.r1.x << " " << activeCameraComponent->cameraViewMatrix.r1.y << " " << activeCameraComponent->cameraViewMatrix.r1.z << " " << activeCameraComponent->cameraViewMatrix.r1.w << "\n";
+			std::cout << activeCameraComponent->cameraViewMatrix.r2.x << " " << activeCameraComponent->cameraViewMatrix.r2.y << " " << activeCameraComponent->cameraViewMatrix.r2.z << " " << activeCameraComponent->cameraViewMatrix.r2.w << "\n";
+			std::cout << activeCameraComponent->cameraViewMatrix.r3.x << " " << activeCameraComponent->cameraViewMatrix.r3.y << " " << activeCameraComponent->cameraViewMatrix.r3.z << " " << activeCameraComponent->cameraViewMatrix.r3.w << "\n";
+			std::cout << activeCameraComponent->cameraViewMatrix.r4.x << " " << activeCameraComponent->cameraViewMatrix.r4.y << " " << activeCameraComponent->cameraViewMatrix.r4.z << " " << activeCameraComponent->cameraViewMatrix.r4.w << "\n";*/
+
 
             // third parameter is the number of vertices to render. 
             glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
