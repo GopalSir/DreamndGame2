@@ -40,4 +40,9 @@ MyGame::MyGame()
 		DREAM::EventSystem::registerEvent(DREAM::MouseClickEvent::GetEventTypeCode(), basicCamera->getComponent<DREAM::CameraControllerComponent>());
 		DREAM::EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), basicCamera->getComponent<DREAM::CameraControllerComponent>());
 		DREAM::EventSystem::registerEvent(DREAM::KeyReleaseEvent::GetEventTypeCode(), basicCamera->getComponent<DREAM::CameraControllerComponent>());
+
+		//Will Implement this in DreamEngine. 
+		/*This function will add or remove 3 axis lines from the scene. basically add lines or remove lines from the render system queue*/
+		this->gizmoVisibility(true);
+
 }

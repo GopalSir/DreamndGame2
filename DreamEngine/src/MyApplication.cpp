@@ -72,6 +72,8 @@ namespace DREAM
             
         EventSystem::registerEvent(MouseClickEvent::GetEventTypeCode(), cameraSystem);
         gamestate = true;
+
+        setupGizmo();
     }
 
 
@@ -247,12 +249,7 @@ namespace DREAM
 
     }
 
-	// Set up simple rectangles strips in 3 directions with different colors and arrow at the end. 
-	// First, I need to parametrize the Shape Class members to draw at different locations.
-    void MyApplication::setUpOrigin()
-    {
 
-    }
 
     RenderSystem* MyApplication::GetRenderSystem()
     {
@@ -288,6 +285,14 @@ namespace DREAM
 			entity->doPostConstruct();
         }
 	}
+
+    void MyApplication::setupGizmo()
+    {
+		//Crate 3 axis lines in the scene.
+        
+
+    }
+
 
 }
 

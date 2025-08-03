@@ -67,8 +67,8 @@ namespace DREAM {
         void setTriangleEntity();
         bool initializeShaders();
         void     setUpCameraSystem();
-        void setUpOrigin();
-        bool showOrigin;
+        void setupGizmo();
+		void gizmoVisibility(bool _visibility);
 
     };
 }
