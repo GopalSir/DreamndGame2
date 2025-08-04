@@ -150,7 +150,7 @@ namespace DREAM
     }
 
     void  MyApplication::setTriangleEntity()
-    {
+    {/*
         TriangleEntity* player = new TriangleEntity();
         TriangleEntity* enemy = new TriangleEntity();
 
@@ -205,7 +205,7 @@ namespace DREAM
         RectangleEntity* rectangle2 = new RectangleEntity(600, 600, 40, 100);
 
         int rectangleEntityID2 = renderSystem->addEntity(rectangle2);
-        renderSystem->initEntityBuffers(rectangleEntityID2);
+        renderSystem->initEntityBuffers(rectangleEntityID2);*/
 
 
     };
@@ -289,9 +289,27 @@ namespace DREAM
     void MyApplication::setupGizmo()
     {
 		//Crate 3 axis lines in the scene.
-        
+        Entity* gizmo_x_axis = Shape::GetLineShape(0, 0, 0, 50, 0, 0);
+        Entity* gizmo_y_axis = Shape::GetLineShape(0, 0, 0, 0, 100, 0);
+        Entity* gizmo_z_axis = Shape::GetLineShape(0, 0, 0, 0, 0, 200);
+
+       int x_axis_id =  renderSystem->addEntity(gizmo_x_axis);
+       int y_axis_id = renderSystem->addEntity(gizmo_y_axis);
+       int z_axis_id = renderSystem->addEntity(gizmo_z_axis);
+
+       renderSystem->initEntityBuffers(x_axis_id);
+       renderSystem->initEntityBuffers(y_axis_id);
+       renderSystem->initEntityBuffers(z_axis_id);
 
     }
+
+	void MyApplication::gizmoVisibility(bool _visibility)
+	{
+		//Set the visibility of the gizmo
+		//This will be used to toggle the visibility of the gizmo in the scene.
+		//Currently, it does nothing as we have not implemented the gizmo yet.
+		Log::LogMessage("Gizmo visibility set to " + std::to_string(_visibility), LogLevel::INFO_LEVEL);
+	}
 
 
 }

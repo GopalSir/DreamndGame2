@@ -10,15 +10,7 @@ class Shape
 	
 
 public:
-	enum SHAPE_TYPE
-	{
-		LINE,
-		POINT,
-		TRIANGLE,
-		RECTANGLE,
-		CUBE
-	};
-	static Entity* GetShape(SHAPE_TYPE);
+
 
 	static Entity* GetTriangleShape(float _x, float _y, float _z);
 	static Entity* GetRectangleShape(float _x, float _y, float _z, float _width, float _height);

@@ -26,12 +26,12 @@ MyGame::MyGame()
 	}
 	
 
-	Entity* basicCube = Shape::GetShape(Shape::SHAPE_TYPE::CUBE);
-	
+	//Entity* basicCube = Shape::GetShape(Shape::SHAPE_TYPE::CUBE);
+	//
 
 
-		int index1 = this->GetRenderSystem()->addEntity(basicCube);
-		this->GetRenderSystem()->initEntityBuffers(index1);
+	//	int index1 = this->GetRenderSystem()->addEntity(basicCube);
+	//	this->GetRenderSystem()->initEntityBuffers(index1);
 
 		Entity* basicCamera = DREAM::CameraSystem::createDefaultCameraEntity();
 		basicCamera->addComponent(new DREAM::CameraControllerComponent());
@@ -44,5 +44,6 @@ MyGame::MyGame()
 		//Will Implement this in DreamEngine. 
 		/*This function will add or remove 3 axis lines from the scene. basically add lines or remove lines from the render system queue*/
 		this->gizmoVisibility(true);
+		
 
 }

@@ -28,6 +28,6 @@ RectangleEntity::RectangleEntity(float _x, float _y, float _length,float _breadt
 
 
     this->addComponent(rectangleVertexAttribComponent);
-    this->addComponent(new DrawableComponent());
+    //this->addComponent(new DrawableComponent());
     
 };

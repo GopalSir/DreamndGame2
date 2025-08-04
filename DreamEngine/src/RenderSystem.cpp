@@ -71,8 +71,10 @@ namespace DREAM
 
 
             // third parameter is the number of vertices to render. 
-            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-            glDrawArrays(GL_TRIANGLES, 0, verticesCount);
+            //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
+            glDrawArrays(tempEntities->getComponent<DrawableComponent>()->drawable_type, 0, verticesCount);
+            
 
 
             /*it's gonna draw the

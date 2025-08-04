@@ -16,6 +16,7 @@
 #include "PhysicsSystem.h"
 #include "../glfwKeyCallBacks.hpp"
 #include "../VertexAttribPointerGenerator.hpp"
+#include "../Shape.hpp"
 #include <iostream>
 #include <chrono>
 #include <thread>
