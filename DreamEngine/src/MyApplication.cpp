@@ -289,9 +289,9 @@ namespace DREAM
     void MyApplication::setupGizmo()
     {
 		//Crate 3 axis lines in the scene.
-        Entity* gizmo_x_axis = Shape::GetLineShape(0, 0, 0, 50, 0, 0);
-        Entity* gizmo_y_axis = Shape::GetLineShape(0, 0, 0, 0, 100, 0);
-        Entity* gizmo_z_axis = Shape::GetLineShape(0, 0, 0, 0, 0, 200);
+        Entity* gizmo_x_axis = Shape::GetLineShape(0, 0, 0, 1000, 0, 0,COLOR(1,0,0,1) );
+        Entity* gizmo_y_axis = Shape::GetLineShape(0, 0, 0, 0, 1000, 0, COLOR(0, 1, 1, 1));
+        Entity* gizmo_z_axis = Shape::GetLineShape(0, 0, 0, 0, 0, 1000, COLOR(0, 0, 1, 1));
 
        int x_axis_id =  renderSystem->addEntity(gizmo_x_axis);
        int y_axis_id = renderSystem->addEntity(gizmo_y_axis);

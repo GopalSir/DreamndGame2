@@ -41,7 +41,7 @@ namespace DREAM
             int tempVBO = tempEntities->getComponent<DrawableComponent>()->VBO;
             int tempVAO = tempEntities->getComponent<DrawableComponent>()->VAO;
 
-			
+            COLOR tempColor = tempEntities->getComponent<DrawableComponent>()->color;
 
             int verticesCount = tempEntities->getComponent<VerticesComponent<float>>()->vertices.size();
             glEnableVertexAttribArray(0);
@@ -50,6 +50,7 @@ namespace DREAM
 
             Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix);
             shader->setUniform("mvp", tempMVP);
+            shader->setUniform("color", tempColor.r, tempColor.g, tempColor.b, tempColor.a);
 
             //Logging MVP
             //std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";

@@ -1,6 +1,7 @@
 #pragma once
 #include <ECS_Core/Core.hpp>
 #include "../glheaders.hpp"
+#include "../Colors.h"
 
 
 class DrawableComponent: public Component
@@ -8,6 +9,8 @@ class DrawableComponent: public Component
     public:
     GLuint VBO;
     GLuint VAO;
+	COLOR color;
+	
 
 	//Type of the drawable object
 	enum DRAWABLE_TYPE
@@ -23,6 +26,7 @@ class DrawableComponent: public Component
 	{
 		VBO = 0;
 		VAO = 0;
+		color = COLOR();
 	}
 	~DrawableComponent()
 	{
