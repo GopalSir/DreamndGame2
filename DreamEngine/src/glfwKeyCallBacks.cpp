@@ -54,10 +54,18 @@ namespace DREAM
 
     void GLFW_WindowResize_Callback_Handler(GLFWwindow* _window, int _width, int _height)
     {
+        int *a, *b;
+        a = new int;
+        b = new int;
+        glfwGetFramebufferSize(_window, a, b);
+        std::cout << "Framebuffer size before resize: " << *a << " " << *b << std::endl;
         std::cout << "Window Resized\n";
         
-        glfwSetWindowSize(_window, _width, _height);
+        //glfwSetWindowSize(_window, _width, _height);
         glViewport(0, 0, _width, _height);
+        glfwGetFramebufferSize(_window, a, b);
+        std::cout << "Framebuffer size after resize: " << *a << " " << *b << std::endl;
+
     }
 
 }

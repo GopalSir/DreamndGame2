@@ -26,6 +26,7 @@ namespace DREAM
 
 
 		CameraComponent(float fov, float aspect,float  near, float far) ;
+		void doPostConstruct() override;
 	};
 }
 

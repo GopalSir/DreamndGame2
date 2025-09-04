@@ -131,7 +131,7 @@ namespace DREAM
 
     int CameraSystem::handleEvent(EventInfo* _eventInfo)
     {
-         std::cout<<"camera event boo"<<std::flush;
+         //std::cout<<"camera event boo"<<std::flush;
          
         
 
@@ -143,9 +143,9 @@ namespace DREAM
         Entity* defaultCameraEntity = new Entity();
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // velocity
-			Vec4<float>(100, 100, 100, 0), // position
+			Vec4<float>(100, 100, 0, 1), // position
 			Vec4<float>(0, 0, 0, 0), // rotation
-			Vec4<float>(0, 0, 0, 1)  // rotation_velocity
+			Vec4<float>(0, 0, 0, 0)  // rotation_velocity
 		);
 
                float fov = 60.0f * (3.1415926f / 180.0f);
@@ -155,7 +155,7 @@ namespace DREAM
                glfwGetFramebufferSize(currentWindow, &windowWidth, &windowHeight);
 
                float aspect = (float)windowWidth / windowHeight;
-               float near = 0.1f;
+               float near = 0.3f;
                float far =1000.0f;
 
         CameraComponent* cameraComponent = new CameraComponent(fov, aspect, near, far);

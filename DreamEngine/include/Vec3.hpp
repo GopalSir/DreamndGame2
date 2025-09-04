@@ -156,6 +156,7 @@ public:
 		r4(0, 0, 0, 1) {
 	} // Assuming the last row is [0, 0, 0, 1] for homogeneous coordinates
 
+	Mat4<T> inverse() const;
 
 	// Overload * operator for matrix multiplication
 	Mat4 operator*(const Mat4& other) const {
@@ -188,6 +189,17 @@ public:
 		);
 	}
 
+	Vec4<float> operator*(const Vec4<T>& other)
+	{
+		Vec4<T> result;
+		result.x = r1.x * other.x + r1.y * other.y + r1.z * other.z + r1.w * other.w;
+		result.y = r2.x * other.x + r2.y * other.y + r2.z * other.z + r2.w * other.w;
+		result.z = r3.x * other.x + r3.y * other.y + r3.z * other.z + r3.w * other.w;
+		result.w = r4.x * other.x + r4.y * other.y + r4.z * other.z + r4.w * other.w;
+
+		return result;
+	}
+
 	static Mat4<T> identity;
 };
 
@@ -201,7 +213,77 @@ Mat4<T> Mat4<T>::identity = Mat4<T>(
 	Vec4<T>(0, 0, 0, 1)
 );
 
+template<typename T>
+Mat4<T> Mat4<T>::inverse() const {
+	// Create augmented matrix [A|I] where A is this matrix and I is identity
+	T aug[4][8];
 
+	// Fill left side with this matrix
+	aug[0][0] = r1.x; aug[0][1] = r1.y; aug[0][2] = r1.z; aug[0][3] = r1.w;
+	aug[1][0] = r2.x; aug[1][1] = r2.y; aug[1][2] = r2.z; aug[1][3] = r2.w;
+	aug[2][0] = r3.x; aug[2][1] = r3.y; aug[2][2] = r3.z; aug[2][3] = r3.w;
+	aug[3][0] = r4.x; aug[3][1] = r4.y; aug[3][2] = r4.z; aug[3][3] = r4.w;
+
+	// Fill right side with identity matrix
+	for (int i = 0; i < 4; i++) {
+		for (int j = 4; j < 8; j++) {
+			aug[i][j] = (i == j - 4) ? 1.0 : 0.0;
+		}
+	}
+
+	// Forward elimination
+	for (int i = 0; i < 4; i++) {
+		// Find pivot
+		int maxRow = i;
+		for (int k = i + 1; k < 4; k++) {
+			if (std::abs(aug[k][i]) > std::abs(aug[maxRow][i])) {
+				maxRow = k;
+			}
+		}
+
+		// Swap rows if needed
+		if (maxRow != i) {
+			for (int j = 0; j < 8; j++) {
+				std::swap(aug[i][j], aug[maxRow][j]);
+			}
+		}
+
+		// Check for singular matrix
+		if (std::abs(aug[i][i]) < 1e-10) {
+			// Matrix is singular, return identity or handle error
+			return Mat4<T>(
+				Vec4<T>(1, 0, 0, 0),
+				Vec4<T>(0, 1, 0, 0),
+				Vec4<T>(0, 0, 1, 0),
+				Vec4<T>(0, 0, 0, 1)
+			);
+		}
+
+		// Make diagonal element 1
+		T pivot = aug[i][i];
+		for (int j = 0; j < 8; j++) {
+			aug[i][j] /= pivot;
+		}
+
+		// Eliminate column
+		for (int k = 0; k < 4; k++) {
+			if (k != i) {
+				T factor = aug[k][i];
+				for (int j = 0; j < 8; j++) {
+					aug[k][j] -= factor * aug[i][j];
+				}
+			}
+		}
+	}
+
+	// Extract inverse matrix from right side
+	return Mat4<T>(
+		Vec4<T>(aug[0][4], aug[0][5], aug[0][6], aug[0][7]),
+		Vec4<T>(aug[1][4], aug[1][5], aug[1][6], aug[1][7]),
+		Vec4<T>(aug[2][4], aug[2][5], aug[2][6], aug[2][7]),
+		Vec4<T>(aug[3][4], aug[3][5], aug[3][6], aug[3][7])
+	);
+}
    
 
 

@@ -16,7 +16,8 @@ class DrawableComponent: public Component
 	enum DRAWABLE_TYPE
 	{
 		LINE = GL_LINES,
-		TRIANGLE = GL_TRIANGLES
+		TRIANGLE = GL_TRIANGLES,
+		POINT = GL_POINTS
 	};
 
 	DRAWABLE_TYPE drawable_type;

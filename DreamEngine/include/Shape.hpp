@@ -11,7 +11,7 @@ class Shape
 
 public:
 
-
+	static Entity* GetPointShape(float _x, float _y, float _z, COLOR _color);
 	static Entity* GetTriangleShape(float _x, float _y, float _z);
 	static Entity* GetRectangleShape(float _x, float _y, float _z, float _width, float _height);
 	static Entity* GetCubeShape(float _x, float _y, float _z, float _width, float _height, float _depth);

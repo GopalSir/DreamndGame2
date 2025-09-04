@@ -2,7 +2,7 @@
 
 namespace DREAM
 {
-    CameraComponent::CameraComponent(float fov, float aspect, float far, float near)
+    CameraComponent::CameraComponent(float fov, float aspect, float near, float far)
     {
         this->fov = fov;
         this->aspect_ratio = aspect;
@@ -10,6 +10,11 @@ namespace DREAM
         this->far = far;
 
 		this->cameraWorldTransform = Mat4<float>::identity; // Initialize to identity matrix
+    }
+
+    void CameraComponent::doPostConstruct()
+    {
+
     }
 
 }

@@ -71,9 +71,13 @@ namespace DREAM
             });
             
         EventSystem::registerEvent(MouseClickEvent::GetEventTypeCode(), cameraSystem);
+        glEnable(GL_PROGRAM_POINT_SIZE);
+
         gamestate = true;
 
         setupGizmo();
+         
+        
     }
 
 
@@ -309,6 +313,7 @@ namespace DREAM
 		//This will be used to toggle the visibility of the gizmo in the scene.
 		//Currently, it does nothing as we have not implemented the gizmo yet.
 		Log::LogMessage("Gizmo visibility set to " + std::to_string(_visibility), LogLevel::INFO_LEVEL);
+        
 	}
 
 

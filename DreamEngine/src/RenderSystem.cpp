@@ -52,17 +52,17 @@ namespace DREAM
             shader->setUniform("mvp", tempMVP);
             shader->setUniform("color", tempColor.r, tempColor.g, tempColor.b, tempColor.a);
 
-            //Logging MVP
-            //std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
-            //std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
-            //std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
-            //std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";
+           // Logging MVP
+     /*       std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
+            std::cout << tempMVP.r2.x << " " << tempMVP.r2.y << " " << tempMVP.r2.z << " " << tempMVP.r2.w << "\n";
+            std::cout << tempMVP.r3.x << " " << tempMVP.r3.y << " " << tempMVP.r3.z << " " << tempMVP.r3.w << "\n";
+            std::cout << tempMVP.r4.x << " " << tempMVP.r4.y << " " << tempMVP.r4.z << " " << tempMVP.r4.w << "\n";*/
 
            // Logging Projection matrix
-			std::cout << activeCameraComponent->projection.r1.x << " " << activeCameraComponent->projection.r1.y << " " << activeCameraComponent->projection.r1.z << " " << activeCameraComponent->projection.r1.w << "\n";
-			std::cout << activeCameraComponent->projection.r2.x << " " << activeCameraComponent->projection.r2.y << " " << activeCameraComponent->projection.r2.z << " " << activeCameraComponent->projection.r2.w << "\n";
-			std::cout << activeCameraComponent->projection.r3.x << " " << activeCameraComponent->projection.r3.y << " " << activeCameraComponent->projection.r3.z << " " << activeCameraComponent->projection.r3.w << "\n";
-			std::cout << activeCameraComponent->projection.r4.x << " " << activeCameraComponent->projection.r4.y << " " << activeCameraComponent->projection.r4.z << " " << activeCameraComponent->projection.r4.w << "\n";
+			//std::cout << activeCameraComponent->projection.r1.x << " " << activeCameraComponent->projection.r1.y << " " << activeCameraComponent->projection.r1.z << " " << activeCameraComponent->projection.r1.w << "\n";
+			//std::cout << activeCameraComponent->projection.r2.x << " " << activeCameraComponent->projection.r2.y << " " << activeCameraComponent->projection.r2.z << " " << activeCameraComponent->projection.r2.w << "\n";
+			//std::cout << activeCameraComponent->projection.r3.x << " " << activeCameraComponent->projection.r3.y << " " << activeCameraComponent->projection.r3.z << " " << activeCameraComponent->projection.r3.w << "\n";
+			//std::cout << activeCameraComponent->projection.r4.x << " " << activeCameraComponent->projection.r4.y << " " << activeCameraComponent->projection.r4.z << " " << activeCameraComponent->projection.r4.w << "\n";
 
 			//Logging View matrix
 		/*	std::cout << activeCameraComponent->cameraViewMatrix.r1.x << " " << activeCameraComponent->cameraViewMatrix.r1.y << " " << activeCameraComponent->cameraViewMatrix.r1.z << " " << activeCameraComponent->cameraViewMatrix.r1.w << "\n";
@@ -144,5 +144,39 @@ namespace DREAM
         dc->VAO = tempVAO;
         // delete vertexBuffer;
         return true;
-    };
+    }
+    Vec4<float> RenderSystem::ScreenToWorldCoordinate(Vec4<float> _screenCoord, CameraComponent* _cameraComponent)
+    {
+        //First we will convert screen coords to NDC, for that we need viewport coords too.
+        int view_port[4];
+        glGetIntegerv(GL_VIEWPORT, view_port);
+
+        float view_port_width = (float)(view_port[2]);
+        float view_port_height = (float)(view_port[3]);
+
+        //Now converting them to NDC
+        float x_ndc = 2 * _screenCoord.x / view_port_width - 1;
+        float y_ndc = 1 - (2 * _screenCoord.y / view_port_height); 
+        float z_ndc = -1.0f;
+
+        Vec4<float> ndc_point(x_ndc, y_ndc, z_ndc, 1);
+
+        Mat4<float> pv = _cameraComponent->projection * _cameraComponent->cameraViewMatrix;
+
+        Mat4<float> inverse_of_projection_view = pv.inverse();
+
+
+        Vec4<float> result;
+        result = inverse_of_projection_view * ndc_point;
+
+        if (std::abs(result.w) > 1e-6) {
+            result.x /= result.w;
+            result.y /= result.w;
+            result.z /= result.w;
+            result.w = 1.0f;
+        }
+
+        return result;
+    }
+    ;
 }

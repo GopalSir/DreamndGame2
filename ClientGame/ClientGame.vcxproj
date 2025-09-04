@@ -22,12 +22,14 @@
     <ClInclude Include="CameraControllerComponent.h" />
     <ClInclude Include="MyEvents.hpp" />
     <ClInclude Include="MyGame.h" />
+    <ClInclude Include="ShapeCreator.hpp" />
     <ClInclude Include="ThrusterComponenet.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraControllerComponent.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MyGame.cpp" />
+    <ClCompile Include="ShapeCreator.cpp" />
     <ClCompile Include="ThrusterComponen.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

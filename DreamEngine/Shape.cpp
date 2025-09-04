@@ -126,6 +126,24 @@
 //	return result;
 //}
 
+Entity* Shape::GetPointShape(float _x, float _y, float _z, COLOR _color)
+{
+	VerticesComponent<float>* verticesComponent = new VerticesComponent<float>();
+	VertexAttribComponent* vertexAttributeComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::DEFAULT);
+	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::POINT);
+	drawableComponent->color = _color;
+
+	Entity* result = new Entity();
+
+	verticesComponent->vertices.push_back(PositionComponent<float>(_x, _y, _z));
+
+	result->addComponent(verticesComponent);
+	result->addComponent(vertexAttributeComponent);
+	result->addComponent(drawableComponent);
+
+	return result;
+}
+
 Entity* Shape::GetLineShape(float _x1, float _y1, float _z1, float _x2, float _y2, float _z2, COLOR _color)
 {
 	VerticesComponent<float>* verticesComponent = new VerticesComponent<float>();

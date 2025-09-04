@@ -26,7 +26,7 @@ namespace DREAM
 
     int CameraControllerComponent::handleEvent(DREAM::EventInfo* _eventInfo)
     {
-		std::cout<<"camera controller event boo"<<std::flush;
+		//std::cout<<"camera controller event boo"<<std::flush;
         
 
         //check if camera active
@@ -43,39 +43,39 @@ namespace DREAM
 
 			if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == true)
 			{
-				std::cout << "Left Control and right arrow Pressed" << std::endl;
+				//std::cout << "Left Control and right arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 
                 //Mat3<float> x_axis = 
 				//physicsComponent->rotation_velocity = Vec4<float>(0, 0.1, 0, 0);
-                physicsComponent->rotation_velocity = Vec4<float>(0,-50.0f,0,0);
+                physicsComponent->rotation_velocity = Vec4<float>(0,-100.0f,0,0);
 
 
 			}
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_LEFT].first == true)
             {
-                std::cout << "Left Control and left arrow Pressed" << std::endl;
+                //std::cout << "Left Control and left arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
 
 
-                physicsComponent->rotation_velocity = Vec4<float>(0, 50.0f, 0, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(0, 100.0f, 0, 0);
 
             }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_UP].first == true)
             {
-                std::cout << "Left Control and up arrow Pressed" << std::endl;
+                //std::cout << "Left Control and up arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
-                physicsComponent->rotation_velocity = Vec4<float>(50.0f, 0, 0, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(100.0f, 0, 0, 0);
 
 
             }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_DOWN].first == true)
             {
-                std::cout << "Left Control and down arrow Pressed" << std::endl;
+                //std::cout << "Left Control and down arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
-                physicsComponent->rotation_velocity = Vec4<float>(-50.0f, 0, 0, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(-100.0f, 0, 0, 0);
 
 
             }
@@ -85,7 +85,7 @@ namespace DREAM
                             // Move left locally, aka left of whereever youre looking. 
                             Vec3<float> x_axis(cameraComponent->cameraWorldTransform.r1.x, cameraComponent->cameraWorldTransform.r2.x, cameraComponent->cameraWorldTransform.r3.x);
                             x_axis = Vec3<float>::normalize(x_axis);
-							physicsComponent->velocity = Vec4<float>(-x_axis.x * 40, -x_axis.y * 40, -x_axis.z * 40, 0);
+							physicsComponent->velocity = Vec4<float>(-x_axis.x * 100, -x_axis.y * 100, -x_axis.z * 100, 0);
 
                         }
             else  if (DREAM::KeyStates::KeyState[GLFW_KEY_D].first == true)
@@ -93,7 +93,7 @@ namespace DREAM
                             // Move right
                             // Move left locally, aka left of whereever youre looking. 
 
-							physicsComponent->velocity = Vec4<float>(x_axis.x * 40, x_axis.y * 40, x_axis.z * 40, 0);
+							physicsComponent->velocity = Vec4<float>(x_axis.x * 100, x_axis.y * 100, x_axis.z * 100, 0);
                             
                         }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_S].first == true)
@@ -102,8 +102,8 @@ namespace DREAM
                 if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false)
                 {
 					//S pressed and left control not pressed, so we move down
-                    std::cout << "Panning down" << std::endl;
-                    physicsComponent->velocity = Vec4<float>(-y_axis.x * 10, -y_axis.y * 10, -y_axis.z * 10, 0);
+                    //std::cout << "Panning down" << std::endl;
+                    physicsComponent->velocity = Vec4<float>(-y_axis.x * 50, -y_axis.y * 50, -y_axis.z * 50, 0);
                     
                 }
                 else
@@ -117,8 +117,8 @@ namespace DREAM
                             // Move u
                 if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false)
                 {
-                    std::cout << "Panning up" << std::endl;
-                    physicsComponent->velocity = Vec4<float>(y_axis.x * 10, y_axis.y * 10, y_axis.z * 10, 0);
+                    //std::cout << "Panning up" << std::endl;
+                    physicsComponent->velocity = Vec4<float>(y_axis.x * 50, y_axis.y * 50, y_axis.z * 50, 0);
                 }
                             else
                             {
@@ -130,12 +130,12 @@ namespace DREAM
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_E].first == true)
                         {
-                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, -50.f, 0);
+                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, -100.f, 0);
 
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_Q].first == true)
                         {
-                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, 50.f, 0);
+                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, 100.f, 0);
                         }
                     
                 
@@ -147,7 +147,7 @@ namespace DREAM
             // std::cout<<"key removed boo"<<std::endl;
             if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false || DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == false)
             {
-                std::cout << "Left Control and right arrow Released" << std::endl;
+                //std::cout << "Left Control and right arrow Released" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
                 physicsComponent->rotation_velocity = Vec4<float>(0, 0, 0, 0);
@@ -157,7 +157,7 @@ namespace DREAM
            
                         if (physicsComponent == nullptr)
                         {
-                            std::cout << "Physics Componenet null in release event ";
+                            //std::cout << "Physics Componenet null in release event ";
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_A].first == false)
                         {
@@ -201,13 +201,13 @@ namespace DREAM
 
             if (mouseClickEvent->key == GLFW_MOUSE_BUTTON_LEFT)
             {
-                std::cout << "Left Button Pressed\n";
+                //std::cout << "Left Button Pressed\n";
             }
             else if (mouseClickEvent->key == GLFW_MOUSE_BUTTON_RIGHT)
             {
-                std::cout << "Right Button Pressed\n";
+                //std::cout << "Right Button Pressed\n";
             }
-            std::cout << "Mouse Clicked at position: (" << mouseClickEvent->x << ", " << mouseClickEvent->y << ")\n";
+            //std::cout << "Mouse Clicked at position: (" << mouseClickEvent->x << ", " << mouseClickEvent->y << ")\n";
 
         }
         return 0;

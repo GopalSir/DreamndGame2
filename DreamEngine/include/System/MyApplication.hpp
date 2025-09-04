@@ -47,6 +47,9 @@ namespace DREAM {
 
         std::chrono::nanoseconds calculateRequiredFrameTime(int _gameFPS);
         int playerEntityID, enemyEntityID;
+
+        
+
         void bridgeSystems();
         void completePostConstruct();
 
@@ -57,7 +60,7 @@ namespace DREAM {
         void run();
 
 
-        //Methods exposed to cliend side implementation 
+        //Methods exposed to client side implementation 
         RenderSystem* GetRenderSystem();
 		CameraSystem* GetCameraSystem();
         //EventSystem* GetEventSystem();

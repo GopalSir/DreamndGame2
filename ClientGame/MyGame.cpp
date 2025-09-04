@@ -44,6 +44,12 @@ MyGame::MyGame()
 		//Will Implement this in DreamEngine. 
 		/*This function will add or remove 3 axis lines from the scene. basically add lines or remove lines from the render system queue*/
 		this->gizmoVisibility(true);
+
+
+		//Custom Shape drawing begins here
+		_shapeCreator = new ShapeCreator(basicCamera->getComponent<PhysicsComponent>(),GetRenderSystem(),basicCamera->getComponent<DREAM::CameraComponent>());
+
+		DREAM::EventSystem::registerEvent(DREAM::MouseClickEvent::GetEventTypeCode(), _shapeCreator);
 		
 
 }

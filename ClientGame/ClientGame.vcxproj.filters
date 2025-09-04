@@ -24,6 +24,12 @@
     <ClInclude Include="ThrusterComponenet.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CameraControllerComponent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShapeCreator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyGame.cpp">
@@ -33,6 +39,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThrusterComponen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControllerComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ShapeCreator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
