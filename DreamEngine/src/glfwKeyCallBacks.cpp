@@ -68,4 +68,13 @@ namespace DREAM
 
     }
 
+    void GLFW_Scroll_Callback_Handler(GLFWwindow*, double _xOffset, double _yOffset)
+    {
+        MouseScrollEvent* mouseScrollEvent = new MouseScrollEvent();
+        mouseScrollEvent->x_offset = _xOffset;
+        mouseScrollEvent->y_offset = _yOffset;
+
+        EventSystem::handleEvent(mouseScrollEvent);
+    }
+
 }

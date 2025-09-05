@@ -28,18 +28,19 @@ namespace DREAM
     {
 		//std::cout<<"camera controller event boo"<<std::flush;
         
+        Vec3<float> x_axis(cameraComponent->cameraWorldTransform.r1.x, cameraComponent->cameraWorldTransform.r2.x, cameraComponent->cameraWorldTransform.r3.x);
+        Vec3<float> y_axis(cameraComponent->cameraWorldTransform.r1.y, cameraComponent->cameraWorldTransform.r2.y, cameraComponent->cameraWorldTransform.r3.y);
+        Vec3<float> z_axis(cameraComponent->cameraWorldTransform.r1.z, cameraComponent->cameraWorldTransform.r2.z, cameraComponent->cameraWorldTransform.r3.z);
+        // Normalize the axes to ensure they are unit vectors
+        x_axis = Vec3<float>::normalize(x_axis);
+        y_axis = Vec3<float>::normalize(y_axis);
+        z_axis = Vec3<float>::normalize(z_axis);
 
         //check if camera active
 
         if (_eventInfo->getEventTypeCode() == DREAM::KeyPressEvent::GetEventTypeCode())
         {
-            Vec3<float> x_axis(cameraComponent->cameraWorldTransform.r1.x, cameraComponent->cameraWorldTransform.r2.x, cameraComponent->cameraWorldTransform.r3.x);
-			Vec3<float> y_axis(cameraComponent->cameraWorldTransform.r1.y, cameraComponent->cameraWorldTransform.r2.y, cameraComponent->cameraWorldTransform.r3.y);
-			Vec3<float> z_axis(cameraComponent->cameraWorldTransform.r1.z, cameraComponent->cameraWorldTransform.r2.z, cameraComponent->cameraWorldTransform.r3.z);
-			// Normalize the axes to ensure they are unit vectors
-            x_axis = Vec3<float>::normalize(x_axis);
-			y_axis = Vec3<float>::normalize(y_axis);
-			z_axis = Vec3<float>::normalize(z_axis);
+
 
 			if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == true)
 			{
@@ -108,7 +109,8 @@ namespace DREAM
                 }
                 else
                 {
-                    physicsComponent->velocity = Vec4<float>(z_axis.x * 1000, z_axis.y * 1000, z_axis.z * 1000, 0);
+                    //Zoom Out
+                    physicsComponent->velocity = Vec4<float>(z_axis.x * 100, z_axis.y * 100, z_axis.z * 100, 0);
                     
                 }
                         }
@@ -122,7 +124,8 @@ namespace DREAM
                 }
                             else
                             {
-                    physicsComponent->velocity = Vec4<float>(-z_axis.x * 1000, -z_axis.y * 1000, -z_axis.z * 1000, 0);
+                    //Zoom Out
+                    physicsComponent->velocity = Vec4<float>(-z_axis.x * 100, -z_axis.y * 100, -z_axis.z * 100, 0);
 								
                             }
 
@@ -210,6 +213,19 @@ namespace DREAM
             //std::cout << "Mouse Clicked at position: (" << mouseClickEvent->x << ", " << mouseClickEvent->y << ")\n";
 
         }
+        else if (_eventInfo->getEventTypeCode() == DREAM::MouseScrollEvent::GetEventTypeCode())
+        {
+            MouseScrollEvent* mouseScrollEvent = dynamic_cast<MouseScrollEvent*>(_eventInfo);
+            std::cout << "Y Scroll: " << mouseScrollEvent->y_offset << "\n";
+            Vec4<float> position_offset = Vec4<float>(z_axis.x * 10, z_axis.y * 10, z_axis.z * 10, 1) * (-mouseScrollEvent->y_offset);
+            position_offset.w = 1;
+        
+            physicsComponent->position = physicsComponent->position + position_offset;
+            physicsComponent->position.w = 1;
+
+           
+
+            }
         return 0;
     }
 }

@@ -61,6 +61,16 @@ namespace DREAM
         static int GetEventTypeCode() { return localTypeCode; };
    };
 
+    class MouseScrollEvent : public EventInfo
+    {
+        static constexpr int localTypeCode = 5;
+    public:
+        double x_offset;
+        double y_offset;
+        MouseScrollEvent() : EventInfo(localTypeCode) {};
+        static int GetEventTypeCode() { return localTypeCode; };
+    };
+
 }
 
 //enum EVENTS

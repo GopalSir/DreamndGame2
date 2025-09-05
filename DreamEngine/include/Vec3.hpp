@@ -28,9 +28,9 @@ struct Vec4
 		return Vec4(x - other.x, y - other.y, z - other.z, w - other.w);
 	}
 
-	//Multiplication operator overload to multiply a Vec4<T> by a scalar
+	//Multiplication operator overload to multiply a Vec4<T> by a scalar MAKE SURE TO NORMALIZE W BACK TO APPROPIRATE VALUE IF HOMOGENEOURS COORDINATE
 	Vec4 operator*(const T scalar) const {
-		return Vec4(x * scalar, y * scalar, z * scalar, w );
+		return Vec4(x * scalar, y * scalar, z * scalar, w*scalar );
 	}
 
 
