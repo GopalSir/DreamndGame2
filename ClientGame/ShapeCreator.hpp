@@ -20,6 +20,10 @@ private:
 	DREAM::CameraComponent* cameraComponent;
 	std::vector<PositionComponent<float>> points;
 	Vec4<float> previous_stw, current_stw;
+	DrawableComponent::DRAWABLE_TYPE draw_mode;
+
+	//Counter to count number of clicks
+	int click_counter;
 	
 public:
 	int handleEvent(DREAM::EventInfo* _eventInfo) override;

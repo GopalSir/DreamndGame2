@@ -6,18 +6,22 @@ int ShapeCreator::handleEvent(DREAM::EventInfo* _eventInfo)
 
     Log::LogMessage("Shape Creator handler activated\n");
 
-    if (_eventInfo->getEventTypeCode() == DREAM::MouseClickEvent::GetEventTypeCode())
+    if (_eventInfo->getEventTypeCode() == DREAM::MouseClickEvent::GetEventTypeCode()  )
     {
         DREAM::MouseClickEvent* _mouseClickEvent = dynamic_cast<DREAM::MouseClickEvent*>(_eventInfo);
 
-        std::cout << _mouseClickEvent->x << " " << _mouseClickEvent->y<<"\n";
+        if (_mouseClickEvent->key != GLFW_MOUSE_BUTTON_1 ||  _mouseClickEvent->action == GLFW_RELEASE )
+            return 0;
+    
+        std::cout << _mouseClickEvent->x << " " << _mouseClickEvent->y<<" "<<_mouseClickEvent->key<<"\n";
 
         COLOR defaultColor = COLOR();
-
+        
+        
 
         Vec4<float> stw = DREAM::RenderSystem::ScreenToWorldCoordinate(Vec4<float>(_mouseClickEvent->x, _mouseClickEvent->y, 0,1), cameraComponent );
        Entity* point =  Shape::GetPointShape(stw.x, stw.y, stw.z, defaultColor);
-
+       points.push_back(PositionComponent<float>(stw.x,stw.y,stw.z));
        current_stw = stw;
 
 
@@ -31,6 +35,20 @@ int ShapeCreator::handleEvent(DREAM::EventInfo* _eventInfo)
   
 
        renderSystem->initEntityBuffers(current_point);
+       ++click_counter;
+
+       //Check if the click count is reaching the required count based on drawing mode type
+       if (draw_mode == DrawableComponent::DRAWABLE_TYPE::TRIANGLE)
+       {
+           click_counter = click_counter % 3;
+       }
+
+
+       if (click_counter == 0)
+       {
+           //Time to pop the points out and render a triangle out of the last three points. 
+       }
+
 
 
        //draw a line between current and previous point.
@@ -66,4 +84,11 @@ ShapeCreator::ShapeCreator(PhysicsComponent* _physicsComponent, DREAM::RenderSys
     cameraPhysicsComponent = _physicsComponent;
     renderSystem = _renderSystem;
     cameraComponent = _cameraComponent;
+
+    //Default draw mode at initialization is triangle
+    draw_mode = DrawableComponent::DRAWABLE_TYPE::TRIANGLE;
+
+    //Initializing click counter to zero
+    click_counter = 0;
+
 }
