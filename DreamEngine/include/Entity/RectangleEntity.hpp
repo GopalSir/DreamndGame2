@@ -6,7 +6,7 @@
 #include "../Component/VerticesComponent.hpp"
 #include "../VertexAttribPointerGenerator.hpp"
 
-
+using namespace DREAM;
 class RectangleEntity : public Entity
 {
     public:
