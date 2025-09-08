@@ -52,6 +52,9 @@ MyGame::MyGame()
 
 		DREAM::EventSystem::registerEvent(DREAM::MouseClickEvent::GetEventTypeCode(), _shapeCreator);
 		DREAM::EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), _shapeCreator);
+
+
+	
 		
 
 }
