@@ -156,7 +156,7 @@ namespace DREAM
 
         //Now converting them to NDC
         float x_ndc = 2 * _screenCoord.x / view_port_width - 1;
-        float y_ndc = 1 - (2 * _screenCoord.y / view_port_height); 
+        float y_ndc = 1 - (2 * _screenCoord.y / view_port_height);
         float z_ndc = 0.7f;
 
         Vec4<float> ndc_point(x_ndc, y_ndc, z_ndc, 1);
@@ -177,6 +177,28 @@ namespace DREAM
         }
 
         return result;
+    };
+
+    //This function will take in screen coordinates, and based on window size return NDC
+    Vec4<float> RenderSystem::ScreenToNDC(Vec4<float> _screenCoord)
+    {
+        int view_port[4];
+        glGetIntegerv(GL_VIEWPORT, view_port);
+
+        float view_port_width = (float)(view_port[2]);
+        float view_port_height = (float)(view_port[3]);
+
+        //Now converting them to NDC
+        float x_ndc = 2 * _screenCoord.x / view_port_width - 1;
+        float y_ndc = 1 - (2 * _screenCoord.y / view_port_height);
+        float z_ndc = -1.0f;
+
+        Vec4<float> ndc_point(x_ndc, y_ndc, z_ndc, 1);
+        
+        return ndc_point;
+
+
     }
-    ;
+    
+   
 }

@@ -19,18 +19,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CameraControllerComponent.h" />
-    <ClInclude Include="MyEvents.hpp" />
-    <ClInclude Include="MyGame.h" />
-    <ClInclude Include="ShapeCreator.hpp" />
-    <ClInclude Include="ThrusterComponenet.hpp" />
+    <ClInclude Include="Header Files\CameraControllerComponent.h" />
+    <ClInclude Include="Header Files\MyEvents.hpp" />
+    <ClInclude Include="Header Files\MyGame.h" />
+    <ClInclude Include="Header Files\ThrusterComponenet.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CameraControllerComponent.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MyGame.cpp" />
-    <ClCompile Include="ShapeCreator.cpp" />
-    <ClCompile Include="ThrusterComponen.cpp" />
+    <ClCompile Include="src\Component\CameraControllerComponent.cpp" />
+    <ClCompile Include="src\Component\ThrusterComponen.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MyGame.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -84,6 +82,9 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\DreamEngine\include;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>

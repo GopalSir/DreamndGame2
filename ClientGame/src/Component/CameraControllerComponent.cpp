@@ -1,32 +1,35 @@
-#include "CameraControllerComponent.h"
+#include "../../include/Component/CameraControllerComponent.h"
 
 namespace DREAM
 {
-	CameraControllerComponent::CameraControllerComponent()
-	{
-		cameraComponent = nullptr;
-		physicsComponent = nullptr;
-		Log::LogMessage("CameraControllerComponent Constructor Called", LogLevel::INFO_LEVEL);
+    CameraControllerComponent::CameraControllerComponent()
+    {
+        cameraComponent = nullptr;
+        physicsComponent = nullptr;
+        lookAroundDeltaRotationMatrix = Mat4<float>::identity;
+        Log::LogMessage("CameraControllerComponent Constructor Called", LogLevel::INFO_LEVEL);
 
-	}
+    }
     void CameraControllerComponent::doPostConstruct() {
         Log::LogMessage("CameraControllerComponent PostConstruct Called", LogLevel::INFO_LEVEL);
 
-		cameraComponent = this->entity->getComponent<CameraComponent>();
-		physicsComponent = this->entity->getComponent<PhysicsComponent>();
+        cameraComponent = this->entity->getComponent<CameraComponent>();
+        physicsComponent = this->entity->getComponent<PhysicsComponent>();
         if (physicsComponent == nullptr)
         {
             Log::LogMessage("Physics Component is null in CameraControllerComponent", LogLevel::ERROR_LEVEL);
         }
-		if (cameraComponent == nullptr)
-		{
-			Log::LogMessage("Camera Component is null in CameraControllerComponent", LogLevel::ERROR_LEVEL);
-		}
+        if (cameraComponent == nullptr)
+        {
+            Log::LogMessage("Camera Component is null in CameraControllerComponent", LogLevel::ERROR_LEVEL);
+        }
     }
+
+   
 
     int CameraControllerComponent::handleEvent(DREAM::EventInfo* _eventInfo)
     {
-		//std::cout<<"camera controller event boo"<<std::flush;
+        //std::cout<<"camera controller event boo"<<std::flush;
         
         Vec3<float> x_axis(cameraComponent->cameraWorldTransform.r1.x, cameraComponent->cameraWorldTransform.r2.x, cameraComponent->cameraWorldTransform.r3.x);
         Vec3<float> y_axis(cameraComponent->cameraWorldTransform.r1.y, cameraComponent->cameraWorldTransform.r2.y, cameraComponent->cameraWorldTransform.r3.y);
@@ -42,17 +45,17 @@ namespace DREAM
         {
 
 
-			if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == true)
-			{
-				//std::cout << "Left Control and right arrow Pressed" << std::endl;
+            if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_RIGHT].first == true)
+            {
+                //std::cout << "Left Control and right arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 
                 //Mat3<float> x_axis = 
-				//physicsComponent->rotation_velocity = Vec4<float>(0, 0.1, 0, 0);
+                //physicsComponent->rotation_velocity = Vec4<float>(0, 0.1, 0, 0);
                 physicsComponent->rotation_velocity = Vec4<float>(0,-100.0f,0,0);
 
 
-			}
+            }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_LEFT].first == true)
             {
                 //std::cout << "Left Control and left arrow Pressed" << std::endl;
@@ -86,7 +89,7 @@ namespace DREAM
                             // Move left locally, aka left of whereever youre looking. 
                             Vec3<float> x_axis(cameraComponent->cameraWorldTransform.r1.x, cameraComponent->cameraWorldTransform.r2.x, cameraComponent->cameraWorldTransform.r3.x);
                             x_axis = Vec3<float>::normalize(x_axis);
-							physicsComponent->velocity = Vec4<float>(-x_axis.x * 100, -x_axis.y * 100, -x_axis.z * 100, 0);
+                            physicsComponent->velocity = Vec4<float>(-x_axis.x * 100, -x_axis.y * 100, -x_axis.z * 100, 0);
 
                         }
             else  if (DREAM::KeyStates::KeyState[GLFW_KEY_D].first == true)
@@ -94,7 +97,7 @@ namespace DREAM
                             // Move right
                             // Move left locally, aka left of whereever youre looking. 
 
-							physicsComponent->velocity = Vec4<float>(x_axis.x * 100, x_axis.y * 100, x_axis.z * 100, 0);
+                            physicsComponent->velocity = Vec4<float>(x_axis.x * 100, x_axis.y * 100, x_axis.z * 100, 0);
                             
                         }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_S].first == true)
@@ -102,7 +105,7 @@ namespace DREAM
                             // Move up
                 if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false)
                 {
-					//S pressed and left control not pressed, so we move down
+                    //S pressed and left control not pressed, so we move down
                     //std::cout << "Panning down" << std::endl;
                     physicsComponent->velocity = Vec4<float>(-y_axis.x * 50, -y_axis.y * 50, -y_axis.z * 50, 0);
                     
@@ -126,7 +129,7 @@ namespace DREAM
                             {
                     //Zoom Out
                     physicsComponent->velocity = Vec4<float>(-z_axis.x * 100, -z_axis.y * 100, -z_axis.z * 100, 0);
-								
+                                
                             }
 
 
@@ -193,7 +196,7 @@ namespace DREAM
                             // Move up
                             physicsComponent->rotation_velocity = Vec4<float>(0, 0, 0, 0);
                         }
-                    
+                        
                 
 
             
@@ -204,11 +207,23 @@ namespace DREAM
 
             if (mouseClickEvent->key == GLFW_MOUSE_BUTTON_LEFT)
             {
-                //std::cout << "Left Button Pressed\n";
+
             }
             else if (mouseClickEvent->key == GLFW_MOUSE_BUTTON_RIGHT)
             {
-                //std::cout << "Right Button Pressed\n";
+                if (mouseClickEvent->action == GLFW_PRESS)
+                {
+                    std::cout << "Right Button Pressed\n";
+                    right_mouse_buttton_status = true;
+                    lastClickEvent = *mouseClickEvent;
+                }
+                else if (mouseClickEvent->action == GLFW_RELEASE)
+                {
+                    std::cout << "Right Button Released\n";
+                    right_mouse_buttton_status = false;
+                    lastClickEvent = *mouseClickEvent;
+                    lookAroundDeltaRotationMatrix = Mat4<float>::identity;
+                }
             }
             //std::cout << "Mouse Clicked at position: (" << mouseClickEvent->x << ", " << mouseClickEvent->y << ")\n";
 
@@ -226,6 +241,38 @@ namespace DREAM
            
 
             }
+        else if (_eventInfo->getEventTypeCode() == DREAM::MouseMoveEvent::GetEventTypeCode())
+        {
+            if (right_mouse_buttton_status)
+            {
+                /*
+                * Capture the distance between last clicked point and current mouse position
+                * 
+                */
+                MouseMoveEvent* mouseMoveEvent = dynamic_cast<MouseMoveEvent*>(_eventInfo);
+
+                float x_delta = mouseMoveEvent->x_offset - lastClickEvent.x;
+                float y_delta = mouseMoveEvent->y_offset - lastClickEvent.y;
+
+                Mat4<float> m1 = PhysicsSystem::GetRotatioMatrixfromRotation(x_delta/50, DREAM::AXIS::Y_AXIS);
+                Mat4<float> m2 = PhysicsSystem::GetRotatioMatrixfromRotation(y_delta/50, DREAM::AXIS::X_AXIS);
+
+                //lookAroundDeltaRotationMatrix = m2 * m1;
+                cameraComponent->cameraWorldTransform = m2 * m1 * cameraComponent->cameraWorldTransform;
+
+
+            }
+        }
+  
+
+           /* HandleRMBdrag();*/
+
         return 0;
     }
+
+    void CameraControllerComponent::HandleRMBdrag()
+    {
+        //Check for 
+    }
 }
+ 

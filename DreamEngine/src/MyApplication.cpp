@@ -60,6 +60,7 @@ namespace DREAM
 
         glfwSetFramebufferSizeCallback(glfwWindow, GLFW_WindowResize_Callback_Handler);
         glfwSetScrollCallback(glfwWindow, GLFW_Scroll_Callback_Handler);
+        glfwSetCursorPosCallback(glfwWindow, GLFW_CursorPosCallback_Handler);
         glfwSetMouseButtonCallback(glfwWindow, [](GLFWwindow* _window, int _button, int _action, int mods) {
             MouseClickEvent* mouseClickEvent = new MouseClickEvent();
             mouseClickEvent->action = _action;

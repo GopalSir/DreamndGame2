@@ -77,4 +77,13 @@ namespace DREAM
         EventSystem::handleEvent(mouseScrollEvent);
     }
 
+    void GLFW_CursorPosCallback_Handler(GLFWwindow*, double _xOffset, double _yOffset)
+    {
+        MouseMoveEvent* mouseMoveEvent = new MouseMoveEvent();
+        mouseMoveEvent->x_offset = _xOffset;
+        mouseMoveEvent->y_offset = _yOffset;
+
+        EventSystem::handleEvent(mouseMoveEvent);
+    }
+
 }

@@ -27,6 +27,7 @@ namespace DREAM
 		void SetActiveCamera(CameraComponent* _cameraComoponent) { activeCameraComponent = _cameraComoponent; };
 
         static Vec4<float> ScreenToWorldCoordinate(Vec4<float> _screenCoord, CameraComponent* _cameraComponent);
+        static Vec4<float> ScreenToNDC(Vec4<float> _screenCoord);
 
 
     };

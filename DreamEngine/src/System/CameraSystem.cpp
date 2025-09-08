@@ -44,6 +44,8 @@ namespace DREAM
             CameraComponent* cameraComponent = tempEntity->getComponent<CameraComponent>();
             PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
 
+            
+
 
                 if (cameraComponent && physicsComponent)
                 {

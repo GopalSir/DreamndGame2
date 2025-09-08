@@ -1,6 +1,6 @@
 #define GLEW_NO_GLU
 //#include "../include/System/MyApplication.hpp"
-#include "MyGame.h"
+#include "../include/MyGame.h"
 #include <EntryPoint.hpp>
 
 

@@ -13,33 +13,30 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Entity">
+      <UniqueIdentifier>{ca1841aa-0999-4be9-8b94-d66854dd56c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Component">
+      <UniqueIdentifier>{3e4e3e55-ee47-4d71-bce4-2f6246a1a0d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\System">
+      <UniqueIdentifier>{1846abf9-daf3-4fb0-a383-c2edf2eccf21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility">
+      <UniqueIdentifier>{c777f29f-e7c6-4908-a7f8-7a391201704e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\EventHandling">
+      <UniqueIdentifier>{142bcf36-5059-40bd-9d15-473a1e8a3bc8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\Vectors">
+      <UniqueIdentifier>{415927da-2924-4077-b0bd-76b851365d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Utility\ShapeCreation">
+      <UniqueIdentifier>{9c82918e-f265-460d-ac73-77a6d02c635a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\ECS_Core\Component.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="include\ECS_Core\Core.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ECS_Core\Entity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ECS_Core\Log.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ECS_Core\System.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EVENTS.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\glfwKeyCallBacks.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\glheaders.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IEventHandler.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Resource.hpp">
@@ -48,77 +45,104 @@
     <ClInclude Include="include\Shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Vec3.hpp">
+    <ClInclude Include="include\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\VertexAttribPointerGenerator.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\DrawableComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\MVPComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\PhysicsComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\PositionComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\RotationComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\VertexAttribComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\VerticesComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Component\WindowComponent.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Entity\RectangleEntity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Entity\TriangleEntity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\System\AirplaneSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\System\EventSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\System\RenderSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\System\MyApplication.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\EntryPoint.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\System\CameraSystem.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\Shape.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="KeyStates.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\ECS_Core\Entity.hpp">
+      <Filter>Header Files\Entity</Filter>
     </ClInclude>
     <ClInclude Include="include\Component\CameraComponent.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS_Core\Component.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\DrawableComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\MVPComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\PhysicsComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\PositionComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\RotationComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\VertexAttribComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\VerticesComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Component\WindowComponent.hpp">
+      <Filter>Header Files\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\AirplaneSystem.hpp">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\CameraSystem.hpp">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\EventSystem.hpp">
+      <Filter>Header Files\System</Filter>
     </ClInclude>
     <ClInclude Include="include\System\PhysicsSystem.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\RenderSystem.hpp">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glfwKeyCallBacks.hpp">
+      <Filter>Header Files\Utility\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EVENTS.hpp">
+      <Filter>Header Files\Utility\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IEventHandler.hpp">
+      <Filter>Header Files\Utility\EventHandling</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Vec3.hpp">
+      <Filter>Header Files\Utility\Vectors</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS_Core\System.hpp">
+      <Filter>Header Files\System</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ShapeCreator.hpp">
+      <Filter>Header Files\Utility\ShapeCreation</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Shape.hpp">
+      <Filter>Header Files\Utility\ShapeCreation</Filter>
     </ClInclude>
     <ClInclude Include="include\Colors.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\glheaders.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\EntryPoint.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\KeyStates.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ECS_Core\Log.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\System\MyApplication.hpp">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Entity\RectangleEntity.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Entity\TriangleEntity.hpp">
+      <Filter>Header Files\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="include\VertexAttribPointerGenerator.hpp">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,34 +158,10 @@
     <ClCompile Include="src\ECS_Core\System.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\AirplaneSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\CameraSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\EventSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\glfwKeyCallBacks.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\MVPComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\PhysicsComponent.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RectangleEntity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\RenderSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Shader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\TriangleEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\VertexAttribPointerGenerator.cpp">
@@ -170,22 +170,52 @@
     <ClCompile Include="src\MyApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="include\Entity\CameraEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Shape.cpp">
+    <ClCompile Include="src\EntryPoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="KeyStates.cpp">
+    <ClCompile Include="src\KeyStates.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CameraComponent.cpp">
+    <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\PhysicsSystem.cpp">
+    <ClCompile Include="src\Shape.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ShapeCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\CameraComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\MVPComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Component\PhysicsComponent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity\RectangleEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Entity\TriangleEntity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\AirplaneSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\CameraSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\EventSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\PhysicsSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\RenderSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
