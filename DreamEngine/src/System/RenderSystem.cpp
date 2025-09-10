@@ -40,6 +40,7 @@ namespace DREAM
             //for open gl , we gotta bind to the buffer first 
             int tempVBO = tempEntities->getComponent<DrawableComponent>()->VBO;
             int tempVAO = tempEntities->getComponent<DrawableComponent>()->VAO;
+            PhysicsComponent* physicsComponent = tempEntities->getComponent<PhysicsComponent>();
 
             COLOR tempColor = tempEntities->getComponent<DrawableComponent>()->color;
 
@@ -48,7 +49,19 @@ namespace DREAM
             glBindBuffer(GL_ARRAY_BUFFER, tempVBO);
             glBindVertexArray(tempVAO);
 
-            Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix);
+            Mat4<float> model_matrix = Mat4<float>::identity;
+
+
+            //We can derive model matrix via PhysicsComponent of this entity
+            if (physicsComponent )
+            {
+                model_matrix = PhysicsSystem::GetModelMatrixfromComponent(physicsComponent);
+               /* std::cout << "MM: " << model_matrix.r1.x << " " << model_matrix.r1.y << " " << model_matrix.r1.z << " " << model_matrix.r1.w << "\n";
+                std::cout << "R2: " << model_matrix.r2.x << " " << model_matrix.r2.y << " " << model_matrix.r2.z << " " << model_matrix.r2.w << "\n";
+                std::cout << "R3: " << model_matrix.r3.x << " " << model_matrix.r3.y << " " << model_matrix.r3.z << " " << model_matrix.r3.w << "\n";
+                std::cout << "R4: " << model_matrix.r4.x << " " << model_matrix.r4.y << " " << model_matrix.r4.z << " " << model_matrix.r4.w << "\n";*/
+            }
+            Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix,model_matrix);
             shader->setUniform("mvp", tempMVP);
             shader->setUniform("color", tempColor.r, tempColor.g, tempColor.b, tempColor.a);
 

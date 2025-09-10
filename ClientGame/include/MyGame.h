@@ -15,7 +15,7 @@ public:
 
 	//void run() override;
 
-
+	void GenerateBird();
 
 
 };

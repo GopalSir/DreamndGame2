@@ -18,7 +18,10 @@ namespace DREAM
         {
             Log::LogMessage("Initializing GLFW failed with message code: " + std::to_string(glfwInitResult));
         }
-        glfwWindow = glfwCreateWindow(1080, 720, "Game Window", nullptr, nullptr);
+
+        window_width = 1080;
+        window_height = 720;
+        glfwWindow = glfwCreateWindow(window_width, window_height, "Game Window", nullptr, nullptr);
         glfwMakeContextCurrent(glfwWindow);
         int glewInitResult = glewInit();
         if (glewInitResult != GLEW_OK) {
@@ -267,6 +270,11 @@ namespace DREAM
         
         return cameraSystem;
 
+    }
+
+    PhysicsSystem* MyApplication::GetPhysicsSystem()
+    {
+        return physicsSystem;
     }
 
     void MyApplication::bridgeSystems()

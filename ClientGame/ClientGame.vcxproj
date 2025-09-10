@@ -21,8 +21,8 @@
   <ItemGroup>
     <ClInclude Include="Header Files\CameraControllerComponent.h" />
     <ClInclude Include="Header Files\MyEvents.hpp" />
-    <ClInclude Include="Header Files\MyGame.h" />
     <ClInclude Include="Header Files\ThrusterComponenet.hpp" />
+    <ClInclude Include="include\MyGame.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Component\CameraControllerComponent.cpp" />

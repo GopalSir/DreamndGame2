@@ -1,5 +1,6 @@
 #pragma once
 #include <ECS_Core/Core.hpp>
+#include <System/PhysicsSystem.h>
 #include "../Entity/CameraEntity.hpp"
 #include "../IEventHandler.hpp"
 #include "../Component/VerticesComponent.hpp"

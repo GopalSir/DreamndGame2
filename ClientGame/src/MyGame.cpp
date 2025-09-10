@@ -55,6 +55,32 @@ MyGame::MyGame()
 
 
 	
-		
+		GenerateBird();
+
+}
+
+void MyGame::GenerateBird()
+{
+	VerticesComponent<float> birdVertices;
+
+	float x1, y1, z1;
+
+	x1 = 0.0f;
+	y1 = 100;
+	z1 = 0;
+
+	
+	birdVertices.vertices.push_back(PositionComponent<float>(x1, y1, z1));
+	birdVertices.vertices.push_back(PositionComponent<float>(x1, y1+30, z1));
+	birdVertices.vertices.push_back(PositionComponent<float>(x1+30, y1+15, z1));
+
+	Entity* bird = Shape::GetTriangleShape(birdVertices);
+	int entity_index = MyApplication::GetRenderSystem()->addEntity(bird);
+	MyApplication::GetRenderSystem()->initEntityBuffers(entity_index);
+
+	bird->addComponent(new PhysicsComponent());
+	MyApplication::GetPhysicsSystem()->addEntity(bird);
+
+	bird->getComponent<PhysicsComponent>()->velocity.x = 10.0f;
 
 }

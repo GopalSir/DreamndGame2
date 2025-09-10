@@ -7,7 +7,7 @@ struct Vec4
     public:
     T x,y,z,w;
     Vec4(T _x, T _y, T _z, T _w): x(_x), y(_y), z(_z), w(_w){};
-    Vec4(){};
+	Vec4() : x(0), y(0), z(0), w(0) {};
 	// Helper function to compute the dot product of two Vec4<T>
 	static T dot(const Vec4<T>& v1, const Vec4<T>& v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;

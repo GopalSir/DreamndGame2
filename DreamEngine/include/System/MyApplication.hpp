@@ -39,6 +39,7 @@ namespace DREAM {
 
 
         int gameFPS;
+        int window_width, window_height;
         std::chrono::time_point<std::chrono::high_resolution_clock> frameStart;
         std::chrono::nanoseconds actualFrameTime;
         std::chrono::nanoseconds requiredFrameTime;
@@ -57,12 +58,16 @@ namespace DREAM {
         MyApplication();
         ~MyApplication();
 
+        int getWindowWidth() { return window_width; };
+        int getWindowHeight() { return window_height; };
+
         void run();
 
-
+        
         //Methods exposed to client side implementation 
         RenderSystem* GetRenderSystem();
 		CameraSystem* GetCameraSystem();
+        PhysicsSystem* GetPhysicsSystem();
         //EventSystem* GetEventSystem();
 
         void updateSystems();

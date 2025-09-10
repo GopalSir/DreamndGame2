@@ -5,6 +5,7 @@
 #include <functional>
 #include <map>
 #include "Vec3.hpp"
+#include <Component/PhysicsComponent.hpp>
 
 namespace DREAM{
 
@@ -26,7 +27,9 @@ public:
 	}
 
 	static Mat4<float> GetRotatioMatrixfromRotation( float _deltaRotation, AXIS _rotationAxis);
+	static Mat4<float> GetModelMatrixfromComponent(PhysicsComponent* _physicsComponent);
 	static Vec4<float> GetEulerRotationfromRotationMatrix(const Mat4<float>& _rotationMatrix);
+	
 	void update() override;
 
 };
