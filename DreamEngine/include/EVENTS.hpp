@@ -1,5 +1,6 @@
 #pragma once
 #include "glheaders.hpp"
+#include <Vec3.hpp>
 
 namespace DREAM
 {
@@ -23,7 +24,7 @@ namespace DREAM
         int action;
 
         KeyPressEvent() :EventInfo(localTypeCode) {};
-        static int GetEventTypeCode() { return localTypeCode; };
+        const static int GetEventTypeCode() { return localTypeCode; };
 
     };
 
@@ -78,6 +79,17 @@ namespace DREAM
         double x_offset;
         double y_offset;
         MouseMoveEvent() : EventInfo(localTypeCode) {};
+        static int GetEventTypeCode() { return localTypeCode; };
+    };
+
+
+    class CollisionEvent : public EventInfo
+    {
+        static constexpr int localTypeCode = 7;
+    public:
+        Vec4<float> position;
+        Entity* e1, e2;
+        CollisionEvent() : EventInfo(localTypeCode) {};
         static int GetEventTypeCode() { return localTypeCode; };
     };
 

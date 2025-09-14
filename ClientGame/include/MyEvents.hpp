@@ -15,3 +15,5 @@ class PlaneCrashEvent : public DREAM::EventInfo
 
 	DEFINE_EVENT(PlaneCrashEvent, 21);
 };
+
+class 

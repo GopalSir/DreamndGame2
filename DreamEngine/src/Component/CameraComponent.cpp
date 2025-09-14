@@ -8,7 +8,7 @@ namespace DREAM
         this->aspect_ratio = aspect;
         this->near = near;
         this->far = far;
-
+        this->active = true;
 		this->cameraWorldTransform = Mat4<float>::identity; // Initialize to identity matrix
     }
 

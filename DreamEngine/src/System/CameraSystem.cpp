@@ -102,15 +102,15 @@ namespace DREAM
 
     void CameraSystem::updateCameraRotation(PhysicsComponent* _physicsComponent, CameraComponent* _cameraComponent)
     {
-        //Need to extract back the rotation of the camera using it's world transform matrix
-		Mat4<float> cameraWorldTransform = _cameraComponent->cameraWorldTransform;
+  //      //Need to extract back the rotation of the camera using it's world transform matrix
+		//Mat4<float> cameraWorldTransform = _cameraComponent->cameraWorldTransform;
 
-		Vec4<float> new_euler_rotation = PhysicsSystem::GetEulerRotationfromRotationMatrix(cameraWorldTransform);
+		//Vec4<float> new_euler_rotation = PhysicsSystem::GetEulerRotationfromRotationMatrix(cameraWorldTransform);
 
 		// Update the rotation of the physics component based on the new euler rotation
-		_physicsComponent->rotation.x = new_euler_rotation.x;
+	/*	_physicsComponent->rotation.x = new_euler_rotation.x;
 		_physicsComponent->rotation.y = new_euler_rotation.y;
-		_physicsComponent->rotation.z = new_euler_rotation.z;
+		_physicsComponent->rotation.z = new_euler_rotation.z;*/
 
 
 
@@ -145,7 +145,7 @@ namespace DREAM
         Entity* defaultCameraEntity = new Entity();
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // velocity
-			Vec4<float>(100, 100, 0, 1), // position
+			Vec4<float>(100, 100, 300, 1), // position
 			Vec4<float>(0, 0, 0, 0), // rotation
 			Vec4<float>(0, 0, 0, 0)  // rotation_velocity
 		);
@@ -185,7 +185,7 @@ namespace DREAM
 		Mat4<float> deltaRotationMatrix = deltaRotationMatrix_z * deltaRotationMatrix_y * deltaRotationMatrix_x;
 
 
-		Mat4<float> result = _cameraComponent->cameraWorldTransform; // Start with the camera's world transform
+        Mat4<float> result = PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.z, AXIS::Z_AXIS) * PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.y, AXIS::Y_AXIS) * PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.x, AXIS::X_AXIS);
 
 		// Now we combine the rotation matrix with the translation vector3
 		// The translation vector is the position of the camera in world space

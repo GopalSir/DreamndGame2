@@ -94,19 +94,24 @@ namespace DREAM
     void MyApplication::updateSystems()
     {
 
+    for (auto i : gameSystems)
+        {
+            i->update();
+        }
+
+        physicsSystem->update();
         cameraSystem->update();
         renderSystem->update();
-		physicsSystem->update();
-
-        //for (auto i : gameSystems)
-        //{
-        //    i->update();
-        //}
     }
 
     bool MyApplication::getGameState()
     {
         return gamestate;
+    }
+
+    void MyApplication::addGameSystem(System* _system)
+    {
+        gameSystems.push_back(_system);
     }
 
     void MyApplication::setGameState(bool _gamestate)
@@ -143,11 +148,11 @@ namespace DREAM
             actualFrameTime = frameEnd - frameStart;
             //Time of last frame in seconds
 			deltaTime = std::chrono::duration<float>(actualFrameTime).count();
-            if (actualFrameTime < requiredFrameTime)
+          /*  if (actualFrameTime < requiredFrameTime)
             {
                 requiredSleepTime = requiredFrameTime - actualFrameTime;
                 std::this_thread::sleep_for(requiredSleepTime);
-            }
+            }*/
         }
 
     }

@@ -72,6 +72,7 @@ namespace DREAM {
 
         void updateSystems();
         bool getGameState();
+        void addGameSystem(System* _system);
         void setGameState(bool _gameState);
         void setTriangleEntity();
         bool initializeShaders();

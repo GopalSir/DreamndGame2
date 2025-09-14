@@ -60,10 +60,16 @@ Vec4<float> PhysicsSystem::GetEulerRotationfromRotationMatrix(const Mat4<float>&
 
 void PhysicsSystem::update()
 {
+    
     for (auto* tempEntity : entities)
     {
         //We will update the position based on velocity and rotation based on rotation (local rotation)
         PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
+
+        if (physicsComponent->isGravity)
+        {
+            physicsComponent->velocity.y += -0.03f;
+        }
 
         //Updating Position
         physicsComponent->position = physicsComponent->position + physicsComponent->velocity * (*dt_pointer);
