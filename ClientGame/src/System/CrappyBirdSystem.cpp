@@ -10,34 +10,55 @@
 * 
 */
 
-Entity* CrappyBirdSystem::GeneratePillar(int _r_limit, int y_limit, int _dir, int _width, int _height)
+std::vector<Entity*> CrappyBirdSystem::GeneratePillar(int _r_limit, int y_limit, int _dir, int _width, int _height)
 {
 
 	float y_rand = 30 * ((float)rand() / RAND_MAX);
 	float x_rand = 30 * ((float)rand() / RAND_MAX);
 
-	DREAM::VerticesComponent<float> vc;
+	float end_height = (float)_height / 10;
+
+	DREAM::VerticesComponent<float> vc1;
+	DREAM::VerticesComponent<float> vc2;
 	
 	if (_dir == 0)
 	{
-		vc.vertices.push_back(PositionComponent<float>(_r_limit, y_limit , 0));
-		vc.vertices.push_back(PositionComponent<float>(_r_limit, y_limit+ _height + y_rand, 0));
-		vc.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit +  _height + y_rand, 0));
-		vc.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit , 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit, y_limit , 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit, y_limit+ _height + y_rand, 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit +  _height + y_rand, 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit , 0));
+
+
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit, y_limit + _height + y_rand - end_height, 0));
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit, y_limit + _height + y_rand, 0));
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit + _height + y_rand, 0));
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit+20, y_limit + _height + y_rand - end_height, 0));
+
+
 	}
 	else if (_dir == 1)
 	{
-		vc.vertices.push_back(PositionComponent<float>(_r_limit, y_limit , 0));
-		vc.vertices.push_back(PositionComponent<float>(_r_limit, y_limit - _height - y_rand, 0));
-		vc.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit - _height - y_rand, 0));
-		vc.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit , 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit, y_limit , 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit, y_limit - _height - y_rand, 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit - _height - y_rand, 0));
+		vc1.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit , 0));
+
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit, y_limit + _height + y_rand - end_height, 0));
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit, y_limit + _height + y_rand, 0));
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit + _height + y_rand, 0));
+		vc2.vertices.push_back(PositionComponent<float>(_r_limit + 20, y_limit + _height + y_rand - end_height, 0));
 	}
 
 	
 
-	Entity* pillar = Shape::GetRectangleShape(vc);
-	pillar->getComponent<DrawableComponent>()->color = COLOR(100, 0, 255, 1);
-	return pillar;
+	Entity* pillarBody = Shape::GetRectangleShape(vc1);
+	pillarBody->getComponent<DrawableComponent>()->color = COLOR(0, 255, 255, 1);
+
+	Entity* pillarEnd = Shape::GetRectangleShape(vc2);
+	pillarEnd->getComponent<DrawableComponent>()->color = COLOR(200, 0, 255, 1);
+
+	return { pillarBody, pillarEnd };
+	
 }
 
 void CrappyBirdSystem::CheckPillarCondition()
@@ -93,24 +114,44 @@ void CrappyBirdSystem::update()
 		*/
 		if ((physicsComponent->position.x - crappyBirdComponent->p_previous.x) > 100)
 		{
+
+			float  r_limit1 = physicsComponent->position.x + crappyBirdComponent->r_limit + 100 * (float(rand()) / RAND_MAX);
+			float r_limit2 = physicsComponent->position.x + crappyBirdComponent->r_limit + 100 * (float(rand()) / RAND_MAX);
+
 			std::cout << "Generating Piller\n";
-			Entity* tempPillar1 = GeneratePillar(physicsComponent->position.x + crappyBirdComponent->r_limit + 100*(float(rand())/RAND_MAX), 0, 0, 25, 80);
-			Entity* tempPillar2 = GeneratePillar(physicsComponent->position.x+ crappyBirdComponent->r_limit + 100 * (float(rand()) / RAND_MAX),400, 1, 25, 180);
+			std::vector<Entity*> tempPillar1 = GeneratePillar(r_limit1, 0, 0, 25, 80);
+			std::vector<Entity*>  tempPillar2 = GeneratePillar(r_limit2,400, 1, 25, 180);
 
 			PhysicsComponent* pillar_pc = new PhysicsComponent();
 			PhysicsComponent* pillar_pc2 = new PhysicsComponent();
 			
 
-			tempPillar1->addComponent(pillar_pc);
-			tempPillar2->addComponent(pillar_pc2);
+			for (auto* e : tempPillar1)
+			{
+				e->addComponent(pillar_pc);
+			}
 
-			int temp_index = crappyBirdComponent->renderSystem->addEntity(tempPillar1);
-			crappyBirdComponent->renderSystem->initEntityBuffers(temp_index);
+			for (auto* e : tempPillar2)
+			{
+				e->addComponent(pillar_pc2);
+			}
+
+			for (auto* e : tempPillar1)
+			{
+				int temp_index = crappyBirdComponent->renderSystem->addEntity(e);
+				crappyBirdComponent->renderSystem->initEntityBuffers(temp_index);
+			}
+
+			for (auto* e : tempPillar2)
+			{
+				int temp_index = crappyBirdComponent->renderSystem->addEntity(e);
+				crappyBirdComponent->renderSystem->initEntityBuffers(temp_index);
+			}
+
+			//Now we generate the end portion of the pillar 
+
 			crappyBirdComponent->p_previous = PositionComponent<float>(physicsComponent->position.x, physicsComponent->position.y, physicsComponent->position.z);
 
-
-			int temp_index2 = crappyBirdComponent->renderSystem->addEntity(tempPillar2);
-			crappyBirdComponent->renderSystem->initEntityBuffers(temp_index2);
 			
 		}
 	}

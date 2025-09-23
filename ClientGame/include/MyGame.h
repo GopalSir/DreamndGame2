@@ -6,6 +6,7 @@
 #include "../include/Component/CameraControllerComponent.h"
 #include "ShapeCreator.hpp"
 #include "../include/System/CrappyBirdSystem.h"
+#include "../CityGenerator.h"
 
 class MyGame : public DREAM::MyApplication
 {

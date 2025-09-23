@@ -54,27 +54,34 @@ MyGame::MyGame()
 		DREAM::EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), _shapeCreator);
 
 
-		CrappyBirdSystem* crappyBirdSytem = new CrappyBirdSystem();
-		CrappyBirdComponent* crappyBirdComponent = new CrappyBirdComponent();
+		//CrappyBirdSystem* crappyBirdSytem = new CrappyBirdSystem();
+		//CrappyBirdComponent* crappyBirdComponent = new CrappyBirdComponent();
 
-		crappyBirdComponent->score = 0;
-		crappyBirdComponent->p_previous = PositionComponent<float>(0, 0, 0);
-		crappyBirdComponent->r_limit = 200;
-		crappyBirdComponent->renderSystem = GetRenderSystem();
-		crappyBirdComponent->cameraPhysicsComponent = basicCamera->getComponent<PhysicsComponent>();
-		EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), crappyBirdComponent);
-		
-		
+		//crappyBirdComponent->score = 0;
+		//crappyBirdComponent->p_previous = PositionComponent<float>(0, 0, 0);
+		//crappyBirdComponent->r_limit = 200;
+		//crappyBirdComponent->renderSystem = GetRenderSystem();
+		//crappyBirdComponent->cameraPhysicsComponent = basicCamera->getComponent<PhysicsComponent>();
+		//EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), crappyBirdComponent);
+		//
+		//
 
-		Entity* bird = GenerateBird();
-		bird->addComponent(crappyBirdComponent);
-		crappyBirdComponent->birdPhysicsComponent = bird->getComponent<PhysicsComponent>();
+		//Entity* bird = GenerateBird();
+		//bird->addComponent(crappyBirdComponent);
+		//crappyBirdComponent->birdPhysicsComponent = bird->getComponent<PhysicsComponent>();
+		//
+		//crappyBirdSytem->addEntity(bird);
+		//addGameSystem(crappyBirdSytem);
 		
-		crappyBirdSytem->addEntity(bird);
-		addGameSystem(crappyBirdSytem);
-		
+		CityGenerator* cg = new CityGenerator();
+		std::vector<Entity*> city = cg->GetCity();
 
+		for (auto* tempEntity : city)
+		{
+			int tempIndex = GetRenderSystem()->addEntity(tempEntity);
+			GetRenderSystem()->initEntityBuffers(tempIndex);
 
+		}
 
 }
 

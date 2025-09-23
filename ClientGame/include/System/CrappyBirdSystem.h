@@ -8,7 +8,7 @@
 class CrappyBirdSystem : public System
 {
 private:
-	Entity* GeneratePillar(int _r_limit,int _y_limit, int _dir, int _width, int _height);
+	std::vector<Entity*> GeneratePillar(int _r_limit,int _y_limit, int _dir, int _width, int _height);
 	void CheckPillarCondition();
 public:
 	CrappyBirdSystem();

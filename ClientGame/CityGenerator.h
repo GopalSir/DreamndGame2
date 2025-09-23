@@ -1,0 +1,36 @@
+#pragma once
+#include <ECS_Core/Core.hpp>
+#include <Shape.hpp>
+#include <random>
+#include <map>
+
+enum CITY_BLOCK
+{
+	BUILDING,
+	ROAD, 
+	GRASS,
+
+};
+
+class CityGenerator
+{
+private:
+	// This will decide how many meters of each city block map to. to multiply distances by this ig. not sure
+	float city_to_world_resolution;
+	std::vector<Entity*> city;
+	int city_x;
+	int city_y;
+	std::map<std::pair<int, int>,int> cityStatus;
+
+	void GenerateRoad(int i,int j);
+	std::pair<int,int> FindNearestRoad(std::pair<int, int> _roadCoord, std::vector< std::pair<int, int>>_blockList);
+	std::pair<int, int> MoveTowardsCoord(std::pair<int, int> _currentRoad, std::pair<int, int> _targetRoad);
+	int ManhattanDistance(std::pair<int, int> _c1, std::pair<int, int> _c2);
+	
+public:
+	std::vector<Entity*> GetCity();
+	CityGenerator();
+
+
+};
+

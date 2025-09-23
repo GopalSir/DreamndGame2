@@ -190,6 +190,10 @@ Entity* Shape::GetRectangleShape(DREAM::VerticesComponent<float>& _verticesCompo
 	 1st Triangle: vertex[0], vertex[1], vertex[2]
 	 2nd Triangle: vertex[0], vertex[2], vertex[3]
 	*/
+	if (_verticesComponent.vertices.size() != 4)
+	{
+		return nullptr;
+	}
 
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
 	

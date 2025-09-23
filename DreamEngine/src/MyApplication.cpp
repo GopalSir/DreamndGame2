@@ -81,7 +81,8 @@ namespace DREAM
         gamestate = true;
 
         setupGizmo();
-         
+        
+        world = new World(renderSystem, physicsSystem, cameraSystem);
         
     }
 

@@ -168,6 +168,7 @@
     <ClInclude Include="include\Vec3.hpp" />
     <ClInclude Include="include\VertexAttribPointerGenerator.hpp" />
     <ClInclude Include="include\System\PhysicsSystem.h" />
+    <ClInclude Include="include\World.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Entity\CameraEntity.cpp" />
@@ -194,6 +195,7 @@
     <ClCompile Include="src\System\PhysicsSystem.cpp" />
     <ClCompile Include="src\System\RenderSystem.cpp" />
     <ClCompile Include="src\VertexAttribPointerGenerator.cpp" />
+    <ClCompile Include="src\World.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

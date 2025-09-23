@@ -17,6 +17,7 @@
 #include "../glfwKeyCallBacks.hpp"
 #include "../VertexAttribPointerGenerator.hpp"
 #include "../Shape.hpp"
+#include <World.h>
 #include <iostream>
 #include <chrono>
 #include <thread>
@@ -32,6 +33,8 @@ namespace DREAM {
         CameraSystem* cameraSystem;
         RenderSystem* renderSystem;
 		PhysicsSystem* physicsSystem;
+
+        World* world;
 
         std::vector<System*> gameSystems;
         bool gamestate;
