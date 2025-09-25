@@ -84,6 +84,7 @@ namespace DREAM
         
         world = new World(renderSystem, physicsSystem, cameraSystem);
         
+        backGroundColor = COLOR(0, 0, 0, 1);
     }
 
 
@@ -126,7 +127,7 @@ namespace DREAM
         bridgeSystems();
         while (gamestate)
         {
-            //glClearColor(0.1f, 0.1f, 0.1f, 1.0f); // or your background color
+            glClearColor(backGroundColor.r,backGroundColor.g,backGroundColor.b,backGroundColor.a); // or your background color
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             frameStart = std::chrono::high_resolution_clock::now();
@@ -331,6 +332,11 @@ namespace DREAM
 		Log::LogMessage("Gizmo visibility set to " + std::to_string(_visibility), LogLevel::INFO_LEVEL);
         
 	}
+
+    void MyApplication::setBackGroundColor(COLOR _color)
+    {
+        backGroundColor = _color;
+    }
 
 
 }

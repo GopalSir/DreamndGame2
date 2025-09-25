@@ -36,6 +36,7 @@ namespace DREAM {
 
         World* world;
 
+
         std::vector<System*> gameSystems;
         bool gamestate;
         Shader* programShader;
@@ -52,6 +53,7 @@ namespace DREAM {
         std::chrono::nanoseconds calculateRequiredFrameTime(int _gameFPS);
         int playerEntityID, enemyEntityID;
 
+        COLOR backGroundColor;
         
 
         void bridgeSystems();
@@ -82,6 +84,7 @@ namespace DREAM {
         void     setUpCameraSystem();
         void setupGizmo();
 		void gizmoVisibility(bool _visibility);
+        void setBackGroundColor(COLOR _color);
 
     };
 }

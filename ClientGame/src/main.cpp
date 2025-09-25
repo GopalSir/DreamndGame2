@@ -10,7 +10,6 @@ Entry point for the application
 int main()
 {
 
-
 	auto mygame = CreateApplication();
 	mygame->run();
 

@@ -145,7 +145,7 @@ namespace DREAM
         Entity* defaultCameraEntity = new Entity();
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // velocity
-			Vec4<float>(500, 500, 990, 1), // position
+			Vec4<float>(100, 100, 100, 1), // position
 			Vec4<float>(0, 0, 0, 0), // rotation
 			Vec4<float>(0, 0, 0, 0)  // rotation_velocity
 		);
@@ -185,8 +185,8 @@ namespace DREAM
 		Mat4<float> deltaRotationMatrix = deltaRotationMatrix_z * deltaRotationMatrix_y * deltaRotationMatrix_x;
 
 
-        Mat4<float> result = PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.z, AXIS::Z_AXIS) * PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.y, AXIS::Y_AXIS) * PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.x, AXIS::X_AXIS);
-
+       /* Mat4<float> result = PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.z, AXIS::Z_AXIS) * PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.y, AXIS::Y_AXIS) * PhysicsSystem::GetRotatioMatrixfromRotation(_physicsComponent->rotation.x, AXIS::X_AXIS); */
+        Mat4<float> result = _cameraComponent->cameraWorldTransform;
 		// Now we combine the rotation matrix with the translation vector3
 		// The translation vector is the position of the camera in world space
 		result = result * deltaRotationMatrix; // Apply delta rotation to the camera's world transform

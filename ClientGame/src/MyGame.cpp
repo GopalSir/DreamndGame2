@@ -45,6 +45,7 @@ MyGame::MyGame()
 		//Will Implement this in DreamEngine. 
 		/*This function will add or remove 3 axis lines from the scene. basically add lines or remove lines from the render system queue*/
 		this->gizmoVisibility(true);
+		this->setBackGroundColor(COLOR(0.2, 0.2, 0, 1.0f));
 
 
 		//Custom Shape drawing begins here
