@@ -40,6 +40,9 @@
     <ClCompile Include="src\MyGame.cpp" />
     <ClCompile Include="src\System\CrappyBirdSystem.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="config.lua" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -93,7 +96,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\DreamEngine\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Gaurav\Documents\IISC\libraries\lua;C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\DreamEngine\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -143,15 +146,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\DreamEngine\include;C:\Users\Gaurav\Documents\IISC\libraries\glew-2.1.0\include;C:\Users\Gaurav\Documents\IISC\libraries\glfw-3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\Gaurav\Documents\IISC\libraries\lua;C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\DreamEngine\include;C:\Users\Gaurav\Documents\IISC\libraries\glew-2.1.0\include;C:\Users\Gaurav\Documents\IISC\libraries\glfw-3.4.bin.WIN64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Gaurav\Documents\IISC\libraries\glfw-3.4.bin.WIN64\lib-vc2022;C:\Users\Gaurav\Documents\IISC\libraries\glew-2.1.0\lib\Release\x64;C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DreamEngine.lib;glfw3.lib;glew32.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Gaurav\Documents\IISC\libraries\lua\Lua;C:\Users\Gaurav\Documents\IISC\libraries\glfw-3.4.bin.WIN64\lib-vc2022;C:\Users\Gaurav\Documents\IISC\libraries\glew-2.1.0\lib\Release\x64;C:\Users\Gaurav\Documents\IISC\Visual Studio\DreamndGame2\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>DreamEngine.lib;glfw3.lib;glew32.lib;opengl32.lib;lua54.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

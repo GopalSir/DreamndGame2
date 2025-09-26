@@ -119,7 +119,9 @@ namespace DREAM
         VerticesComponent<float>* verticesComponent = entities[_index]->getComponent<VerticesComponent<float>>();
 
         //One position component component holds 3 floats
-        const int VERTEX_BUFFER_SIZE = 3 * verticesComponent->vertices.size();
+        const int VERTEX_BUFFER_SIZE = 3 * verticesComponent->vertices.size() + 4*verticesComponent->vertices_color.size();
+
+        
 
         float* vertexBuffer = new float[VERTEX_BUFFER_SIZE];
 
@@ -130,6 +132,8 @@ namespace DREAM
             vertexBuffer[position++] = p.x;
             vertexBuffer[position++] = p.y;
             vertexBuffer[position++] = p.z;
+
+            
 
         }
 

@@ -1,6 +1,7 @@
 #pragma once
 #include <ECS_Core/Core.hpp>
 #include "PositionComponent.hpp"
+#include "Colors.h"
 
 namespace DREAM
 {
@@ -9,6 +10,7 @@ namespace DREAM
     {
     public:
         std::vector<PositionComponent<T>> vertices;
+        std::vector<COLOR>vertices_color;
     };
 
 }

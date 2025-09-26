@@ -21,9 +21,80 @@ CityGenerator::CityGenerator()
 	/*
 	* Definitoin for roads: they will be places randomly at first, and then grow towards each other.  
 	*/
-	city_to_world_resolution = 10;
-	city_x = 500;
-	city_y = 500;
+
+	mlua_State = luaL_newstate();
+	luaL_openlibs(mlua_State);
+
+	int result = luaL_dofile(mlua_State, "config.lua");
+	if (result != LUA_OK) {
+		std::cout << "LUA ERROR: " << lua_tostring(mlua_State, -1) << std::endl;
+		lua_pop(mlua_State, 1);
+	}
+	else {
+		std::cout << "LUA FILE LOADED SUCCESSFULLY" << std::endl;
+	
+	
+
+		std::cout << "LUA OK LOADING CONFIG NOW\n";
+
+		// After loading the file, add this debug code:
+		lua_pushglobaltable(mlua_State);
+		lua_pushnil(mlua_State);
+		while (lua_next(mlua_State, -2) != 0) {
+			if (lua_isstring(mlua_State, -2)) {
+				std::cout << "Global: " << lua_tostring(mlua_State, -2) << std::endl;
+			}
+			lua_pop(mlua_State, 1);
+		}
+		lua_pop(mlua_State, 1);
+
+
+		int	r = lua_getglobal(mlua_State, "city_to_world_resolution");
+		
+		if (r == LUA_TNUMBER)
+		{
+			city_to_world_resolution = lua_tonumber(mlua_State, -1);
+			lua_pop(mlua_State, 1);
+		}
+
+		r = lua_getglobal(mlua_State, "city_x");
+		if (r == LUA_TNUMBER)
+		{
+			city_x = lua_tonumber(mlua_State, -1);
+			lua_pop(mlua_State, 1);
+		}
+
+		r = lua_getglobal(mlua_State, "city_y");
+		if (r == LUA_TNUMBER)
+		{
+			city_y = lua_tonumber(mlua_State, -1);
+			lua_pop(mlua_State, 1);
+		}
+
+		r = lua_getglobal(mlua_State, "IterationCount");
+		if (r == LUA_TNUMBER)
+		{
+			mIterationCount = lua_tonumber(mlua_State, -1);
+			lua_pop(mlua_State, 1);
+		}
+
+		r = lua_getglobal(mlua_State, "generationProbability");
+		if (r == LUA_TNUMBER)
+		{
+			mgenerationProbability = lua_tonumber(mlua_State, -1);
+			lua_pop(mlua_State, 1);
+		}
+
+
+	}
+
+	std::cout << city_to_world_resolution;
+
+
+
+	//city_to_world_resolution = 1;
+	//city_x = 500;
+	//city_y = 500;
 
 	int city_x_blockCount = (float)city_x / city_to_world_resolution;
 	int city_y_blockCount = (float)city_y / city_to_world_resolution;
@@ -40,7 +111,7 @@ CityGenerator::CityGenerator()
 	{
 		for (int j = 0; j< city_y_blockCount; ++j)
 		{
-			if (rand01() <0.050f)
+			if (rand01() < mgenerationProbability)
 			{
 				//std::cout << "Generating City block" << i << " " << j << "\n";
 				GenerateRoad(i, j);
@@ -59,7 +130,7 @@ CityGenerator::CityGenerator()
 
 	newRoads2.clear();
 
-	for (int k = 0; k < 300; ++k)
+	for (int k = 0; k < mIterationCount; ++k)
 	{
 		
 
@@ -148,7 +219,7 @@ std::pair<int, int> CityGenerator::MoveTowardsCoord(std::pair<int, int> _current
 	std::pair<int, int> result;
 
 
-	if (abs(_currentRoad.first - _targetRoad.first) <= (_currentRoad.second - _targetRoad.second))
+	if (abs(_currentRoad.first - _targetRoad.first) >= (_currentRoad.second - _targetRoad.second))
 	{
 		if ((_currentRoad.first - _targetRoad.first) < 0) // Target is to the right
 		{
