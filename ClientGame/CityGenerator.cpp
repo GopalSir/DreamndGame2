@@ -85,6 +85,13 @@ CityGenerator::CityGenerator()
 			lua_pop(mlua_State, 1);
 		}
 
+		r = lua_getglobal(mlua_State, "road_strip_width_percentage");
+		if (r == LUA_TNUMBER)
+		{
+			road_strip_width_percentage = lua_tonumber(mlua_State, -1);
+			lua_pop(mlua_State, 1);
+		}
+
 
 	}
 
@@ -120,10 +127,17 @@ CityGenerator::CityGenerator()
 				/*GenerateRoad(i, j);*/
 				auto pair = std::make_pair(i, j);
 				cityStatus[pair] = 1;
+				roadDirection[pair] = ROAD_DIRECTION::EAST;
+				initialBlocks[pair] = true;
 			}
 			
 		}
 	}
+
+
+	//Painting initial blocks with Yellow
+	
+
 
 	std::vector<std::pair<int, int>> newRoads, newRoads2, newRoads2_copy;
 	for (auto kv : cityStatus)
@@ -163,9 +177,10 @@ CityGenerator::CityGenerator()
 				continue;
 			}
 
-
+			FixDirections(kv, newRoadCoord);
 			//GenerateRoad(newRoadCoord.first, newRoadCoord.second);
 			cityStatus[newRoadCoord] = true;
+			//std::cout <<  roadDirection[newRoadCoord];
 
 			newRoads2.push_back(newRoadCoord);
 		}
@@ -175,11 +190,20 @@ CityGenerator::CityGenerator()
 	//Generate all Vertices at once. 
 	DREAM::VerticesComponent<float>* myVC = new DREAM::VerticesComponent<float>();
 
+	
+
 	for (auto p : cityStatus)
 	{
-		if (p.second == true)
+		if (p.second == true )
 		{
-			GenerateRoad(p.first.first, p.first.second,myVC);
+			if (initialBlocks[std::make_pair(p.first.first, p.first.second)] == true)
+			{
+				GenerateRoad(p.first.first, p.first.second, myVC, COLOR(0, 1, 0, 1));
+			}
+			else
+			{
+				GenerateRoad(p.first.first, p.first.second, myVC, COLOR(0, 0, 0, 1));
+			}
 		}
 	}
 	
@@ -189,18 +213,12 @@ CityGenerator::CityGenerator()
 
 	
 
-		
+			
 
 	city.push_back(roads);
 	//DrawBounds();
 
-	for (auto p : cityStatus)
-	{
-		if (p.first.second > city_y_blockCount)
-		{
-			std::cout << "Overflow";
-		}
-	}
+
 	
 
 
@@ -229,24 +247,122 @@ void CityGenerator::DrawBounds()
 	city.push_back(a);
 }
 
-
-
-void CityGenerator::GenerateRoad(int i, int j, DREAM::VerticesComponent<float>* _vc)
+void CityGenerator::PaintInitialBlocks(DREAM::VerticesComponent<float>* _vc)
 {
-	
-	_vc->vertices.push_back(PositionComponent<float>((i* city_to_world_resolution), j* city_to_world_resolution, 0));
-	_vc->vertices_color.push_back(COLOR(1, 1, 0, 1));
-	
-	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution+ city_to_world_resolution, 0));
-	_vc->vertices_color.push_back(COLOR(1, 0, 0, 1));
+	for (auto p : initialBlocks)
+	{
+		int i = p.first.first;
+		int j = p.first.second;
 
-	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution+ city_to_world_resolution, 0));
-	_vc->vertices_color.push_back(COLOR(1, 1, 0, 1));
+
+
+		// Road base (black rectangle)
+		_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution, 0));
+		_vc->vertices_color.push_back(COLOR(0, 1, 0, 1));
+
+		_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution + city_to_world_resolution, 0));
+		_vc->vertices_color.push_back(COLOR(0, 1, 0, 1));
+
+		_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution + city_to_world_resolution, 0));
+		_vc->vertices_color.push_back(COLOR(0, 1, 0, 1));
+
+		_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution, 0));
+		_vc->vertices_color.push_back(COLOR(0, 1, 0, 1));
+	}
+}
+
+
+
+void CityGenerator::GenerateRoad(int i, int j, DREAM::VerticesComponent<float>* _vc,COLOR _color)
+{
+	// Add white strip in the middle (10% of the length)
+	float stripWidth = city_to_world_resolution * road_strip_width_percentage / 100;  // 10% of road width
+	float stripOffset = (city_to_world_resolution - stripWidth) / 2.0f;  // Center the strip
+
+	float baseX = i * city_to_world_resolution;
+	float baseY = j * city_to_world_resolution;
+	float centerX = baseX + city_to_world_resolution / 2.0f;
+	float centerY = baseY + city_to_world_resolution / 2.0f;
+
+	ROAD_DIRECTION rd = roadDirection[std::make_pair(i, j)];
+
+	// Draw strips based on bitwise flags
+	if (rd & ROAD_DIRECTION::NORTH)
+	{
+		// Strip from bottom to center (vertical)
+		_vc->vertices.push_back(PositionComponent<float>(centerX - stripWidth / 2, baseY, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX - stripWidth / 2, centerY, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX + stripWidth / 2, centerY, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX + stripWidth / 2, baseY, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+	}
+
+	if (rd & ROAD_DIRECTION::SOUTH)
+	{
+		// Strip from center to top (vertical)
+		_vc->vertices.push_back(PositionComponent<float>(centerX - stripWidth / 2, centerY, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX - stripWidth / 2, baseY + city_to_world_resolution, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX + stripWidth / 2, baseY + city_to_world_resolution, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX + stripWidth / 2, centerY, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+	}
+
+	if (rd & ROAD_DIRECTION::EAST)
+	{
+		// Strip from left wall to center (horizontal)
+		_vc->vertices.push_back(PositionComponent<float>(baseX, centerY - stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(baseX, centerY + stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX, centerY + stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX, centerY - stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+	}
+
+	if (rd & ROAD_DIRECTION::WEST)
+	{
+		// Strip from center to right wall (horizontal)
+		_vc->vertices.push_back(PositionComponent<float>(centerX, centerY - stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(centerX, centerY + stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(baseX + city_to_world_resolution, centerY + stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+
+		_vc->vertices.push_back(PositionComponent<float>(baseX + city_to_world_resolution, centerY - stripWidth / 2, 0));
+		_vc->vertices_color.push_back(COLOR(1, 1, 1, 1));  // White
+	}
+
+	// Road base (black rectangle)
+	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(_color);
+
+	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution + city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(_color);
+
+	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution + city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(_color);
 
 	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution, 0));
-	_vc->vertices_color.push_back(COLOR(0, 1, 0, 1));
-	
-	
+	_vc->vertices_color.push_back(_color);
 }
 
 std::pair<int,int> CityGenerator::FindNearestRoad(std::pair<int, int> _roadCoord, std::vector< std::pair<int, int>>_blockList)
@@ -276,38 +392,60 @@ std::pair<int,int> CityGenerator::FindNearestRoad(std::pair<int, int> _roadCoord
 std::pair<int, int> CityGenerator::MoveTowardsCoord(std::pair<int, int> _currentRoad, std::pair<int, int> _targetRoad)
 {
 	std::pair<int, int> result;
+	ROAD_DIRECTION target_direction;
 
-
-	if ((_currentRoad.first - _targetRoad.first) >= (_currentRoad.second - _targetRoad.second))
+	if (abs(_currentRoad.first - _targetRoad.first) >= (_currentRoad.second - _targetRoad.second))
 	{
 		if ((_currentRoad.first - _targetRoad.first) < 0) // Target is to the right
 		{
 			result.first = _currentRoad.first + 1;
+
+			//result's direction will be EAST
+			target_direction = ROAD_DIRECTION::EAST;
+
 		}
 		else if ((_currentRoad.first - _targetRoad.first) > 0)  // Target is on the left
 		{
 			result.first = _currentRoad.first - 1;
+			//result's direction will be WEST
+			target_direction = ROAD_DIRECTION::WEST;
 		}
 		else
 		{
 			result.first = _currentRoad.first;
+
+			//result's direction will be SAME AS THAT OF TARGET
+			target_direction = roadDirection[_currentRoad];
+
 		}
 		result.second = _currentRoad.second;
+		//roadDirection[result] = target_direction;
 	}
 	else {
 		if ((_currentRoad.second - _targetRoad.second) < 0) // Target is to the top
 		{
 			result.second = _currentRoad.second + 1;
+
+			//result's direction will be NORTH
+			target_direction = ROAD_DIRECTION::NORTH;
 		}
 		else if ((_currentRoad.second - _targetRoad.second) > 0)  // Target is on the bottom
 		{
 			result.second = _currentRoad.second - 1;
+
+			//result's direction will be SOUTH
+			target_direction = ROAD_DIRECTION::SOUTH;
 		}
 		else
 		{
 			result.second = _currentRoad.second;
+
+			//result's direction will be SAME AS THAT OF TARGET
+			target_direction = roadDirection[_currentRoad];
+
 		}
 		result.first = _currentRoad.first;
+		//roadDirection[result] = target_direction;
 	}
 	return result;
 
@@ -368,6 +506,45 @@ float CityGenerator::EuclideanDistance(std::pair<int, int> _c1, std::pair<int, i
 //Given two blocks, fill a triangle between them depending on where the c2 is. 
 void CityGenerator::FillTriangleBetweenBlock(std::pair<int, int> _c1, std::pair<int, int> _c2)
 {
+}
+
+//Take target and current road block, change direction of current block to match the directio of target block.
+//This can only add direction, cannot take away old direction. 
+void CityGenerator::FixDirections(std::pair<int, int> _c1, std::pair<int, int> _c2)
+{
+	//if _c1 and _c2 guaranteed to be adjacent, now
+	/*
+	if _c1 is to the left of _c2, add WEST to _c1's direction
+	if _c1 is to the right of _c2, add EAST to _c1's direction
+	if _c1 is to the top of _c2, add NORTH to _c1's direction
+	if _c1 is to the bottom of _c2, add SOUTH to _c1's direction
+	*/
+	ROAD_DIRECTION current = roadDirection[_c1];
+
+	if (_c1.first < _c2.first)
+		// _c1 is to the left of _c2, add WEST to _c1's direction
+	{
+		roadDirection[_c1] = static_cast<ROAD_DIRECTION>(current | ROAD_DIRECTION::WEST);
+		roadDirection[_c2] = static_cast<ROAD_DIRECTION>(roadDirection[_c2] | ROAD_DIRECTION::EAST);
+	}
+	else if (_c1.first > _c2.first)
+	{
+		// _c1 is to the right of _c2, add EAST to _c1's direction
+		roadDirection[_c1] = static_cast<ROAD_DIRECTION>(current | ROAD_DIRECTION::EAST);
+		roadDirection[_c2] = static_cast<ROAD_DIRECTION>(roadDirection[_c2] | ROAD_DIRECTION::WEST);
+	}
+	else if (_c1.second < _c2.second)
+	{
+		// _c1 is to the bottom of _c2, add SOUTH to _c1's direction
+		roadDirection[_c1] = static_cast<ROAD_DIRECTION>(current | ROAD_DIRECTION::SOUTH);
+		roadDirection[_c2] = static_cast<ROAD_DIRECTION>(roadDirection[_c2] | ROAD_DIRECTION::NORTH);
+	}
+	else if (_c1.second > _c2.second)
+	{
+		// _c1 is to the top of _c2, add NORTH to _c1's direction
+		roadDirection[_c1] = static_cast<ROAD_DIRECTION>(current | ROAD_DIRECTION::NORTH);
+		roadDirection[_c2] = static_cast<ROAD_DIRECTION>(roadDirection[_c2] | ROAD_DIRECTION::SOUTH);
+	}
 }
 
 // Helper function to count how many of a cell's 4 cardinal neighbors are roads.
