@@ -2,7 +2,7 @@
 #include <ECS_Core/Core.hpp>
 #include "../glheaders.hpp"
 
-class VertexAttribComponent:public Component
+struct VertexAttribPointer
 {
 
 	public:

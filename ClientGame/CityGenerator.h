@@ -21,6 +21,7 @@ private:
 	lua_State* mlua_State;
 	float city_to_world_resolution;
 	std::vector<Entity*> city;
+
 	int city_x;
 	int city_y;
 	std::map<std::pair<int, int>,int> cityStatus;
@@ -28,7 +29,7 @@ private:
 	std::map<std::pair<int, int>, int> roadType;
 
 
-	void GenerateRoad(int i,int j);
+	void GenerateRoad(int i,int j, DREAM::VerticesComponent<float>* _verticesComponent);
 	std::pair<int,int> FindNearestRoad(std::pair<int, int> _roadCoord, std::vector< std::pair<int, int>>_blockList);
 	std::pair<int, int> MoveTowardsCoord(std::pair<int, int> _currentRoad, std::pair<int, int> _targetRoad);
 	std::pair<int, int> FindAjdacentUnoccupied(std::pair<int, int> _currentRoad);

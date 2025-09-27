@@ -2,6 +2,9 @@
 #include <ECS_Core/Core.hpp>
 #include "PositionComponent.hpp"
 #include "Colors.h"
+#include <Component/VertexAttribComponent.hpp>
+
+
 
 namespace DREAM
 {
@@ -11,6 +14,8 @@ namespace DREAM
     public:
         std::vector<PositionComponent<T>> vertices;
         std::vector<COLOR>vertices_color;
+
+        std::vector<VertexAttribPointer*> vertexAttributePointers;
     };
 
 }

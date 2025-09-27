@@ -1,20 +1,31 @@
 #include "../include/VertexAttribPointerGenerator.hpp"
 
-VertexAttribComponent* VertexAttribPointerGenerator::generateVertexAttribPoinnter(STYLE _style)
+VertexAttribPointer* VertexAttribPointerGenerator::generateVertexAttribPoinnter(STYLE _style)
 {
-    VertexAttribComponent* vap =  new VertexAttribComponent();
+    VertexAttribPointer* vap =  new VertexAttribPointer();
     switch (_style)
     {
-    case STYLE::DEFAULT:
+    case STYLE::VERTEX:
  
         vap->shader_layout_index = 0;
         vap->count = 3;
         vap->type = GL_FLOAT;
         vap->normalized = GL_FALSE;
-        vap->stride = 3*sizeof(GL_FLOAT);
+        vap->stride = 7*sizeof(GL_FLOAT);
         vap->ptr = (void*)0;
 
         break;
+    case STYLE::COLOR:
+
+        vap->shader_layout_index = 1;
+        vap->count = 4;
+        vap->type = GL_FLOAT;
+        vap->normalized = GL_FALSE;
+        vap->stride = 7 * sizeof(GL_FLOAT);
+        vap->ptr = (void*)(3*sizeof(GL_FLOAT)) ;
+
+        break;
+
     
     default:
         break;

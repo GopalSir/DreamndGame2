@@ -42,10 +42,10 @@ namespace DREAM
             int tempVAO = tempEntities->getComponent<DrawableComponent>()->VAO;
             PhysicsComponent* physicsComponent = tempEntities->getComponent<PhysicsComponent>();
 
-            COLOR tempColor = tempEntities->getComponent<DrawableComponent>()->color;
+            
 
             int verticesCount = tempEntities->getComponent<VerticesComponent<float>>()->vertices.size();
-            glEnableVertexAttribArray(0);
+            //glEnableVertexAttribArray(0);
             glBindBuffer(GL_ARRAY_BUFFER, tempVBO);
             glBindVertexArray(tempVAO);
 
@@ -63,7 +63,7 @@ namespace DREAM
             }
             Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix,model_matrix);
             shader->setUniform("mvp", tempMVP);
-            shader->setUniform("color", tempColor.r, tempColor.g, tempColor.b, tempColor.a);
+            
 
            // Logging MVP
      /*       std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";
@@ -126,32 +126,55 @@ namespace DREAM
         float* vertexBuffer = new float[VERTEX_BUFFER_SIZE];
 
         int position = 0;
+        int index = 0;
 
-        for (PositionComponent<float> p : verticesComponent->vertices)
+        //for (PositionComponent<float> p : verticesComponent->vertices)
+        //{
+        //    vertexBuffer[position++] = p.x;
+        //    vertexBuffer[position++] = p.y;
+        //    vertexBuffer[position++] = p.z;
+
+        //    
+
+        //}
+
+
+        for (int index = 0; index < verticesComponent->vertices.size(); ++index)
         {
-            vertexBuffer[position++] = p.x;
-            vertexBuffer[position++] = p.y;
-            vertexBuffer[position++] = p.z;
+            vertexBuffer[position++] = verticesComponent->vertices[index].x;
+            vertexBuffer[position++] = verticesComponent->vertices[index].y;
+            vertexBuffer[position++] = verticesComponent->vertices[index].z;
 
-            
+            vertexBuffer[position++] = verticesComponent->vertices_color[index].r;
+            vertexBuffer[position++] = verticesComponent->vertices_color[index].g;
+            vertexBuffer[position++] = verticesComponent->vertices_color[index].b;
+            vertexBuffer[position++] = verticesComponent->vertices_color[index].a;
+
 
         }
-
-
-        VertexAttribComponent* vtb = entities[_index]->getComponent<VertexAttribComponent>();
 
 
         glBindVertexArray(tempVAO);
         glBindBuffer(GL_ARRAY_BUFFER, tempVBO);
         glBufferData(GL_ARRAY_BUFFER, VERTEX_BUFFER_SIZE * sizeof(float), vertexBuffer, GL_STATIC_DRAW);
-        glVertexAttribPointer(
-            vtb->shader_layout_index,
-            vtb->count,
-            vtb->type,
-            vtb->normalized,
-            vtb->stride,
-            vtb->ptr
-        );
+
+        for (auto* vatp : verticesComponent->vertexAttributePointers)
+        {
+          
+            glVertexAttribPointer(
+                vatp->shader_layout_index,
+                vatp->count,
+                vatp->type,
+                vatp->normalized,
+                vatp->stride,
+                vatp->ptr
+            );
+
+            glEnableVertexAttribArray(vatp->shader_layout_index);
+        }
+
+
+
         //  glBindVertexArray(0);
         //  glBindBuffer(GL_ARRAY_BUFFER,0);
 

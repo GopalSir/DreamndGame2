@@ -6,8 +6,9 @@ class VertexAttribPointerGenerator
     public:
     enum STYLE
     {
-        DEFAULT
+        VERTEX,
+        COLOR
     };
 
-    static VertexAttribComponent* generateVertexAttribPoinnter(STYLE _style);
+    static VertexAttribPointer* generateVertexAttribPoinnter(STYLE _style);
 };

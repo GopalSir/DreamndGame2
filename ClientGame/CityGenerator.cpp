@@ -114,7 +114,7 @@ CityGenerator::CityGenerator()
 			if (rand01() < mgenerationProbability)
 			{
 				//std::cout << "Generating City block" << i << " " << j << "\n";
-				GenerateRoad(i, j);
+				/*GenerateRoad(i, j);*/
 				auto pair = std::make_pair(i, j);
 				cityStatus[pair] = 1;
 			}
@@ -155,13 +155,13 @@ CityGenerator::CityGenerator()
 				
 			}
 
-			if (newRoadCoord.first > city_x || newRoadCoord.first < 0 || newRoadCoord.second > city_y || newRoadCoord.second < 0)
+			if (newRoadCoord.first > city_x_blockCount || newRoadCoord.first < 0 || newRoadCoord.second > city_y_blockCount || newRoadCoord.second < 0)
 			{
 				continue;
 			}
 
 
-			GenerateRoad(newRoadCoord.first, newRoadCoord.second);
+			//GenerateRoad(newRoadCoord.first, newRoadCoord.second);
 			cityStatus[newRoadCoord] = true;
 
 			newRoads2.push_back(newRoadCoord);
@@ -169,25 +169,46 @@ CityGenerator::CityGenerator()
 		newRoads = newRoads2;
 	}
 
+	//Generate all Vertices at once. 
+	DREAM::VerticesComponent<float>* myVC = new DREAM::VerticesComponent<float>();
+
+	for (auto p : cityStatus)
+	{
+		if (p.second == true)
+		{
+			GenerateRoad(p.first.first, p.first.second,myVC);
+		}
+	}
+	
+	std::cout << "Size of cities vertices: " << myVC->vertices.size();
+
+	Entity* roads = Shape::GetRectangleShape(*myVC);
+
+	city.push_back(roads);
+
+
 
 
 }
 
 
 
-void CityGenerator::GenerateRoad(int i, int j)
+void CityGenerator::GenerateRoad(int i, int j, DREAM::VerticesComponent<float>* _vc)
 {
-	DREAM::VerticesComponent<float> vc;
-	vc.vertices.push_back(PositionComponent<float>((i* city_to_world_resolution), j* city_to_world_resolution, 0));
-	vc.vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution+ city_to_world_resolution, 0));
-	vc.vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution+ city_to_world_resolution, 0));
-	vc.vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution, 0));
-
-	Entity* roadBlock = Shape::GetRectangleShape(vc);
-
-	roadBlock->getComponent<DrawableComponent>()->color = COLOR(0, 100, 42,1.0f);
 	
-	city.push_back(roadBlock);
+	_vc->vertices.push_back(PositionComponent<float>((i* city_to_world_resolution), j* city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(COLOR(1, 1, 0, 1));
+	
+	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution), j * city_to_world_resolution+ city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(COLOR(1, 0, 0, 1));
+
+	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution+ city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(COLOR(1, 1, 0, 1));
+
+	_vc->vertices.push_back(PositionComponent<float>((i * city_to_world_resolution) + city_to_world_resolution, j * city_to_world_resolution, 0));
+	_vc->vertices_color.push_back(COLOR(0, 1, 0, 1));
+	
+	
 }
 
 std::pair<int,int> CityGenerator::FindNearestRoad(std::pair<int, int> _roadCoord, std::vector< std::pair<int, int>>_blockList)
@@ -219,7 +240,7 @@ std::pair<int, int> CityGenerator::MoveTowardsCoord(std::pair<int, int> _current
 	std::pair<int, int> result;
 
 
-	if (abs(_currentRoad.first - _targetRoad.first) >= (_currentRoad.second - _targetRoad.second))
+	if (abs(_currentRoad.first - _targetRoad.first) > abs(_currentRoad.second - _targetRoad.second))
 	{
 		if ((_currentRoad.first - _targetRoad.first) < 0) // Target is to the right
 		{

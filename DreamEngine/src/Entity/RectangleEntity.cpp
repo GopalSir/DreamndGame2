@@ -23,11 +23,11 @@ RectangleEntity::RectangleEntity(float _x, float _y, float _length,float _breadt
     
     this->addComponent(vc);
 
-    VertexAttribComponent* rectangleVertexAttribComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(
-        VertexAttribPointerGenerator::STYLE::DEFAULT);
+    //VertexAttribComponent* rectangleVertexAttribComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(
+    //    VertexAttribPointerGenerator::STYLE::DEFAULT);
 
 
-    this->addComponent(rectangleVertexAttribComponent);
+    //this->addComponent(rectangleVertexAttribComponent);
     //this->addComponent(new DrawableComponent());
     
 };
