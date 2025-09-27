@@ -99,6 +99,9 @@ CityGenerator::CityGenerator()
 	int city_x_blockCount = (float)city_x / city_to_world_resolution;
 	int city_y_blockCount = (float)city_y / city_to_world_resolution;
 
+	std::cout << "DEBUG: Grid size is " << city_x_blockCount << " wide by " << city_y_blockCount << " tall." << std::endl;
+
+
 	int num_road_seed = 2;
 	
 	if (num_road_seed > 100)
@@ -155,7 +158,7 @@ CityGenerator::CityGenerator()
 				
 			}
 
-			if (newRoadCoord.first > city_x_blockCount || newRoadCoord.first < 0 || newRoadCoord.second > city_y_blockCount || newRoadCoord.second < 0)
+			if (newRoadCoord.first >= city_x_blockCount || newRoadCoord.first < 0 || newRoadCoord.second >= city_y_blockCount || newRoadCoord.second < 0)
 			{
 				continue;
 			}
@@ -184,11 +187,46 @@ CityGenerator::CityGenerator()
 
 	Entity* roads = Shape::GetRectangleShape(*myVC);
 
+	
+
+		
+
 	city.push_back(roads);
+	//DrawBounds();
+
+	for (auto p : cityStatus)
+	{
+		if (p.first.second > city_y_blockCount)
+		{
+			std::cout << "Overflow";
+		}
+	}
+	
 
 
+}
 
 
+void CityGenerator::DrawBounds()
+{
+	
+
+	DREAM::VerticesComponent<float>* myVC = new DREAM::VerticesComponent<float>();
+
+	myVC->vertices.push_back(PositionComponent<float>(0, 0, 0));
+	myVC->vertices_color.push_back(COLOR(1, 1, 1, 1));
+
+	myVC->vertices.push_back(PositionComponent<float>(0, 500, 0));
+	myVC->vertices_color.push_back(COLOR(1, 1, 1, 1));
+
+	myVC->vertices.push_back(PositionComponent<float>(500, 500, 0));
+	myVC->vertices_color.push_back(COLOR(1, 1, 1, 1));
+
+	myVC->vertices.push_back(PositionComponent<float>(500, 0, 0));
+	myVC->vertices_color.push_back(COLOR(1, 1, 1, 1));
+
+	Entity* a = Shape::GetRectangleShape(*myVC);
+	city.push_back(a);
 }
 
 
@@ -240,7 +278,7 @@ std::pair<int, int> CityGenerator::MoveTowardsCoord(std::pair<int, int> _current
 	std::pair<int, int> result;
 
 
-	if (abs(_currentRoad.first - _targetRoad.first) > abs(_currentRoad.second - _targetRoad.second))
+	if ((_currentRoad.first - _targetRoad.first) >= (_currentRoad.second - _targetRoad.second))
 	{
 		if ((_currentRoad.first - _targetRoad.first) < 0) // Target is to the right
 		{

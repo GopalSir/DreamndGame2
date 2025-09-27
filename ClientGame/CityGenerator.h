@@ -37,6 +37,7 @@ private:
 	int ManhattanDistance(std::pair<int, int> _c1, std::pair<int, int> _c2);
 	float EuclideanDistance(std::pair<int, int> _c1, std::pair<int, int> _c2);
 	void FillTriangleBetweenBlock(std::pair<int, int> _c1, std::pair<int, int> _c2);
+	void DrawBounds();
 
 	int mIterationCount;
 	float mgenerationProbability;

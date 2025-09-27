@@ -201,8 +201,9 @@ Entity* Shape::GetRectangleShape(DREAM::VerticesComponent<float>& _verticesCompo
 	VertexAttribPointer* vertexAttributePositionPOinter = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::VERTEX);
 	VertexAttribPointer* vertexAttributeColorPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::COLOR);
 	
-	for (int i = 0; i < _verticesComponent.vertices.size() / 4; i += 4)
+	for (int i = 0; i < _verticesComponent.vertices.size(); i += 4)
 	{
+			//1st triangle
 		verticesComponent->vertices.push_back(_verticesComponent.vertices[i + 0]);
 		verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[i+ 0]);
 
@@ -225,7 +226,7 @@ Entity* Shape::GetRectangleShape(DREAM::VerticesComponent<float>& _verticesCompo
 		verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[i + 3]);
 	}
 
-	//1st triangle
+
 
 	//Setting vertex attribute position and vertex attribute color information 
 
