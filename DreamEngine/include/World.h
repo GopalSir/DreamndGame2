@@ -7,12 +7,12 @@
 namespace DREAM {
 	class World
 	{
-	private:
-		const RenderSystem* renderSystem;
-		const PhysicsSystem* physicsSystem;
-		const CameraSystem* cameraSystem;
-
 	public:
+		 RenderSystem* renderSystem;
+		PhysicsSystem* physicsSystem;
+		 CameraSystem* cameraSystem;
+
+	
 		World(RenderSystem* _renderSystem, PhysicsSystem* _physicsSystem, CameraSystem* _cameraSystem)
 		{
 			renderSystem = _renderSystem;

@@ -113,6 +113,7 @@ namespace DREAM
 
     void MyApplication::addGameSystem(System* _system)
     {
+        _system->setWorld(world);
         gameSystems.push_back(_system);
     }
 

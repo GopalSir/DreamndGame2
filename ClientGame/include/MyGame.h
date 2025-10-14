@@ -6,7 +6,7 @@
 #include "../include/Component/CameraControllerComponent.h"
 #include "ShapeCreator.hpp"
 #include "../include/System/CrappyBirdSystem.h"
-#include "../CityGenerator.h"
+#include "../CitySystem.h"
 
 class MyGame : public DREAM::MyApplication
 {
@@ -17,7 +17,6 @@ public:
 
 	//void run() override;
 
-	Entity* GenerateBird();
 	
 
 

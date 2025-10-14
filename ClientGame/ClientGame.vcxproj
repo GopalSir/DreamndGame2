@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CityGenerator.h" />
+    <ClInclude Include="CitySystem.h" />
     <ClInclude Include="include\Component\CrappyBirdComponent.h" />
     <ClInclude Include="Header Files\CameraControllerComponent.h" />
     <ClInclude Include="Header Files\ThrusterComponenet.hpp" />
@@ -32,6 +33,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CityGenerator.cpp" />
+    <ClCompile Include="CitySystem.cpp" />
     <ClCompile Include="src\Component\CrappyBirdComponent.cpp" />
     <ClCompile Include="src\Component\CameraControllerComponent.cpp" />
     <ClCompile Include="src\Component\CrappyCameraControlelr.cpp" />

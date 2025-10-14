@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <map>
 #include <Lua/include/lua.hpp>
+#include <IEventHandler.hpp>
 
 enum CITY_BLOCK
 {
@@ -34,7 +35,7 @@ enum ROAD_DIRECTION
 	NORTH_WEST=128
 };
 
-class CityGenerator
+class CityGenerator 
 {
 private:
 	// This will decide how many meters of each city block map to. to multiply distances by this ig. not sure
@@ -66,11 +67,13 @@ private:
 	int mIterationCount;
 	float mgenerationProbability;
 	float road_strip_width_percentage;
+	COLOR roadColor;
+	COLOR initialRoadColor;
+	COLOR striPColor;
 
 public:
-	std::vector<Entity*> GetCity();
+	Entity* GetCity();
 	CityGenerator();
-
 
 };
 

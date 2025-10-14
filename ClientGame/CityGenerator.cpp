@@ -9,10 +9,103 @@ double rand01() {
 }
 
 
-std::vector<Entity*> CityGenerator::GetCity()
+Entity* CityGenerator::GetCity()
 {
+	static int counter = 0;
 
-	return city;
+	
+	
+
+	int city_x_blockCount = (float)city_x / city_to_world_resolution;
+	int city_y_blockCount = (float)city_y / city_to_world_resolution;
+
+	std::cout << "DEBUG: Grid size is " << city_x_blockCount << " wide by " << city_y_blockCount << " tall." << std::endl;
+
+
+	static std::vector<std::pair<int, int>> newRoads;
+
+	std::vector<std::pair<int, int>>  newRoads2, newRoads2_copy;
+
+	if (counter == 0)
+	{
+		for (auto kv : cityStatus)
+		{
+			newRoads.push_back(kv.first);
+		}
+	}
+
+	newRoads2.clear();
+
+	DREAM::VerticesComponent<float>* myVC = new DREAM::VerticesComponent<float>();
+	
+
+
+		newRoads2.clear();
+		//Traverse existing roads, find the closest road coordinate and add a new road towards it. ( using simple vector addition)
+		for (auto kv : newRoads)
+		{
+			//this loop only runs on coordinates which are roads. 
+
+			auto nearestCoord = FindNearestRoad(kv, newRoads);
+			auto newRoadCoord = MoveTowardsCoord(kv, nearestCoord);
+
+			/*
+			Sanity checks for newRoadCoord
+			*/
+
+			//Getting placed on an already placed block 
+			if (cityStatus[newRoadCoord] == true)
+			{
+				//This means kv and newCoord need to connect, before newCoord is changed to a unoccupied cell
+				FixDirections(kv, newRoadCoord);
+
+				newRoadCoord = FindAjdacentUnoccupied(newRoadCoord);
+
+			}
+
+			if (newRoadCoord.first >= city_x_blockCount || newRoadCoord.first < 0 || newRoadCoord.second >= city_y_blockCount || newRoadCoord.second < 0)
+			{
+				continue;
+			}
+
+			FixDirections(kv, newRoadCoord);
+			//GenerateRoad(newRoadCoord.first, newRoadCoord.second);
+			cityStatus[newRoadCoord] = true;
+			GenerateRoad(newRoadCoord.first, newRoadCoord.second, myVC, COLOR(0, 0, 0, 1));
+			//std::cout <<  roadDirection[newRoadCoord];
+
+			newRoads2.push_back(newRoadCoord);
+		}
+		newRoads = newRoads2;
+	
+
+	//Generate all Vertices at once. 
+	
+
+
+
+	/*for (auto p : cityStatus)
+	{
+		if (p.second == true)
+		{
+			if (initialBlocks[std::make_pair(p.first.first, p.first.second)] == true)
+			{
+				GenerateRoad(p.first.first, p.first.second, myVC, COLOR(0, 1, 0, 1));
+			}
+			else
+			{
+				GenerateRoad(p.first.first, p.first.second, myVC, COLOR(0, 0, 0, 1));
+			}
+		}
+	}*/
+
+	std::cout << "Size of cities vertices: " << myVC->vertices.size();
+
+	Entity* roads = Shape::GetRectangleShape(*myVC);
+
+	counter++;
+
+	return roads;
 
 }
 
@@ -97,12 +190,6 @@ CityGenerator::CityGenerator()
 
 	std::cout << city_to_world_resolution;
 
-
-
-	//city_to_world_resolution = 1;
-	//city_x = 500;
-	//city_y = 500;
-
 	int city_x_blockCount = (float)city_x / city_to_world_resolution;
 	int city_y_blockCount = (float)city_y / city_to_world_resolution;
 
@@ -110,16 +197,16 @@ CityGenerator::CityGenerator()
 
 
 	int num_road_seed = 2;
-	
+
 	if (num_road_seed > 100)
 	{
 		num_road_seed = 100;
 	}
 
-	// Draw all brown square for bird initially
+	// //Draw all brown square for bird initially
 	for (int i = 0; i < city_x_blockCount; ++i)
 	{
-		for (int j = 0; j< city_y_blockCount; ++j)
+		for (int j = 0; j < city_y_blockCount; ++j)
 		{
 			if (rand01() < mgenerationProbability)
 			{
@@ -130,99 +217,13 @@ CityGenerator::CityGenerator()
 				roadDirection[pair] = ROAD_DIRECTION::EAST;
 				initialBlocks[pair] = true;
 			}
-			
+
 		}
 	}
-
-
-	//Painting initial blocks with Yellow
-	
-
-
-	std::vector<std::pair<int, int>> newRoads, newRoads2, newRoads2_copy;
-	for (auto kv : cityStatus)
-	{
-		newRoads.push_back(kv.first);
-	}
-
-	newRoads2.clear();
-
-	for (int k = 0; k < mIterationCount; ++k)
-	{
-		
-
-		newRoads2.clear();
-		//Traverse existing roads, find the closest road coordinate and add a new road towards it. ( using simple vector addition)
-		for (auto kv : newRoads)
-		{
-			//this loop only runs on coordinates which are roads. 
-
-			auto nearestCoord = FindNearestRoad(kv, newRoads);
-			auto newRoadCoord = MoveTowardsCoord(kv,nearestCoord);
-
-			/*
-			Sanity checks for newRoadCoord
-			*/
-
-			//Getting placed on an already placed block 
-			if (cityStatus[newRoadCoord] == true)
-			{
-				
-				newRoadCoord = FindAjdacentUnoccupied(newRoadCoord);
-				
-			}
-
-			if (newRoadCoord.first >= city_x_blockCount || newRoadCoord.first < 0 || newRoadCoord.second >= city_y_blockCount || newRoadCoord.second < 0)
-			{
-				continue;
-			}
-
-			FixDirections(kv, newRoadCoord);
-			//GenerateRoad(newRoadCoord.first, newRoadCoord.second);
-			cityStatus[newRoadCoord] = true;
-			//std::cout <<  roadDirection[newRoadCoord];
-
-			newRoads2.push_back(newRoadCoord);
-		}
-		newRoads = newRoads2;
-	}
-
-	//Generate all Vertices at once. 
-	DREAM::VerticesComponent<float>* myVC = new DREAM::VerticesComponent<float>();
-
-	
-
-	for (auto p : cityStatus)
-	{
-		if (p.second == true )
-		{
-			if (initialBlocks[std::make_pair(p.first.first, p.first.second)] == true)
-			{
-				GenerateRoad(p.first.first, p.first.second, myVC, COLOR(0, 1, 0, 1));
-			}
-			else
-			{
-				GenerateRoad(p.first.first, p.first.second, myVC, COLOR(0, 0, 0, 1));
-			}
-		}
-	}
-	
-	std::cout << "Size of cities vertices: " << myVC->vertices.size();
-
-	Entity* roads = Shape::GetRectangleShape(*myVC);
-
-	
-
-			
-
-	city.push_back(roads);
-	//DrawBounds();
-
-
-	
 
 
 }
+
 
 
 void CityGenerator::DrawBounds()
@@ -457,8 +458,8 @@ std::pair<int, int> CityGenerator::FindAjdacentUnoccupied(std::pair<int, int> _c
 {
 	// Define the master list of offsets as a constant.
 	static const std::vector<std::pair<int, int>> eight_direction_offsets = {
-		{ 0,  1}, { 1,  1}, { 1,  0}, { 1, -1},
-		{ 0, -1}, {-1, -1}, {-1,  0}, {-1,  1}
+		{ 0,  1},  { 1,  0}, 
+		{ 0, -1}, {-1,  0}, 
 	};
 
 	// 1. Create a temporary, non-const copy that we can shuffle.

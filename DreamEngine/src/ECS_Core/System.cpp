@@ -19,3 +19,14 @@ Entity* System::getEntity(int _index)
         return entities[_index];
     }
 };
+
+System::~System()
+{
+    std::cout << "Calling Base Destructor";
+    //When a system is destroyed, it needs to destroy all entities it was pointing too. 
+    for (auto* tmpEntity : entities)
+    {
+        delete tmpEntity;
+    }
+
+}

@@ -26,6 +26,8 @@ namespace DREAM
         Mat4<float> CalculateMVP(Mat4<float>& _projection, Mat4<float>& _view, Mat4<float>& _model);
         bool initEntityBuffers(int _index);
 		void SetActiveCamera(CameraComponent* _cameraComoponent) { activeCameraComponent = _cameraComoponent; };
+        void disableEntity(int _index);
+        void deleteEntity(int _index);
 
         static Vec4<float> ScreenToWorldCoordinate(Vec4<float> _screenCoord, CameraComponent* _cameraComponent);
         static Vec4<float> ScreenToNDC(Vec4<float> _screenCoord);

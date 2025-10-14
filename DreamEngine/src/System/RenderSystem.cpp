@@ -185,6 +185,16 @@ namespace DREAM
         // delete vertexBuffer;
         return true;
     }
+    void RenderSystem::disableEntity(int _index)
+    {
+        Entity* tempEntity = entities[_index];
+        
+        Entity::disableEntity(tempEntity);
+    }
+    void RenderSystem::deleteEntity(int _index)
+    {
+        delete entities[_index];
+    }
     Vec4<float> RenderSystem::ScreenToWorldCoordinate(Vec4<float> _screenCoord, CameraComponent* _cameraComponent)
     {
         //First we will convert screen coords to NDC, for that we need viewport coords too.

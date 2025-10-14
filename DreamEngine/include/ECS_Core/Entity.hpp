@@ -30,7 +30,19 @@ class Entity
 			component->doPostConstruct();
 		}
     }
-    virtual ~Entity(){};
+    virtual ~Entity(){
+       
+        for (auto* cp : components)
+            delete cp;
+    };
+
+    static void disableEntity(Entity* _entity)
+    {
+        for (auto* cp : _entity->components)
+        {
+            
+        }
+    }
 };
 
 
