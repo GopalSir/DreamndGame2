@@ -14,8 +14,12 @@ void CitySystem::update()
 
 int CitySystem::handleEvent(DREAM::EventInfo* _eventInfo)
 {
+	static int done = false;
+
 	if (_eventInfo->getEventTypeCode() == DREAM::MouseClickEvent::GetEventTypeCode())
 	{
+		
+		
 		DREAM::MouseClickEvent* mc = dynamic_cast<DREAM::MouseClickEvent*>(_eventInfo);
 
 		if (mc->action == GLFW_RELEASE)
@@ -23,11 +27,12 @@ int CitySystem::handleEvent(DREAM::EventInfo* _eventInfo)
 			return 0;
 		}
 
-		Entity* tempEntity = mCityGenerator->GetCity();
-		int tempint = world->renderSystem->addEntity(tempEntity);
-		world->renderSystem->initEntityBuffers(tempint);
+			Entity* tempEntity = mCityGenerator->GetCity();
+			int tempint = world->renderSystem->addEntity(tempEntity);
+			world->renderSystem->initEntityBuffers(tempint);
 		
 
+		done = true;
 	}
 	std::cout << "Recieved mouseclick in CitySystem";
 

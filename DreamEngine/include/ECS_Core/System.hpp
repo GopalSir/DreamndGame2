@@ -15,7 +15,7 @@ protected:
      DREAM::World*  world;
 
      //Called automatically from inside of //addEntity() function
-     virtual void onEntityAddition(Entity* );
+     virtual void onEntityAddition(Entity*) {};
 
     public:
     /*adds the entity to "entities" vector and then

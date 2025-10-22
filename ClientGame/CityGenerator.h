@@ -53,6 +53,7 @@ private:
 
 
 	void GenerateRoad(int i,int j, DREAM::VerticesComponent<float>* _verticesComponent,COLOR _color);
+	void GenerateStrip(int i, int j, DREAM::VerticesComponent<float>* _vc, COLOR _color, ROAD_DIRECTION _oldRD);
 	std::pair<int,int> FindNearestRoad(std::pair<int, int> _roadCoord, std::vector< std::pair<int, int>>_blockList);
 	std::pair<int, int> MoveTowardsCoord(std::pair<int, int> _currentRoad, std::pair<int, int> _targetRoad);
 	std::pair<int, int> FindAjdacentUnoccupied(std::pair<int, int> _currentRoad);
