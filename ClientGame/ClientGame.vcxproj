@@ -19,9 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CityGenerator.h" />
-    <ClInclude Include="CitySystem.h" />
-    <ClInclude Include="include\Component\CrappyBirdComponent.h" />
     <ClInclude Include="Header Files\CameraControllerComponent.h" />
     <ClInclude Include="Header Files\ThrusterComponenet.hpp" />
     <ClInclude Include="include\Component\CameraControllerComponent.h" />
@@ -32,11 +29,7 @@
     <ClInclude Include="include\System\CrappyBirdSystem.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CityGenerator.cpp" />
-    <ClCompile Include="CitySystem.cpp" />
-    <ClCompile Include="src\Component\CrappyBirdComponent.cpp" />
     <ClCompile Include="src\Component\CameraControllerComponent.cpp" />
-    <ClCompile Include="src\Component\CrappyCameraControlelr.cpp" />
     <ClCompile Include="src\Component\ThrusterComponen.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MyGame.cpp" />

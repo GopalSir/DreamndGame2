@@ -38,27 +38,6 @@ MyGame::MyGame()
 		//Custom Shape drawing begins here
 		_shapeCreator = new ShapeCreator(basicCamera->getComponent<PhysicsComponent>(),GetRenderSystem(),basicCamera->getComponent<DREAM::CameraComponent>());
 
-		//DREAM::EventSystem::registerEvent(DREAM::MouseClickEvent::GetEventTypeCode(), _shapeCreator);
-		//DREAM::EventSystem::registerEvent(DREAM::KeyPressEvent::GetEventTypeCode(), _shapeCreator);
-
-
-		
-		/*CityGenerator* cg = new CityGenerator();
-
-		std::vector<Entity*> city = cg->GetCity();
-
-		for (auto* tempEntity : city)
-		{
-			int tempIndex = GetRenderSystem()->addEntity(tempEntity);
-			GetRenderSystem()->initEntityBuffers(tempIndex);
-
-		}*/
-
-		CitySystem* citySystem = new CitySystem();
-		EventSystem::registerEvent(DREAM::MouseClickEvent::GetEventTypeCode(), citySystem);
-
-		addGameSystem(citySystem);
-
 }
 
 
