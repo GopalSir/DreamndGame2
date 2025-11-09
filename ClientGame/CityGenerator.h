@@ -35,6 +35,32 @@ enum ROAD_DIRECTION
 	NORTH_WEST=128
 };
 
+struct RoadAgent
+{
+	Vec2<float> position;
+	Vec2<float> velocity;
+
+	int age;
+	bool alive;
+
+	//Train tracking: stored cells this agent walked through
+	std::vector<std::pair<int, int>> trail;
+
+	RoadAgent(float _x, float _y, float _vx, float _vy)
+	{
+		position.x = _x;
+		position.y = _y;
+
+		velocity.x = _vx;
+		velocity.y = _vy;
+
+		age = 0;
+		
+		alive = true;
+	}
+};
+
+
 class CityGenerator 
 {
 private:
@@ -50,6 +76,22 @@ private:
 
 	std::map<std::pair<int, int>, ROAD_DIRECTION> roadDirection;
 	std::map<std::pair<int, int>, ROAD_TYPE> roadType;
+
+	//Agent-based Generation
+	std::vector<RoadAgent> mAgents;
+	std::map<std::pair<int, int>, float> mTrailStrength;
+
+	//Agent parameters
+	float mAgentMomentum = 0.85f;
+	int mMaxAgentAge = 50;
+	float mSpawnChance = 0.3f;
+	float mTrailAttraction = 0.3f;
+
+	void InitializeAgents();
+	void UpdateAgent(RoadAgent& _agent);
+	void SpawnAgentFromRoad(int x, int y);
+	std::pair<float, float> GetBestDirection(const RoadAgent& _agent);
+	void SolidifyAgentTrail(const RoadAgent& _agent);
 
 
 	void GenerateRoad(int i,int j, DREAM::VerticesComponent<float>* _verticesComponent,COLOR _color);
