@@ -42,9 +42,6 @@
     <ClInclude Include="include\MyGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\System\CrappyBirdSystem.h">
-      <Filter>Header Files\System</Filter>
-    </ClInclude>
     <ClInclude Include="include\MyEvents.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -55,6 +52,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\Component\CrappyCameraControlelr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MountainGenerator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,8 +71,8 @@
     <ClCompile Include="src\Component\ThrusterComponen.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="src\System\CrappyBirdSystem.cpp">
-      <Filter>Source Files\System</Filter>
+    <ClCompile Include="MountainGenerator.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

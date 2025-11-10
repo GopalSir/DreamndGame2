@@ -5,8 +5,7 @@
 #include <Shape.hpp>
 #include "../include/Component/CameraControllerComponent.h"
 #include "ShapeCreator.hpp"
-#include "../include/System/CrappyBirdSystem.h"
-#include "../CitySystem.h"
+#include "../MountainGenerator.h"
 
 class MyGame : public DREAM::MyApplication
 {
