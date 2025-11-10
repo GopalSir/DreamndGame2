@@ -169,9 +169,11 @@
     <ClInclude Include="include\VertexAttribPointerGenerator.hpp" />
     <ClInclude Include="include\System\PhysicsSystem.h" />
     <ClInclude Include="include\World.h" />
+    <ClInclude Include="LUA_API.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="include\Entity\CameraEntity.cpp" />
+    <ClCompile Include="LUA_API.cpp" />
     <ClCompile Include="src\Component\CameraComponent.cpp" />
     <ClCompile Include="src\Component\MVPComponent.cpp" />
     <ClCompile Include="src\Component\PhysicsComponent.cpp" />
