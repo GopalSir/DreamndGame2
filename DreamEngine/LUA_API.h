@@ -2,15 +2,11 @@
 #include <ECS_Core/Core.hpp>
 #include <System/RenderSystem.hpp>
 #include <Shape.hpp>
+#include <Lua/include/lua.h>
 
-extern "C" {
-#include <lua.h>
-#include <lauxlib.h>
-#include <lualib.h>
-}
 
 namespace DREAM {
-    class LUA_API {
+    class MyLuaAPI {
     private:
         static RenderSystem* renderSystem;
 
