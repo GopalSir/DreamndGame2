@@ -24,14 +24,14 @@
     <ClInclude Include="include\Component\CameraControllerComponent.h" />
     <ClInclude Include="include\Component\ThrusterComponenet.hpp" />
     <ClInclude Include="include\Component\CrappyCameraControlelr.h" />
+    <ClInclude Include="include\LuaIntegration.h" />
     <ClInclude Include="include\MyEvents.hpp" />
     <ClInclude Include="include\MyGame.h" />
-    <ClInclude Include="MountainGenerator.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MountainGenerator.cpp" />
     <ClCompile Include="src\Component\CameraControllerComponent.cpp" />
     <ClCompile Include="src\Component\ThrusterComponen.cpp" />
+    <ClCompile Include="src\LuaIntegration.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MyGame.cpp" />
   </ItemGroup>

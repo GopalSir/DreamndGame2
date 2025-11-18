@@ -2,16 +2,21 @@
 
 
 
-Entity* Shape::GetPointShape(float _x, float _y, float _z, COLOR _color)
+Entity* Shape::GetPointShape(DREAM::VerticesComponent<float>& _verticesComponent)
 {
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
-	//VertexAttribComponent* vertexAttributeComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::DEFAULT);
+	*verticesComponent = _verticesComponent;
+	
+	VertexAttribPointer* vertexAttributePositionPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::VERTEX);
+	VertexAttribPointer* vertexAttributeColorPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::COLOR);
+	
+	// Attach vertex attribute pointers
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributePositionPointer);
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributeColorPointer);
+	
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::POINT);
-	drawableComponent->color = _color;
 
 	Entity* result = new Entity();
-
-	verticesComponent->vertices.push_back(PositionComponent<float>(_x, _y, _z));
 
 	result->addComponent(verticesComponent);
 	result->addComponent(drawableComponent);
@@ -24,7 +29,9 @@ Entity* Shape::GetPointShape(float _x, float _y, float _z, COLOR _color)
 Entity* Shape::GetLineShape(float _x1, float _y1, float _z1, float _x2, float _y2, float _z2, COLOR _color)
 {
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
-	//VertexAttribComponent* vertexAttributeComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::DEFAULT);
+	VertexAttribPointer* vertexAttributeComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::VERTEX);
+	VertexAttribPointer* vertexAttributeColorPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::COLOR);
+
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::LINE);
 	drawableComponent->color = _color;
 
@@ -32,6 +39,15 @@ Entity* Shape::GetLineShape(float _x1, float _y1, float _z1, float _x2, float _y
 
 	verticesComponent->vertices.push_back(PositionComponent<float>(_x1, _y1, _z1));
 	verticesComponent->vertices.push_back(PositionComponent<float>(_x2, _y2, _z2));
+
+	verticesComponent->vertices_color.push_back(_color);
+	verticesComponent->vertices_color.push_back(_color);
+
+
+
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributeComponent);
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributeColorPointer);
+
 
 	result->addComponent(verticesComponent);
 	//result->addComponent(vertexAttributeComponent);
@@ -50,6 +66,9 @@ Entity* Shape::GetTriangleShape(DREAM::VerticesComponent<float> &_verticesCompon
 	VertexAttribPointer* vertexAttributeColorPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::COLOR);
 
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::TRIANGLE);
+
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributePositionPOinter);
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributeColorPointer);
 
 	Entity* result = new Entity();
 

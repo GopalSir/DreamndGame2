@@ -54,7 +54,7 @@
     <ClInclude Include="include\Component\CrappyCameraControlelr.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MountainGenerator.h">
+    <ClInclude Include="include\LuaIntegration.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -71,7 +71,7 @@
     <ClCompile Include="src\Component\ThrusterComponen.cpp">
       <Filter>Source Files\Component</Filter>
     </ClCompile>
-    <ClCompile Include="MountainGenerator.cpp">
+    <ClCompile Include="src\LuaIntegration.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

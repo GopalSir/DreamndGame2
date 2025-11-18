@@ -10,19 +10,26 @@ public:
 
     // Constructor: Takes file paths to vertex and fragment shaders
     Shader(const char* vertexPath, const char* fragmentPath);
+    
+    // Constructor: Takes shader source code strings directly
+    static Shader* CreateFromSource(const char* vertexSource, const char* fragmentSource);
 
     // Use this shader program
     void use();
 
     // Utility to set a uniform (example: float value)
     void setUniform(const std::string& name, float value);
+    void setUniform(const std::string& name, float x, float y);
     void setUniform(const std::string& name, float x, float y, float z, float w);
+    void setUniform(const std::string& name, int value);
     void setUniform(const std::string& name, Mat4<float>& _mvp);
 
     // Destructor
     ~Shader();
 
 private:
+    // Private default constructor for CreateFromSource
+    Shader();
     // Read shader source code from file
     std::string readShader(const char* filePath);
 

@@ -55,7 +55,7 @@ namespace DREAM {
 
         COLOR backGroundColor;
         
-
+        void updateSystems();
         void bridgeSystems();
         void completePostConstruct();
 
@@ -75,7 +75,7 @@ namespace DREAM {
         PhysicsSystem* GetPhysicsSystem();
         //EventSystem* GetEventSystem();
 
-        void updateSystems();
+        
         bool getGameState();
         void addGameSystem(System* _system);
         void setGameState(bool _gameState);
@@ -84,7 +84,7 @@ namespace DREAM {
         void     setUpCameraSystem();
         void setupGizmo();
 		void gizmoVisibility(bool _visibility);
-        void setBackGroundColor(COLOR _color);
+        void setBackGroundColor(COLOR &_color);
 
     };
 }

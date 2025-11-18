@@ -2,6 +2,8 @@
 #include "glheaders.hpp"
 #include <Vec3.hpp>
 
+class Entity;
+
 namespace DREAM
 {
     class EventInfo
@@ -88,7 +90,8 @@ namespace DREAM
         static constexpr int localTypeCode = 7;
     public:
         Vec4<float> position;
-        Entity* e1, e2;
+        Entity* e1;
+        Entity* e2;
         CollisionEvent() : EventInfo(localTypeCode) {};
         static int GetEventTypeCode() { return localTypeCode; };
     };

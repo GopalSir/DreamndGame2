@@ -1,7 +1,8 @@
 #define GLEW_NO_GLU
 //#include "../include/System/MyApplication.hpp"
-#include "../include/MyGame.h"
-#include <EntryPoint.hpp>
+#include "../include/LuaIntegration.h"
+
+
 
 
 /*
@@ -9,9 +10,10 @@ Entry point for the application
 */
 int main()
 {
+	LuaIntegration::run();
 
-	auto mygame = CreateApplication();
-	mygame->run();
+	int a;
+	scanf_s("%i", &a);
 
- return 0;
+	return 0;
 }

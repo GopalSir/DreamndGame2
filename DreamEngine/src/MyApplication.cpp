@@ -160,6 +160,7 @@ namespace DREAM
 
     }
 
+
     std::chrono::nanoseconds MyApplication::calculateRequiredFrameTime(int _gameFPS)
     {
         auto result = std::chrono::nanoseconds(1000000000) / _gameFPS;
@@ -334,7 +335,7 @@ namespace DREAM
         
 	}
 
-    void MyApplication::setBackGroundColor(COLOR _color)
+    void MyApplication::setBackGroundColor(COLOR &_color)
     {
         backGroundColor = _color;
     }

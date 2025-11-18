@@ -24,6 +24,28 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath) {
     glDeleteShader(fragmentShader);
 }
 
+Shader* Shader::CreateFromSource(const char* vertexSource, const char* fragmentSource) {
+    Shader* shader = new Shader();  // Use private constructor
+    
+    std::cout << "Shader: Compiling vertex shader from source..." << std::endl;
+    GLuint vertexShader = shader->compileShader(vertexSource, GL_VERTEX_SHADER);
+
+    std::cout << "Shader: Compiling fragment shader from source..." << std::endl;
+    GLuint fragmentShader = shader->compileShader(fragmentSource, GL_FRAGMENT_SHADER);
+
+    std::cout << "Shader: Linking shaders into a program..." << std::endl;
+    shader->programID = shader->linkShaders(vertexShader, fragmentShader);
+
+    // Clean up compiled shader objects
+    glDeleteShader(vertexShader);
+    glDeleteShader(fragmentShader);
+    
+    return shader;
+}
+
+// Private default constructor for CreateFromSource
+Shader::Shader() : programID(0) {}
+
 Shader::~Shader() {
     std::cout << "Shader: Deleting shader program with ID " << programID << std::endl;
     glDeleteProgram(programID);
@@ -36,19 +58,37 @@ void Shader::use() {
 void Shader::setUniform(const std::string& name, float value) {
     GLint location = glGetUniformLocation(programID, name.c_str());
     if (location == -1) {
-        std::cerr << "Warning: Uniform '" << name << "' not found in shader program." << std::endl;
+        // Silently ignore missing uniforms
     } else {
         glUniform1f(location, value);
         
     }
 }
 
+void Shader::setUniform(const std::string& name, float x, float y) {
+    GLint location = glGetUniformLocation(programID, name.c_str());
+    if (location == -1) {
+        // Silently ignore missing uniforms
+    } else {
+        glUniform2f(location, x, y);
+    }
+}
+
 void Shader::setUniform(const std::string& name, float x, float y, float z, float w) {
     GLint location = glGetUniformLocation(programID, name.c_str());
     if (location == -1) {
-        std::cerr << "Warning: Uniform '" << name << "' not found in shader program." << std::endl;
+        // Silently ignore missing uniforms
     } else {
         glUniform4f(location, x, y, z, w);
+    }
+}
+
+void Shader::setUniform(const std::string& name, int value) {
+    GLint location = glGetUniformLocation(programID, name.c_str());
+    if (location == -1) {
+        // Silently ignore missing uniforms
+    } else {
+        glUniform1i(location, value);
     }
 }
 
@@ -78,7 +118,7 @@ void Shader::setUniform(const std::string& name, Mat4<float> &_mvp)
 
     GLint location = glGetUniformLocation(programID, name.c_str());
     if (location == -1) {
-        std::cerr << "Warning: Uniform '" << name << "' not found in shader program." << std::endl;
+        // Silently ignore missing uniforms - shader might not need them
     } else {
         glUniformMatrix4fv(location,1,GL_FALSE,mvparray);
     }

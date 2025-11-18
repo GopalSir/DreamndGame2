@@ -12,7 +12,7 @@ class Shape
 
 public:
 
-	static Entity* GetPointShape(float _x, float _y, float _z, COLOR _color);
+	static Entity* GetPointShape(DREAM::VerticesComponent<float>& _verticesComponent);
 	static Entity* GetTriangleShape(DREAM::VerticesComponent<float> &_verticesComponent);
 	static Entity* GetRectangleShape(DREAM::VerticesComponent<float>& _verticesComponent);
 	//static Entity* GetRectangleShape()

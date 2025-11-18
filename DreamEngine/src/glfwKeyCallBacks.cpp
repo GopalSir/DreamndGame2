@@ -9,8 +9,8 @@ namespace DREAM
         if (action == GLFW_PRESS)
         {
             KeyPressEvent* _tempKeyPressInfo = new KeyPressEvent();
-            //_tempKeyPressInfo->key_code = key;
-            //_tempKeyPressInfo->action = 0; // don't care for now
+            _tempKeyPressInfo->key_code = key;
+            _tempKeyPressInfo->action = action;
 
             
             KeyStates::setState(key, std::pair<bool, bool>(true, false));
@@ -22,8 +22,8 @@ namespace DREAM
             
             {
                 KeyPressEvent* _tempKeyPressInfo = new KeyPressEvent();
-                //_tempKeyPressInfo->key_code = key;
-                //_tempKeyPressInfo->action = 0; // don't care for now
+                _tempKeyPressInfo->key_code = key;
+                _tempKeyPressInfo->action = action;
 
 
                 KeyStates::setState(key, std::pair<bool, bool>(true, true));
@@ -34,8 +34,8 @@ namespace DREAM
         else if (action == GLFW_RELEASE)
         {
             KeyReleaseEvent* _tempKeyReleaseInfo = new KeyReleaseEvent();
-            //_tempKeyReleaseInfo->key_code = key;
-            //_tempKeyReleaseInfo->action = 0; // don't care for now
+            _tempKeyReleaseInfo->key_code = key;
+            _tempKeyReleaseInfo->action = action;
 
             KeyStates::setState(key, std::pair<bool, bool>(false, false));
 
