@@ -2,7 +2,7 @@
 #include <ECS_Core/Core.hpp>
 #include "../glheaders.hpp"
 #include "../Colors.h"
-
+#include "Shader.hpp"
 
 class DrawableComponent: public Component
 {
@@ -10,6 +10,7 @@ class DrawableComponent: public Component
     GLuint VBO;
     GLuint VAO;
 	COLOR color;
+	Shader* shader;
 	
 
 	//Type of the drawable object

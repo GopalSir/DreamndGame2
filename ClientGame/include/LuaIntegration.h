@@ -10,6 +10,8 @@
 #include <Lua/include/lua.hpp>
 
 
+class LuaCallbackSystem;
+
 
 //This class will wrap around the engine, create engine instance
 class LuaIntegration
@@ -17,6 +19,8 @@ class LuaIntegration
 	// Allow event handlers to access private members
 	
 
+
+	static LuaCallbackSystem* lcs;
 	static MyGame* mygame;
 
 	static int Lua_Shape_GetRectangle(lua_State* L);
@@ -27,16 +31,43 @@ class LuaIntegration
 	static int Lua_ClearScene(lua_State* L);
 	//static int Lua_RegisterScrollCallback(lua_State* L);
 
+	static int Lua_Shader_SetShader(lua_State* L);
+	static int Lua_Shader_SetUniform(lua_State* L);
+	
+
 	static int initEngineFromLua(lua_State* L);
 
-	static lua_State* L;
+	
 	//static int lua_scroll_callback_ref;
 	//static LuaScrollEventHandler* scrollEventHandler;
 	
 public:
 	static void run();
+	static lua_State* L;
 	//static void TriggerScrollCallback(double xoffset, double yoffset);
 };
 
 
 
+
+class LuaCallbackSystem : public System
+{
+	void update() override {
+
+		lua_getglobal(LuaIntegration::L, "callbackFunction");
+
+		if (!lua_isfunction(LuaIntegration::L, -1)) {
+			std::cout << "Function " << "callbackFunction" << " not found!" << std::endl;
+			lua_pop(LuaIntegration::L, 1);  // Clean stack
+			return;
+		}
+
+		// Call function (2 arguments, 1 return value)
+		if (lua_pcall(LuaIntegration::L, 0, 0, 0) != LUA_OK) {
+			std::cout << "Error calling function: " << lua_tostring(LuaIntegration::L, -1) << std::endl;
+			lua_pop(LuaIntegration::L, 1);  // Pop error message
+			return;
+		}
+
+	};
+};

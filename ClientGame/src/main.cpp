@@ -12,8 +12,8 @@ int main()
 {
 	LuaIntegration::run();
 
-	int a;
-	scanf_s("%i", &a);
+	//int a;
+	//scanf_s("%i", &a);
 
 	return 0;
 }

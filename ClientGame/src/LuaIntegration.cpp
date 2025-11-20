@@ -5,6 +5,8 @@
 
 MyGame* LuaIntegration::mygame;
 lua_State* LuaIntegration::L;
+LuaCallbackSystem*  LuaIntegration::lcs;
+
 //int LuaIntegration::lua_scroll_callback_ref = LUA_NOREF;
 //LuaScrollEventHandler* LuaIntegration::scrollEventHandler = nullptr;
 
@@ -23,6 +25,9 @@ lua_State* LuaIntegration::L;
 void LuaIntegration::run()
 {
 	mygame = new MyGame();
+	
+	lcs = new LuaCallbackSystem();
+	mygame->addGameSystem(lcs);
 
 	// Register scroll event handler for Lua callbacks
 	//scrollEventHandler = new LuaScrollEventHandler();
@@ -62,7 +67,14 @@ lua_setfield(L, -2, "GetPoint");
 
 lua_setfield(L, -2, "Shape");   // ENGINE.Shape = Shape table
 
+lua_newtable(L);
+lua_pushcfunction(L, Lua_Shader_SetShader);
+lua_setfield(L, -2, "SetShader");
 
+lua_pushcfunction(L, Lua_Shader_SetUniform);
+lua_setfield(L, -2, "SetUniform");
+
+lua_setfield(L, -2, "Shader");   // ENGINE.Shader = Shader table
 
 
 lua_setglobal(L, "ENGINE");     // global ENGINE
@@ -160,7 +172,9 @@ int LuaIntegration::Lua_Shape_GetRectangle(lua_State* L)
 	int tempIndex = mygame->GetRenderSystem()->addEntity(rectShape);
 	mygame->GetRenderSystem()->initEntityBuffers(tempIndex);
 
-	return 0;
+	lua_pushinteger(L, tempIndex);
+
+	return 1;
 }
 
 int LuaIntegration::Lua_Shape_GetTriangle(lua_State* L)
@@ -243,8 +257,9 @@ int LuaIntegration::Lua_Shape_GetTriangle(lua_State* L)
 	int tempIndex = mygame->GetRenderSystem()->addEntity(rectShape);
 	mygame->GetRenderSystem()->initEntityBuffers(tempIndex);
 
-	return 0;
+	lua_pushinteger(L, tempIndex);
 
+	return 1;
 
 	return 0;
 }
@@ -321,8 +336,10 @@ int LuaIntegration::Lua_Shape_GetPoint(lua_State* L)
 	Entity* pointCloud = Shape::GetPointShape(vc);
 	int tempIndex = mygame->GetRenderSystem()->addEntity(pointCloud);
 	mygame->GetRenderSystem()->initEntityBuffers(tempIndex);
+	
+	lua_pushinteger(L, tempIndex);
 
-	return 0;
+	return 1;
 }
 
 int LuaIntegration::Lua_gizmoVisibility(lua_State* L)
@@ -348,6 +365,45 @@ int LuaIntegration::Lua_SetBackGroundColor(lua_State* L)
 	mygame->setBackGroundColor(color);
 	return 0;
 }
+
+int LuaIntegration::Lua_Shader_SetShader(lua_State* L)
+{
+	
+	int tempIndex= luaL_checkinteger(L,1);
+	std::string vertexShader = luaL_checkstring(L, 2);
+	std::string fragmentShader = luaL_checkstring(L, 3);
+
+
+
+	auto& entities = mygame->GetRenderSystem()->entities;
+
+	if (tempIndex < 0 || tempIndex >= entities.size())
+		std::cout << "Can't set shader as the index provided by lua is invalid";
+	else
+		entities[tempIndex]->getComponent<DrawableComponent>()->shader = Shader::CreateFromSource(vertexShader.c_str(), fragmentShader.c_str());
+	
+
+
+	return 0;
+}
+
+int LuaIntegration::Lua_Shader_SetUniform(lua_State* L)
+{
+	int tempIndex = luaL_checkinteger(L, 1);
+	std::string uniformName = luaL_checkstring(L, 2);
+	float value = luaL_checknumber(L, 3);
+
+	auto& entities = mygame->GetRenderSystem()->entities;
+
+	if (tempIndex < 0 || tempIndex >= entities.size())
+		std::cout << "Can't set shader as the index provided by lua is invalid";
+	else
+		entities[tempIndex]->getComponent<DrawableComponent>()->shader->setUniform(uniformName, value);
+
+
+	return 0;
+}
+
 
 int LuaIntegration::initEngineFromLua(lua_State* L)
 {

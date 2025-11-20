@@ -40,6 +40,9 @@ namespace DREAM
             //for open gl , we gotta bind to the buffer first 
             int tempVBO = tempEntities->getComponent<DrawableComponent>()->VBO;
             int tempVAO = tempEntities->getComponent<DrawableComponent>()->VAO;
+
+            Shader* entityShader = tempEntities->getComponent<DrawableComponent>()->shader;
+
             PhysicsComponent* physicsComponent = tempEntities->getComponent<PhysicsComponent>();
 
             
@@ -62,8 +65,17 @@ namespace DREAM
                 std::cout << "R4: " << model_matrix.r4.x << " " << model_matrix.r4.y << " " << model_matrix.r4.z << " " << model_matrix.r4.w << "\n";*/
             }
             Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix,model_matrix);
-            shader->setUniform("mvp", tempMVP);
             
+            
+            if (entityShader)
+            {
+                entityShader->use();
+                entityShader->setUniform("mvp", tempMVP);
+            }
+            else
+            {
+                shader->setUniform("mvp", tempMVP);
+            }
 
            // Logging MVP
      /*       std::cout << tempMVP.r1.x << " " << tempMVP.r1.y << " " << tempMVP.r1.z << " " << tempMVP.r1.w << "\n";

@@ -145,7 +145,7 @@ namespace DREAM
         Entity* defaultCameraEntity = new Entity();
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // velocity
-			Vec4<float>(100, 100, 100, 1), // position
+			Vec4<float>(0, 0, 100, 1), // position
 			Vec4<float>(0, 0, 0, 0), // rotation
 			Vec4<float>(0, 0, 0, 0)  // rotation_velocity
 		);
