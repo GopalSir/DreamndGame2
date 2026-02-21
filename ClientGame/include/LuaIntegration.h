@@ -23,6 +23,8 @@ class LuaIntegration
 	static LuaCallbackSystem* lcs;
 	static MyGame* mygame;
 
+	
+
 	static int Lua_Shape_GetRectangle(lua_State* L);
 	static int Lua_Shape_GetTriangle(lua_State* L);
 	static int Lua_Shape_GetPoint(lua_State* L);
@@ -44,6 +46,7 @@ class LuaIntegration
 public:
 	static void run();
 	static lua_State* L;
+	static int SyncToLua();
 	//static void TriggerScrollCallback(double xoffset, double yoffset);
 };
 
@@ -53,6 +56,8 @@ public:
 class LuaCallbackSystem : public System
 {
 	void update() override {
+
+		LuaIntegration::SyncToLua();
 
 		lua_getglobal(LuaIntegration::L, "callbackFunction");
 

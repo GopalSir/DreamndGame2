@@ -28,6 +28,7 @@ namespace DREAM
 		void SetActiveCamera(CameraComponent* _cameraComoponent) { activeCameraComponent = _cameraComoponent; };
         void disableEntity(int _index);
         void deleteEntity(int _index);
+        GLFWwindow* getWindow() { return glfwWindow; }
 
         static Vec4<float> ScreenToWorldCoordinate(Vec4<float> _screenCoord, CameraComponent* _cameraComponent);
         static Vec4<float> ScreenToNDC(Vec4<float> _screenCoord);

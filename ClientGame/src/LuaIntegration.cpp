@@ -404,6 +404,66 @@ int LuaIntegration::Lua_Shader_SetUniform(lua_State* L)
 	return 0;
 }
 
+int LuaIntegration::SyncToLua()
+{
+	// Get or reuse existing INPUT table (don't recreate each frame!)
+	lua_getglobal(L, "INPUT");
+	if (!lua_istable(L, -1)) {
+		// First time: create the table
+		lua_pop(L, 1);  // Pop the nil
+		lua_newtable(L);
+	}
+	// Now INPUT table is on top of stack
+
+	// Get window handle from RenderSystem
+	GLFWwindow* window = mygame->GetRenderSystem()->getWindow();
+
+	// Loop over KeyState map
+	for (auto const& entry : DREAM::KeyStates::KeyState) {
+		int keyCode = entry.first;
+		auto state = entry.second;
+
+		const char* keyName = glfwGetKeyName(keyCode, 0);
+
+		if (keyName) {
+			// Set key state in table
+			lua_pushboolean(L, state.first);
+			lua_setfield(L, -2, keyName);
+		}
+		else {
+			// Fallback for special keys
+			std::string fallbackName = "KEY_" + std::to_string((int)keyCode);
+			lua_pushboolean(L, state.first);
+			lua_setfield(L, -2, fallbackName.c_str());
+		}
+	}
+
+	// Add mouse position
+	double mouseX, mouseY;
+	glfwGetCursorPos(window, &mouseX, &mouseY);
+
+	lua_pushnumber(L, mouseX);
+	lua_setfield(L, -2, "MOUSE_X");
+
+	lua_pushnumber(L, mouseY);
+	lua_setfield(L, -2, "MOUSE_Y");
+
+	// Add mouse buttons
+	lua_pushboolean(L, glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS);
+	lua_setfield(L, -2, "MOUSE_LEFT");
+
+	lua_pushboolean(L, glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT) == GLFW_PRESS);
+	lua_setfield(L, -2, "MOUSE_RIGHT");
+
+	lua_pushboolean(L, glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_MIDDLE) == GLFW_PRESS);
+	lua_setfield(L, -2, "MOUSE_MIDDLE");
+
+	// Set back as global (table is still on stack)
+	lua_setglobal(L, "INPUT");
+
+	return 0;
+}
+
 
 int LuaIntegration::initEngineFromLua(lua_State* L)
 {
