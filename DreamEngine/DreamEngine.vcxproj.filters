@@ -57,7 +57,8 @@
     <ClInclude Include="include\ECS_Core\Component.hpp">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
-    <ClInclude Include="include\Component\DrawableComponent.hpp">
+    <ClInclude Include="include\Component\
+               .hpp">
       <Filter>Header Files\Component</Filter>
     </ClInclude>
     <ClInclude Include="include\Component\MVPComponent.hpp">

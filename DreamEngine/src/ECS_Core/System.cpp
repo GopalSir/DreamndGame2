@@ -12,6 +12,7 @@ Entity* System::getEntity(int _index)
     if(_index < 0 || _index >= (entities.size()))
     {
         Log::LogMessage("Invalid entity index in System::getEntity()",LogLevel::ERROR_LEVEL);
+        std::cout << _index << " " << entities.size() << " info" << std::endl;
         exit(0);
     }
     else
