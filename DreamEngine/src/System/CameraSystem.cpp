@@ -89,8 +89,10 @@ namespace DREAM
         float f = 1.0f / tan(fov / 2.0f);
         Mat4<float> proj;
         proj.r1 = Vec4<float>(f / aspect, 0, 0, 0);
-        proj.r2 = Vec4<float>(0, f, 0, 0);
+        proj.r2 = Vec4<float>(0, f, 0, 0 );
         proj.r3 = Vec4<float>(0, 0, (far + near) / (near - far), (2 * far * near) / (near - far));
+
+        //proj.r3 = Vec4<float>(0, 0, (far + near) / (near - far), (2 * far * near) / (near - far));
         proj.r4 = Vec4<float>(0, 0, -1, 0);
         return proj;
     }

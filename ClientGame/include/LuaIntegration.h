@@ -33,7 +33,8 @@ class LuaIntegration
 	static int Lua_ClearScene(lua_State* L);
 	//static int Lua_RegisterScrollCallback(lua_State* L);
 
-	static int Lua_Physics(lua_State* L);
+	static int Lua_Physics_Set(lua_State* L);
+	static int Lua_Physics_Get(lua_State* L);
 
 	static int Lua_Shader_SetShader(lua_State* L);
 	static int Lua_Shader_SetUniform(lua_State* L);

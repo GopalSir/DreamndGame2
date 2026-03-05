@@ -77,8 +77,13 @@ lua_setfield(L, -2, "SetUniform");
 lua_setfield(L, -2, "Shader");   // ENGINE.Shader = Shader table
 
 
+lua_newtable(L);
+lua_pushcfunction(L, Lua_Physics_Set);
+lua_setfield(L, -2, "Set");
 
-lua_pushcfunction(L, Lua_Physics);
+lua_pushcfunction(L, Lua_Physics_Get);
+lua_setfield(L, -2, "Get");
+
 lua_setfield(L, -2, "Physics");
 
 
@@ -375,7 +380,7 @@ int LuaIntegration::Lua_SetBackGroundColor(lua_State* L)
 //Set the physics component on an entity using index of that entity. 
 //Physics componenet in C++ side has 4 fields. 
 // If any field is missing from Lua argument, we simply not set that field value in Physics Component. 
-int LuaIntegration::Lua_Physics(lua_State* L)
+int LuaIntegration::Lua_Physics_Set(lua_State* L)
 {
 	int entityIndex = luaL_checkinteger(L, 1);
 	//std::cout << "Entity Index" << entityIndex << std::endl;
@@ -398,7 +403,7 @@ int LuaIntegration::Lua_Physics(lua_State* L)
 
 		if (!tempPC)
 		{
-
+			std::cout << "Rebuilding PC" << std::endl;
 			tempPC = new PhysicsComponent();
 			tempEntity->addComponent(tempPC);
 			mygame->GetPhysicsSystem()->addEntity(tempEntity);
@@ -406,70 +411,76 @@ int LuaIntegration::Lua_Physics(lua_State* L)
 
 	}
 
+	float x,y,z;
+
 	lua_getfield(L, 2, "position");
+	if(lua_type(L, -1) != LUA_TTABLE)
+	{
+		lua_pop(L, 1);
+	}
+	else
+	{
+		std::cout << "overwiring positions" << std::endl;
+		lua_getfield(L, -1, "x");
+		 x = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+	
+		lua_getfield(L, -1, "y");
+		 y = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+	
+		lua_getfield(L, -1, "z");
+		 z = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+	
+		tempPC->position.x = x;
+		tempPC->position.y = y;
+		tempPC->position.z = z;
 
-	lua_rawgeti(L, -1, 1);
-	float x = (float)luaL_checknumber(L, -1);
-	lua_pop(L, 1);
-
-	lua_rawgeti(L, -1, 2);
-	float y = (float)luaL_checknumber(L, -1);
-	lua_pop(L, 1);
-
-	lua_rawgeti(L, -1, 3);
-	float z = (float)luaL_checknumber(L, -1);
-	lua_pop(L, 1);
-
-	tempPC->position.x = x;
-	tempPC->position.y = y;
-	tempPC->position.z = z;
-
-	//std::cout << "Positions from lua" << x << " " << y << " " << z << " ";
-
-
-
-
-	lua_pop(L, 1);
+		lua_pop(L, 1);
+	}
 
 
 	lua_getfield(L, 2, "velocity");
-
-	lua_rawgeti(L, -1, 1);
+	if(lua_type(L, -1) != LUA_TTABLE)
+	{
+		lua_pop(L, 1);
+	}
+else {
+		lua_getfield(L, -1, "x");
 	 x = (float)luaL_checknumber(L, -1);
 	lua_pop(L, 1);
 
-	lua_rawgeti(L, -1, 2);
+	lua_getfield(L, -1, "y");
 	 y = (float)luaL_checknumber(L, -1);
 	lua_pop(L, 1);
 
-	lua_rawgeti(L, -1, 3);
+	lua_getfield(L, -1, "z");
 	 z = (float)luaL_checknumber(L, -1);
 	lua_pop(L, 1);
 
 	tempPC->velocity.x = x;
 	tempPC->velocity.y = y;
 	tempPC->velocity.z = z;
-
-	//std::cout << "Positions from lua" << x << " " << y << " " << z << " ";
-
-
-
-
 	lua_pop(L, 1);
-
-
+}
+	
 
 	lua_getfield(L, 2, "rotation");
-
-	lua_rawgeti(L, -1, 1);
+	if(lua_type(L, -1) != LUA_TTABLE)
+	{
+		lua_pop(L, 1);
+	}
+else{
+		lua_getfield(L, -1, "x");
 	x = (float)luaL_checknumber(L, -1);
 	lua_pop(L, 1);
 
-	lua_rawgeti(L, -1, 2);
+	lua_getfield(L, -1, "y");
 	y = (float)luaL_checknumber(L, -1);
 	lua_pop(L, 1);
 
-	lua_rawgeti(L, -1, 3);
+	lua_getfield(L, -1, "z");
 	z = (float)luaL_checknumber(L, -1);
 	lua_pop(L, 1);
 
@@ -477,15 +488,106 @@ int LuaIntegration::Lua_Physics(lua_State* L)
 	tempPC->rotation.y = y;
 	tempPC->rotation.z = z;
 
-	//std::cout << "Positions from lua" << x << " " << y << " " << z << " ";
-
-
-
-
 	lua_pop(L, 1);
+}
+
+	//lua_getfield(L, 2, "rotation_velocity");
+	//if (lua_type(L, -1) != LUA_TTABLE)
+	//{
+	//	lua_pop(L, 1);
+	//}
+	//else {
+	//	lua_getfield(L, -1, "x");
+	//	x = (float)luaL_checknumber(L, -1);
+	//	lua_pop(L, 1);
+
+	//	lua_getfield(L, -1, "y");
+	//	y = (float)luaL_checknumber(L, -1);
+	//	lua_pop(L, 1);
+
+	//	lua_getfield(L, -1, "z");
+	//	z = (float)luaL_checknumber(L, -1);
+	//	lua_pop(L, 1);
+
+	//	tempPC->rotation_velocity.x = x;
+	//	tempPC->rotation_velocity.y = y;
+	//	tempPC->rotation_velocity.z = z;
+
+	//	lua_pop(L, 1);
+	//}
+
+
+
 
 
 	return 0;
+}
+
+int LuaIntegration::Lua_Physics_Get(lua_State* L)
+{
+
+	int entityIndex = luaL_checkinteger(L, 1);
+
+	PhysicsComponent* tempPC;
+	Entity* tempEntity = mygame->GetRenderSystem()->getEntity(entityIndex);
+	if (tempEntity)
+	{
+		tempPC = tempEntity->getComponent<PhysicsComponent>();
+		if (tempPC)
+		{
+			lua_newtable(L);
+			lua_newtable(L);
+			lua_pushnumber(L, tempPC->position.x);
+			lua_setfield(L, -2, "x");
+			lua_pushnumber(L, tempPC->position.y);
+			lua_setfield(L, -2, "y");
+			lua_pushnumber(L, tempPC->position.z);
+			lua_setfield(L, -2, "z");
+	
+			
+			lua_setfield(L, -2, "position");
+
+			lua_newtable(L);
+			lua_pushnumber(L, tempPC->velocity.x);
+			lua_setfield(L, -2, "x");
+			lua_pushnumber(L, tempPC->velocity.y);
+			lua_setfield(L, -2, "y");
+			lua_pushnumber(L, tempPC->velocity.z);
+			lua_setfield(L, -2, "z");
+
+
+			lua_setfield(L, -2, "velocity");
+
+			lua_newtable(L);
+			lua_pushnumber(L, tempPC->rotation.x);
+			lua_setfield(L, -2, "x");
+			lua_pushnumber(L, tempPC->rotation.y);
+			lua_setfield(L, -2, "y");
+			lua_pushnumber(L, tempPC->rotation.z);
+			lua_setfield(L, -2, "z");
+			lua_setfield(L, -2, "rotation");
+
+			lua_newtable(L);
+			lua_pushnumber(L, tempPC->rotation_velocity.x);
+			lua_setfield(L, -2, "x");
+			lua_pushnumber(L, tempPC->rotation_velocity.y);
+			lua_setfield(L, -2, "y");
+			lua_pushnumber(L, tempPC->rotation_velocity.z);
+			lua_setfield(L, -2, "z");
+			lua_setfield(L, -2, "rotation_velocity");
+
+			
+			return 1;
+		}
+		else
+		{
+			std::cout << "can't find PC for index " << entityIndex<<std::endl;
+		}
+		return 0;
+	}
+	
+	return 0;
+	
 }
 
 int LuaIntegration::Lua_Shader_SetShader(lua_State* L)
