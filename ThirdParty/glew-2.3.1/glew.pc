@@ -1,0 +1,11 @@
+prefix=/home/gopal/libs/DreamndGame2/ThirdParty/install/glew
+exec_prefix=${prefix}
+libdir=/home/gopal/libs/DreamndGame2/ThirdParty/install/glew/lib64
+includedir=${prefix}/include
+
+Name: glew
+Description: The OpenGL Extension Wrangler library
+Version: 2.3.1
+Cflags: -I${includedir} 
+Libs: -L${libdir} -lGLEW -lGL -lX11
+Requires: glu

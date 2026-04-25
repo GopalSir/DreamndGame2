@@ -7,7 +7,7 @@
 
 
 // NOW include Lua headers (lua.hpp has extern "C" so C macro must be undefined first)
-#include <Lua/include/lua.hpp>
+#include <lua.hpp>
 
 
 class LuaCallbackSystem;

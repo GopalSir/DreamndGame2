@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+*.o
+*.a
+ThirdParty/install/*
+Install/*
+ThirdParty/glfw-3.4/glfw-3.4/build/ 

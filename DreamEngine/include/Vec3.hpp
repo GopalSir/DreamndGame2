@@ -1,4 +1,5 @@
 #pragma once
+#include <cmath>
 
 template<typename T>
 struct Vec4
@@ -53,7 +54,7 @@ struct Vec3
 	}
 
 	static Vec3<T> normalize(const Vec3<T>& v) {
-		T length = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+		T length = std::sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
 		if (length == 0) return Vec3<T>(0, 0, 0); // Avoid division by zero
 		return Vec3<T>(v.x / length, v.y / length, v.z / length);
 	}
