@@ -70,7 +70,11 @@ namespace DREAM
             if (entityShader)
             {
                 entityShader->use();
-                entityShader->setUniform("mvp", tempMVP);
+                // entityShader->setUniform("mvp", tempMVP);
+                entityShader->setUniform("model_matrix", model_matrix);
+                entityShader->setUniform("view_matrix", activeCameraComponent->cameraViewMatrix);
+                entityShader->setUniform("projection_matrix", activeCameraComponent->projection);
+
             }
             else
             {
