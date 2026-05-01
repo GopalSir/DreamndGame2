@@ -401,6 +401,7 @@ int LuaIntegration::Lua_Physics_Set(lua_State* L)
 	{
 		tempPC = tempEntity->getComponent<PhysicsComponent>();
 
+		//if the entitiy has no PhysicsComponent
 		if (!tempPC)
 		{
 			std::cout << "Rebuilding PC" << std::endl;
@@ -420,7 +421,7 @@ int LuaIntegration::Lua_Physics_Set(lua_State* L)
 	}
 	else
 	{
-		std::cout << "overwiring positions" << std::endl;
+		
 		lua_getfield(L, -1, "x");
 		 x = (float)luaL_checknumber(L, -1);
 		lua_pop(L, 1);
