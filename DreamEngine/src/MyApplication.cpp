@@ -151,11 +151,12 @@ namespace DREAM
             actualFrameTime = frameEnd - frameStart;
             //Time of last frame in seconds
 			deltaTime = std::chrono::duration<float>(actualFrameTime).count();
-          /*  if (actualFrameTime < requiredFrameTime)
+            if (actualFrameTime < requiredFrameTime)
             {
                 requiredSleepTime = requiredFrameTime - actualFrameTime;
                 std::this_thread::sleep_for(requiredSleepTime);
-            }*/
+            }
+            
         }
 
     }
@@ -230,20 +231,20 @@ namespace DREAM
 
     bool MyApplication::initializeShaders()
     {
-        programShader = new Shader("C:\\Users\\Gaurav\\Documents\\IISC\\opengl\\test\\vertex_shader.glsl",
-            "C:\\Users\\Gaurav\\Documents\\IISC\\opengl\\test\\fragment_shader.glsl");
+        // programShader = new Shader("C:\\Users\\Gaurav\\Documents\\IISC\\opengl\\test\\vertex_shader.glsl",
+        //     "C:\\Users\\Gaurav\\Documents\\IISC\\opengl\\test\\fragment_shader.glsl");
 
-        programShader->use();
-        programShader->setUniform("screen_width", 1080);
-        programShader->setUniform("screen_height", 720);
+        // programShader->use();
+        // programShader->setUniform("screen_width", 1080);
+        // programShader->setUniform("screen_height", 720);
 
-        // programShader->setUniform("cam_x",-20.0f);
-        // programShader->setUniform("cam_y",-20.0f);
-        // programShader->setUniform("cam_z",0.0f);
+        // // programShader->setUniform("cam_x",-20.0f);
+        // // programShader->setUniform("cam_y",-20.0f);
+        // // programShader->setUniform("cam_z",0.0f);
 
 
 
-        return true;
+        // return true;
     }
 
     void MyApplication::setUpCameraSystem()
