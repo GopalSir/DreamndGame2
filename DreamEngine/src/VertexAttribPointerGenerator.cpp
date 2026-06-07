@@ -11,7 +11,7 @@ VertexAttribPointer* VertexAttribPointerGenerator::generateVertexAttribPoinnter(
         vap->count = 3;
         vap->type = GL_FLOAT;
         vap->normalized = GL_FALSE;
-        vap->stride = 7*sizeof(GL_FLOAT);
+        vap->stride = 10*sizeof(GL_FLOAT);
         vap->ptr = (void*)0;
 
         break;
@@ -21,8 +21,18 @@ VertexAttribPointer* VertexAttribPointerGenerator::generateVertexAttribPoinnter(
         vap->count = 4;
         vap->type = GL_FLOAT;
         vap->normalized = GL_FALSE;
-        vap->stride = 7 * sizeof(GL_FLOAT);
+        vap->stride = 10 * sizeof(GL_FLOAT);
         vap->ptr = (void*)(3*sizeof(GL_FLOAT)) ;
+
+        break;
+    case STYLE::NORMALS:
+
+        vap->shader_layout_index = 2;
+        vap->count = 3;
+        vap->type = GL_FLOAT;
+        vap->normalized = GL_FALSE;
+        vap->stride = 10 * sizeof(GL_FLOAT);
+        vap->ptr = (void*)(7 * sizeof(GL_FLOAT));
 
         break;
 

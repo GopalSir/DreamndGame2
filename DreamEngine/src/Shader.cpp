@@ -72,10 +72,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, float value) 
 
         GLint currentProgram;
         glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-        std::cout << "Currently bound program: " << currentProgram << " | This shader programID: " << programID << "\n";
+        Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | This shader programID: " + std::to_string(programID), LogLevel::INFO_LEVEL);
         GLint location = glGetUniformLocation(programID, name.c_str());
         if (location == -1) {
-            std::cout << "Warning: Uniform '" << name << "' not found in shader program. It might be optimized out if not used.\n";
+            Log::LogMessage("Warning: Uniform '" + name + "' not found in shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
         } else {
             glUseProgram(programID);
             glUniform1f(location, value);
@@ -87,10 +87,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, float value) 
 void Shader::setUniformCurrent(const std::string& name,float value) {
     GLint currentProgram;
     glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    std::cout << "Currently bound program: " << currentProgram << " | Setting uniform '" << name << "' to float(" << value << ")\n";
+    Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | Setting uniform '" + name + "' to float(" + std::to_string(value) + ")", LogLevel::INFO_LEVEL);
     GLint location = glGetUniformLocation(currentProgram, name.c_str());
     if (location == -1) {
-        std::cout << "Warning: Uniform '" << name << "' not found in currently active shader program. It might be optimized out if not used.\n";
+        Log::LogMessage("Warning: Uniform '" + name + "' not found in currently active shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
     } else {
         glUniform1f(location, value);
     }
@@ -101,10 +101,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, float x, floa
 
         GLint currentProgram;
         glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-        std::cout << "Currently bound program: " << currentProgram << " | This shader programID: " << programID << "\n";
+        Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | This shader programID: " + std::to_string(programID), LogLevel::INFO_LEVEL);
         GLint location = glGetUniformLocation(programID, name.c_str());
         if (location == -1) {
-            std::cout << "Warning: Uniform '" << name << "' not found in shader program. It might be optimized out if not used.\n";
+            Log::LogMessage("Warning: Uniform '" + name + "' not found in shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
         } else {
             glUseProgram(programID);
             glUniform2f(location, x, y);
@@ -115,10 +115,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, float x, floa
 void Shader::setUniformCurrent(const std::string& name, float x, float y) {
     GLint currentProgram;
     glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    std::cout << "Currently bound program: " << currentProgram << " | Setting uniform '" << name << "' to vec2(" << x << ", " << y << ")\n";
+    Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | Setting uniform '" + name + "' to vec2(" + std::to_string(x) + ", " + std::to_string(y) + ")", LogLevel::INFO_LEVEL);
     GLint location = glGetUniformLocation(currentProgram, name.c_str());
     if (location == -1) {
-        std::cout << "Warning: Uniform '" << name << "' not found in currently active shader program. It might be optimized out if not used.\n";
+        Log::LogMessage("Warning: Uniform '" + name + "' not found in currently active shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
     } else {
         glUniform2f(location, x, y);
     }
@@ -132,10 +132,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, float x, floa
 
         GLint currentProgram;
         glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-        std::cout << "Currently bound program: " << currentProgram << " | This shader programID: " << programID << "\n";
+        Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | This shader programID: " + std::to_string(programID), LogLevel::INFO_LEVEL);
         GLint location = glGetUniformLocation(programID, name.c_str());
         if (location == -1) {
-            std::cout << "Warning: Uniform '" << name << "' not found in shader program. It might be optimized out if not used.\n";
+            Log::LogMessage("Warning: Uniform '" + name + "' not found in shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
         } else {
             glUseProgram(programID);
             glUniform4f(location, x, y, z, w);
@@ -145,10 +145,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, float x, floa
 void Shader::setUniformCurrent(const std::string& name, float x, float y, float z, float w) {
     GLint currentProgram;
     glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    std::cout << "Currently bound program: " << currentProgram << " | Setting uniform '" << name << "' to vec4(" << x << ", " << y << ", " << z << ", " << w << ")\n";
+    Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | Setting uniform '" + name + "' to vec4(" + std::to_string(x) + ", " + std::to_string(y) + ", " + std::to_string(z) + ", " + std::to_string(w) + ")", LogLevel::INFO_LEVEL);
     GLint location = glGetUniformLocation(currentProgram, name.c_str());
     if (location == -1) {
-        std::cout << "Warning: Uniform '" << name << "' not found in currently active shader program. It might be optimized out if not used.\n";
+        Log::LogMessage("Warning: Uniform '" + name + "' not found in currently active shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
     } else {
         glUniform4f(location, x, y, z, w);
     }
@@ -160,10 +160,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, int value) {
 
         GLint currentProgram;
         glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-        std::cout << "Currently bound program: " << currentProgram << " | This shader programID: " << programID << "\n";
+        Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | This shader programID: " + std::to_string(programID), LogLevel::INFO_LEVEL);
         GLint location = glGetUniformLocation(programID, name.c_str());
         if (location == -1) {
-            std::cout << "Warning: Uniform '" << name << "' not found in shader program. It might be optimized out if not used.\n";
+            Log::LogMessage("Warning: Uniform '" + name + "' not found in shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
         } else {
             glUseProgram(programID);
             glUniform1i(location, value);
@@ -174,10 +174,10 @@ void Shader::setUniform(GLuint programID, const std::string& name, int value) {
 void Shader::setUniformCurrent(const std::string& name, int value) {
     GLint currentProgram;
     glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-    std::cout << "Currently bound program: " << currentProgram << " | Setting uniform '" << name << "' to int(" << value << ")\n";
+    Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | Setting uniform '" + name + "' to int(" + std::to_string(value) + ")", LogLevel::INFO_LEVEL);
     GLint location = glGetUniformLocation(currentProgram, name.c_str());
     if (location == -1) {
-        std::cout << "Warning: Uniform '" << name << "' not found in currently active shader program. It might be optimized out if not used.\n";
+        Log::LogMessage("Warning: Uniform '" + name + "' not found in currently active shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
     } else {
         glUniform1i(location, value);
     }
@@ -211,10 +211,10 @@ void Shader::setUniform(GLuint programID, const std::string&    name, Mat4<float
 
             GLint currentProgram;
             glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-            std::cout << "Currently bound program: " << currentProgram << " | This shader programID: " << programID << "\n";
+            Log::LogMessage("Currently bound program: " + std::to_string(currentProgram) + " | This shader programID: " + std::to_string(programID), LogLevel::INFO_LEVEL);
             GLint location = glGetUniformLocation(programID, name.c_str());
             if (location == -1) {
-                std::cout << "Warning: Uniform '" << name << "' not found in shader program. It might be optimized out if not used.\n";
+                Log::LogMessage("Warning: Uniform '" + name + "' not found in shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
             } else {
                 glUseProgram(programID);
                 glUniformMatrix4fv(location,1,GL_FALSE,mvparray);
@@ -249,10 +249,10 @@ void Shader::setUniformCurrent(const std::string& name, Mat4<float>& _mvp) {
 
             GLint currentProgram;
             glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
-            std::cout << "Currently bound program inside setUniformCurrent: " << currentProgram << " | Setting uniform '" << name << "' to Mat4\n";
+            Log::LogMessage("Currently bound program inside setUniformCurrent: " + std::to_string(currentProgram) + " | Setting uniform '" + name + "' to Mat4", LogLevel::INFO_LEVEL);
             GLint location = glGetUniformLocation(currentProgram, name.c_str());
             if (location == -1) {
-                std::cout << "Warning: Uniform '" << name << "' not found in currently active shader program. It might be optimized out if not used.\n";
+                Log::LogMessage("Warning: Uniform '" + name + "' not found in currently active shader program. It might be optimized out if not used.", LogLevel::ERROR_LEVEL);
             } else {
                 glUniformMatrix4fv(location,1,GL_FALSE,mvparray);
             }

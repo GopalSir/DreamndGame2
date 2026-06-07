@@ -59,11 +59,13 @@ void Shape::BuildTriangleShape(Entity* _entity,DREAM::VerticesComponent<float> &
 
 	VertexAttribPointer* vertexAttributePositionPOinter = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::VERTEX);
 	VertexAttribPointer* vertexAttributeColorPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::COLOR);
+	VertexAttribPointer* vertexAttributeNormalPointer = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::NORMALS);
 
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::TRIANGLE);
 
 	verticesComponent->vertexAttributePointers.push_back(vertexAttributePositionPOinter);
 	verticesComponent->vertexAttributePointers.push_back(vertexAttributeColorPointer);
+	verticesComponent->vertexAttributePointers.push_back(vertexAttributeNormalPointer);
 
 	
 

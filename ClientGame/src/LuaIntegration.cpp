@@ -267,6 +267,33 @@ int LuaIntegration::Lua_Shape_GetTriangle(lua_State* L)
 
 	lua_pop(L, 1);
 
+	//now we get normals
+	lua_getfield(L, 1, "normals");
+	luaL_checktype(L, -1, LUA_TTABLE);
+	for (int i = 1; i <= vcount; ++i)
+	{
+		lua_rawgeti(L, -1, i);
+		luaL_checktype(L, -1, LUA_TTABLE);
+
+		lua_rawgeti(L, -1, 1);
+		float x = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+
+		lua_rawgeti(L, -1, 2);
+		float y = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+
+		lua_rawgeti(L, -1, 3);
+		float z = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+
+		PositionComponent<float> normal = PositionComponent<float>(x, y, z);
+		vc.normals.push_back(normal);
+
+		lua_pop(L, 1);
+	}
+
+
 	Entity* triangleShape = mygame->CreateEntity();
 	Shape::BuildTriangleShape(triangleShape,vc);
 	int tempIndex = mygame->GetRenderSystem()->addEntity(triangleShape);
