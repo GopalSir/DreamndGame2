@@ -38,6 +38,7 @@ class LuaIntegration
 
 	static int Lua_Shader_SetShader(lua_State* L);
 	static int Lua_Shader_SetUniform(lua_State* L);
+	static int Lua_Shader_Compile(lua_State* L);
 	
 
 	static int initEngineFromLua(lua_State* L);

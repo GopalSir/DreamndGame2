@@ -19,9 +19,11 @@
 #include "../Shape.hpp"
 #include <World.h>
 #include <iostream>
+#include <fstream>
 #include <chrono>
 #include <thread>
 #include "../Shader.hpp"
+
 
 namespace DREAM {
 
@@ -38,6 +40,7 @@ namespace DREAM {
 
 
         std::vector<System*> gameSystems;
+        std::vector<Entity*> gameEntities;
         bool gamestate;
         Shader* programShader;
 
@@ -54,6 +57,9 @@ namespace DREAM {
         int playerEntityID, enemyEntityID;
 
         COLOR backGroundColor;
+
+
+        
         
         void updateSystems();
         void bridgeSystems();
@@ -85,6 +91,14 @@ namespace DREAM {
         void setupGizmo();
 		void gizmoVisibility(bool _visibility);
         void setBackGroundColor(COLOR &_color);
+        
+        //Entity create and Destroy functions
+        Entity* CreateEntity();
+        void DestroyEntity(unsigned int _entityIndex);
+        void DestroyEntity(Entity* _entity);
+
+        //Stage Save function
+        void SaveGame(std::string _saveLocation);
 
     };
 }

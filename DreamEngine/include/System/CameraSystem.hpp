@@ -24,7 +24,7 @@ namespace DREAM {
 
         int PrintCamera(EventInfo* _eventInfo);
         int handleEvent(EventInfo* _eventInfo) override;
-		static Entity* createDefaultCameraEntity();
+		static void createDefaultCamera(Entity* _entity);
         Mat4<float> CalculateProjectionMatrix(float fov, float aspect, float far, float near);
         Mat4<float> calculateCameraWorldTransform(const PhysicsComponent* _physicsComponent, CameraComponent* _cameraComponent);
 		Mat4<float> calculateCameraViewMatrix(const Mat4<float>& _cameraWorldTransform);

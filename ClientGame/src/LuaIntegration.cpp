@@ -71,6 +71,9 @@ lua_newtable(L);
 lua_pushcfunction(L, Lua_Shader_SetShader);
 lua_setfield(L, -2, "SetShader");
 
+lua_pushcfunction(L,Lua_Shader_Compile);
+lua_setfield(L,-2,"Compile");
+
 lua_pushcfunction(L, Lua_Shader_SetUniform);
 lua_setfield(L, -2, "SetUniform");
 
@@ -178,7 +181,8 @@ int LuaIntegration::Lua_Shape_GetRectangle(lua_State* L)
 
 	lua_pop(L, 1);
 
-	Entity* rectShape = Shape::GetRectangleShape(vc);
+	Entity* rectShape = mygame->CreateEntity();
+	Shape::BuildRectangleShape(rectShape,vc);
 	int tempIndex = mygame->GetRenderSystem()->addEntity(rectShape);
 	mygame->GetRenderSystem()->initEntityBuffers(tempIndex);
 
@@ -263,8 +267,9 @@ int LuaIntegration::Lua_Shape_GetTriangle(lua_State* L)
 
 	lua_pop(L, 1);
 
-	Entity* rectShape = Shape::GetTriangleShape(vc);
-	int tempIndex = mygame->GetRenderSystem()->addEntity(rectShape);
+	Entity* triangleShape = mygame->CreateEntity();
+	Shape::BuildTriangleShape(triangleShape,vc);
+	int tempIndex = mygame->GetRenderSystem()->addEntity(triangleShape);
 	mygame->GetRenderSystem()->initEntityBuffers(tempIndex);
 
 	lua_pushinteger(L, tempIndex);
@@ -343,7 +348,8 @@ int LuaIntegration::Lua_Shape_GetPoint(lua_State* L)
 
 	lua_pop(L, 1);
 
-	Entity* pointCloud = Shape::GetPointShape(vc);
+	Entity* pointCloud = mygame->CreateEntity();
+	Shape::BuildPointShape(pointCloud,vc);
 	int tempIndex = mygame->GetRenderSystem()->addEntity(pointCloud);
 	mygame->GetRenderSystem()->initEntityBuffers(tempIndex);
 	
@@ -591,12 +597,29 @@ int LuaIntegration::Lua_Physics_Get(lua_State* L)
 	
 }
 
+/*
+Compile a shader from source string and return the program ID. We can then use this program ID to set the shader on any entity.
+*/
+
+int LuaIntegration::Lua_Shader_Compile(lua_State* L)
+{
+	std::string vertexSrc = luaL_checkstring(L, 1);
+	std::string fragmentSrc = luaL_checkstring(L, 2);
+
+	GLuint programID = Shader::CreateFromSource(vertexSrc.c_str(), fragmentSrc.c_str())->programID;
+	    std::cout << "Compiled shader, programID = " << programID << "\n"; // add this
+	lua_pushinteger(L, programID);
+	return 1;
+}
+
+//Attach an already existing shader using programID to an entity using index of that entity.
+//Shader once compiled stays in GPU as long as the program is running, so we can simply attach it to any entity 
+//As long as we have the programID of the shader, we can attach it to any entity. So in Lua we can create a shader once and then attach it to multiple entities using this function.
 int LuaIntegration::Lua_Shader_SetShader(lua_State* L)
 {
 	
 	int tempIndex= luaL_checkinteger(L,1);
-	std::string vertexShader = luaL_checkstring(L, 2);
-	std::string fragmentShader = luaL_checkstring(L, 3);
+	GLuint shaderProgramID = luaL_checkinteger(L, 2);
 
 
 
@@ -605,25 +628,53 @@ int LuaIntegration::Lua_Shader_SetShader(lua_State* L)
 	if (tempIndex < 0 || tempIndex >= entities.size())
 		std::cout << "Can't set shader as the index provided by lua is invalid";
 	else
-		entities[tempIndex]->getComponent<DrawableComponent>()->shader = Shader::CreateFromSource(vertexShader.c_str(), fragmentShader.c_str());
-	
-
+		entities[tempIndex]->getComponent<DrawableComponent>()->shaderProgramID = shaderProgramID;
 
 	return 0;
 }
 
+// Set a float uniform on the shader of the entity at the given index
 int LuaIntegration::Lua_Shader_SetUniform(lua_State* L)
 {
-	int tempIndex = luaL_checkinteger(L, 1);
+	GLuint shaderProgramID = luaL_checkinteger(L, 1);
 	std::string uniformName = luaL_checkstring(L, 2);
-	float value = luaL_checknumber(L, 3);
 
-	auto& entities = mygame->GetRenderSystem()->entities;
+	//For third value we check the type and then do if else. 
+	if (lua_type(L, 3) == LUA_TNUMBER) {
+		{
+			float value = (float)luaL_checknumber(L, 3);
 
-	if (tempIndex < 0 || tempIndex >= entities.size())
-		std::cout << "Can't set shader as the index provided by lua is invalid";
-	else
-		entities[tempIndex]->getComponent<DrawableComponent>()->shader->setUniform(uniformName, value);
+			Shader::setUniform(shaderProgramID, uniformName, value);
+		}
+	}
+	else if (lua_type(L, 3) == LUA_TTABLE) {
+		// Assume it's a vec3 for simplicity. We'll get all 3 values and set a vec4 uniform.
+		lua_getfield(L, 3, "x");
+		float x = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+
+		lua_getfield(L, 3, "y");
+		float y = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+
+		lua_getfield(L, 3, "z");
+		float z = (float)luaL_checknumber(L, -1);
+		lua_pop(L, 1);
+
+		//check if 4th value exist, if exist we get it otherwise we set it to 1.0f
+		float w = 1.0f;
+		lua_getfield(L, 3, "w");
+		if (lua_type(L, -1) == LUA_TNUMBER) {
+			w = (float)luaL_checknumber(L, -1);
+		}
+		lua_pop(L, 1);
+
+		Shader::setUniform(shaderProgramID, uniformName, x, y, z, w);
+		
+	}
+	else {
+		std::cout << "Unsupported uniform value type for " << uniformName << "\n";
+	}
 
 
 	return 0;

@@ -142,9 +142,9 @@ namespace DREAM
         //delete _eventInfo;
         return 0;
     }
-    Entity* CameraSystem::createDefaultCameraEntity()
+    void CameraSystem::createDefaultCamera(Entity* _entity)
     {
-        Entity* defaultCameraEntity = new Entity();
+        
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // velocity
 			Vec4<float>(0, 0, 100, 1), // position
@@ -165,10 +165,10 @@ namespace DREAM
         CameraComponent* cameraComponent = new CameraComponent(fov, aspect, near, far);
 		cameraComponent->active = true; // Set the camera as active
 		
-		defaultCameraEntity->addComponent(physicsComponent);
-		defaultCameraEntity->addComponent(cameraComponent);
+		_entity->addComponent(physicsComponent);
+		_entity->addComponent(cameraComponent);
 
-        return defaultCameraEntity;
+        
     }
 
     Mat4<float> CameraSystem::calculateCameraWorldTransform(const PhysicsComponent* _physicsComponent, CameraComponent* _cameraComponent)

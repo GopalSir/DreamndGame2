@@ -5,7 +5,7 @@
 
 class Entity
 {
-    int entityID;
+    unsigned int  entityID;
     std::vector<Component*> components;
 
     public:
@@ -42,6 +42,10 @@ class Entity
         {
             
         }
+    }
+    Entity(unsigned int _GUID)
+    {
+        entityID = _GUID;
     }
 };
 

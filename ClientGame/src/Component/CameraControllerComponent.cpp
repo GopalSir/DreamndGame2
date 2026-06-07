@@ -7,6 +7,7 @@ namespace DREAM
         cameraComponent = nullptr;
         physicsComponent = nullptr;
         lookAroundDeltaRotationMatrix = Mat4<float>::identity;
+        right_mouse_buttton_status = false;
         Log::LogMessage("CameraControllerComponent Constructor Called", LogLevel::INFO_LEVEL);
 
     }

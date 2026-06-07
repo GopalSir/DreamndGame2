@@ -2,7 +2,7 @@
 
 
 
-Entity* Shape::GetPointShape(DREAM::VerticesComponent<float>& _verticesComponent)
+void Shape::BuildPointShape(Entity* _entity,DREAM::VerticesComponent<float>& _verticesComponent)
 {
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
 	*verticesComponent = _verticesComponent;
@@ -16,17 +16,14 @@ Entity* Shape::GetPointShape(DREAM::VerticesComponent<float>& _verticesComponent
 	
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::POINT);
 
-	Entity* result = new Entity();
+	_entity->addComponent(verticesComponent);
+	_entity->addComponent(drawableComponent);
 
-	result->addComponent(verticesComponent);
-	result->addComponent(drawableComponent);
-
-	return result;
 }
 
 
 
-Entity* Shape::GetLineShape(float _x1, float _y1, float _z1, float _x2, float _y2, float _z2, COLOR _color)
+void Shape::BuildLineShape(Entity* _entity,float _x1, float _y1, float _z1, float _x2, float _y2, float _z2, COLOR _color)
 {
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
 	VertexAttribPointer* vertexAttributeComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::STYLE::VERTEX);
@@ -35,7 +32,7 @@ Entity* Shape::GetLineShape(float _x1, float _y1, float _z1, float _x2, float _y
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::LINE);
 	drawableComponent->color = _color;
 
-	Entity* result = new Entity();
+	
 
 	verticesComponent->vertices.push_back(PositionComponent<float>(_x1, _y1, _z1));
 	verticesComponent->vertices.push_back(PositionComponent<float>(_x2, _y2, _z2));
@@ -49,15 +46,13 @@ Entity* Shape::GetLineShape(float _x1, float _y1, float _z1, float _x2, float _y
 	verticesComponent->vertexAttributePointers.push_back(vertexAttributeColorPointer);
 
 
-	result->addComponent(verticesComponent);
-	//result->addComponent(vertexAttributeComponent);
-	result->addComponent(drawableComponent);
+	_entity->addComponent(verticesComponent);
+	_entity->addComponent(drawableComponent);
 
-	return result;
 }
 
 //Incomplete and wrong
-Entity* Shape::GetTriangleShape(DREAM::VerticesComponent<float> &_verticesComponent)
+void Shape::BuildTriangleShape(Entity* _entity,DREAM::VerticesComponent<float> &_verticesComponent)
 {
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
 	*verticesComponent = _verticesComponent;
@@ -70,15 +65,14 @@ Entity* Shape::GetTriangleShape(DREAM::VerticesComponent<float> &_verticesCompon
 	verticesComponent->vertexAttributePointers.push_back(vertexAttributePositionPOinter);
 	verticesComponent->vertexAttributePointers.push_back(vertexAttributeColorPointer);
 
-	Entity* result = new Entity();
+	
 
-	result->addComponent(verticesComponent);   
-	result->addComponent(drawableComponent);
+	_entity->addComponent(verticesComponent);   
+	_entity->addComponent(drawableComponent);
 
-	return result;
 }
 
-Entity* Shape::GetRectangleShape(DREAM::VerticesComponent<float>& _verticesComponent)
+void Shape::BuildRectangleShape(Entity* _entity,DREAM::VerticesComponent<float>& _verticesComponent)
 {
 	//We will need to make 6 vertices out of 4 vertices, and render this as 2 triangles. 
 	/*
@@ -89,7 +83,7 @@ Entity* Shape::GetRectangleShape(DREAM::VerticesComponent<float>& _verticesCompo
 	{
 		std::cout << "Cannot generat Rectangle as size of vertices is not divisible by 4\n";
 		std::cout << "Size of cities vertices: " << _verticesComponent.vertices.size();
-		return nullptr;
+		throw std::runtime_error("Cannot generate Rectangle as size of vertices is not divisible by 4");
 	}
 
 	DREAM::VerticesComponent<float>* verticesComponent = new DREAM::VerticesComponent<float>();
@@ -133,10 +127,8 @@ Entity* Shape::GetRectangleShape(DREAM::VerticesComponent<float>& _verticesCompo
 
 	DrawableComponent* drawableComponent = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::TRIANGLE);
 
-	Entity* result = new Entity();
+	_entity->addComponent(verticesComponent);
+	_entity->addComponent(drawableComponent);
 
-	result->addComponent(verticesComponent);
-	result->addComponent(drawableComponent);
-
-	return result;
 }
+

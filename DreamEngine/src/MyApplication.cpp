@@ -238,13 +238,13 @@ namespace DREAM
         // programShader->setUniform("screen_width", 1080);
         // programShader->setUniform("screen_height", 720);
 
-        // // programShader->setUniform("cam_x",-20.0f);
-        // // programShader->setUniform("cam_y",-20.0f);
-        // // programShader->setUniform("cam_z",0.0f);
+        // programShader->setUniform("cam_x",-20.0f);
+        // programShader->setUniform("cam_y",-20.0f);
+        // programShader->setUniform("cam_z",0.0f);
 
 
 
-        // return true;
+        return true;
     }
 
     void MyApplication::setUpCameraSystem()
@@ -312,18 +312,22 @@ namespace DREAM
 
     void MyApplication::setupGizmo()
     {
-		//Crate 3 axis lines in the scene.
-        Entity* gizmo_x_axis = Shape::GetLineShape(0, 0, 0, 1000, 0, 0,COLOR(1,0,0,1) );
-        Entity* gizmo_y_axis = Shape::GetLineShape(0, 0, 0, 0, 1000, 0, COLOR(0, 1, 1, 1));
-        Entity* gizmo_z_axis = Shape::GetLineShape(0, 0, 0, 0, 0, 1000, COLOR(0, 0, 1, 1));
 
-       int x_axis_id =  renderSystem->addEntity(gizmo_x_axis);
-       int y_axis_id = renderSystem->addEntity(gizmo_y_axis);
-       int z_axis_id = renderSystem->addEntity(gizmo_z_axis);
+        Entity* gizmo_x_axis = CreateEntity();
+        Entity* gizmo_y_axis = CreateEntity();
+        Entity* gizmo_z_axis = CreateEntity();
 
-       renderSystem->initEntityBuffers(x_axis_id);
-       renderSystem->initEntityBuffers(y_axis_id);
-       renderSystem->initEntityBuffers(z_axis_id);
+        Shape::BuildLineShape(gizmo_x_axis, 0, 0, 0, 1000, 0, 0,COLOR(1,0,0,1) );
+        Shape::BuildLineShape(gizmo_y_axis, 0, 0, 0, 0, 1000, 0, COLOR(0, 1, 1, 1));
+        Shape::BuildLineShape(gizmo_z_axis, 0, 0, 0, 0, 0, 1000, COLOR(0, 0, 1, 1));
+
+        int x_axis_id = renderSystem->addEntity(gizmo_x_axis);
+        int y_axis_id = renderSystem->addEntity(gizmo_y_axis);
+        int z_axis_id = renderSystem->addEntity(gizmo_z_axis);
+
+        renderSystem->initEntityBuffers(x_axis_id);
+        renderSystem->initEntityBuffers(y_axis_id);
+        renderSystem->initEntityBuffers(z_axis_id);
 
     }
 
@@ -341,6 +345,36 @@ namespace DREAM
         backGroundColor = _color;
     }
 
+    Entity* MyApplication::CreateEntity()
+    {
+        Entity* result = new Entity(GetGUID());
+        gameEntities.push_back(result);
+        return result;
+    }
+
+    //Destry an entity by first removing it from all the systems it's attached to. 
+    void MyApplication::DestroyEntity(Entity* _entity)
+    {
+
+    }
+
+    //Walk through all entities
+    void MyApplication::SaveGame(std::string _saveLocation)
+    {
+
+        std::fstream saveStream(_saveLocation);
+
+        //We'll create the file
+        if(!saveStream)
+        {
+            Log::LogMessage("Cannot create file with name  " + _saveLocation);
+        }
+        
+        for(auto* entity: gameEntities)
+        {
+            
+        }
+    }
 
 }
 

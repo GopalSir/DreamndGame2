@@ -10,7 +10,7 @@ class DrawableComponent: public Component
     GLuint VBO;
     GLuint VAO;
 	COLOR color;
-	Shader* shader;
+	GLuint shaderProgramID;
 	
 
 	//Type of the drawable object
@@ -30,6 +30,7 @@ class DrawableComponent: public Component
 		VBO = 0;
 		VAO = 0;
 		color = COLOR();
+		shaderProgramID = 0;
 	}
 	~DrawableComponent()
 	{

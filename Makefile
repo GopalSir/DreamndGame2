@@ -1,7 +1,7 @@
 # Makefile for DreamndGame2
 
 #Compiler Info 
-CXX := g++
+CXX := g++ -g
 CXXINCLUDEFLAGS = 	-I$(GLEW_INCLUDE_DIR) \
 					-I$(GLFW_INCLUDE_DIR) \
 					-I$(DREAMENGINE_INCLUDE_DIR)

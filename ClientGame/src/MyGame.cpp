@@ -12,8 +12,8 @@ MyGame::MyGame()
 {
 	Log::LogMessage("My Game constructor Called");
 
-
-		Entity* basicCamera = DREAM::CameraSystem::createDefaultCameraEntity();
+		Entity* basicCamera = CreateEntity();
+		DREAM::CameraSystem::createDefaultCamera(basicCamera);
 		basicCamera->addComponent(new DREAM::CameraControllerComponent());
 		GetCameraSystem()->addEntity(basicCamera);
 

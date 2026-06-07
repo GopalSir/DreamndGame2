@@ -41,7 +41,7 @@ namespace DREAM
             int tempVBO = tempEntities->getComponent<DrawableComponent>()->VBO;
             int tempVAO = tempEntities->getComponent<DrawableComponent>()->VAO;
 
-            Shader* entityShader = tempEntities->getComponent<DrawableComponent>()->shader;
+            GLuint entityShader = tempEntities->getComponent<DrawableComponent>()->shaderProgramID;
 
             PhysicsComponent* physicsComponent = tempEntities->getComponent<PhysicsComponent>();
 
@@ -67,18 +67,30 @@ namespace DREAM
             Mat4<float> tempMVP = CalculateMVP(activeCameraComponent->projection, activeCameraComponent->cameraViewMatrix,model_matrix);
             
             
-            if (entityShader)
+            if (entityShader!=0)
             {
-                entityShader->use();
-                // entityShader->setUniform("mvp", tempMVP);
-                entityShader->setUniform("model_matrix", model_matrix);
-                entityShader->setUniform("view_matrix", activeCameraComponent->cameraViewMatrix);
-                entityShader->setUniform("projection_matrix", activeCameraComponent->projection);
+                
+
+                GLenum err = glGetError(); // clear any prior error
+                glUseProgram(entityShader);
+                err = glGetError();
+                Log::LogMessage("glUseProgram(" + std::to_string(entityShader) + ") error: " + std::to_string(err), LogLevel::ERROR_LEVEL);
+                
+                GLint currentProgram;
+                glGetIntegerv(GL_CURRENT_PROGRAM, &currentProgram);
+                Log::LogMessage("GL_CURRENT_PROGRAM after bind: " + std::to_string(currentProgram), LogLevel::INFO_LEVEL);
+                // Shader::setUniform("mvp", tempMVP);
+                 Shader::setUniformCurrent("model_matrix", model_matrix);
+                 Shader::setUniformCurrent("view_matrix", activeCameraComponent->cameraViewMatrix);
+                 Shader::setUniformCurrent("projection_matrix", activeCameraComponent->projection);
 
             }
             else
             {
-                shader->setUniform("mvp", tempMVP);
+                Shader::GetDefaultShader()->use();
+                Shader::GetDefaultShader()->setUniformCurrent("model_matrix", model_matrix);
+                Shader::GetDefaultShader()->setUniformCurrent("view_matrix", activeCameraComponent->cameraViewMatrix);
+                Shader::GetDefaultShader()->setUniformCurrent("projection_matrix", activeCameraComponent->projection);
             }
 
            // Logging MVP
