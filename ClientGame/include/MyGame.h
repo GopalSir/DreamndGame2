@@ -4,20 +4,16 @@
 #include "../include/Component/ThrusterComponenet.hpp"
 #include <Shape.hpp>
 #include "../include/Component/CameraControllerComponent.h"
-#include "ShapeCreator.hpp"
+
 
 
 class MyGame : public DREAM::MyApplication
 {
+	Shader* basicShader;
+	void setupShaders();
+	void setupEntities();
 public: 
-	ShapeCreator* _shapeCreator;
-	MyGame();
-
-
 	
-
-
-
-
+	MyGame();
 };
 
