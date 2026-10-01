@@ -4,6 +4,8 @@
 #include "../include/Component/ThrusterComponenet.hpp"
 #include <Shape.hpp>
 #include "../include/Component/CameraControllerComponent.h"
+#include "../include/Component/JointComponent.h"
+#include "../include/Component/LinkComponent.h"
 
 
 

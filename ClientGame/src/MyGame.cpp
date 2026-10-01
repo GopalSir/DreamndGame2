@@ -32,7 +32,18 @@ MyGame::MyGame()
 	
 		MyApplication::setupGizmo();
 
+
+
+
+				//setup systems 
+		MyApplication::addGameSystem(new PlayerSystem());
+
+
 		setupEntities();
+		setupFloorEntity();
+
+
+		
 
 }
 
@@ -40,6 +51,7 @@ void MyGame::setupShaders(){
 	
 	//Set up shaders for the program
 	basicShader = new Shader("shaders/BasicVertexShader.glsl", "shaders/BasicFragmentShader.glsl");
+	basicShader->setUniform(basicShader->programID, "light_position", 0.0f, -0.0f, 0.0f, 1.0f);
 		
 
 
@@ -63,8 +75,58 @@ void MyGame::setupEntities(){
 
 	Shape::BuildTriangleShape(triangleEntity, vc);
 
-	int entity_id1 = GetRenderSystem()->addEntity(triangleEntity);
-	GetRenderSystem()->initEntityBuffers(entity_id1);
+
+
+	triangleEntity->addComponent(new DREAM::PhysicsComponent(Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
+															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
+															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
+															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f)));
+
+	
+
+	MyApplication::RegisterEntity(triangleEntity);
+
+
+
+}
+
+void MyGame::setupFloorEntity()
+{
+	Entity* floorEntity = CreateEntity();
+
+	VerticesComponent<float> vc = VerticesComponent<float>();
+	vc.vertices.push_back(PositionComponent<float>(-100.0f, -1.0f, -100.0f));
+	vc.vertices.push_back(PositionComponent<float>(100.0f, -1.0f, -100.0f));
+	vc.vertices.push_back(PositionComponent<float>(100.0f, -1.0f, 100.0f));
+
+	vc.vertices.push_back(PositionComponent<float>(-100.0f, -1.0f, -100.0f));
+	vc.vertices.push_back(PositionComponent<float>(100.0f, -1.0f, 100.0f));
+	vc.vertices.push_back(PositionComponent<float>(-100.0f, -1.0f, 100.0f));
+
+	vc.normals.push_back(PositionComponent<float>(0,1,0));
+	vc.normals.push_back(PositionComponent<float>(0,1,0));
+	vc.normals.push_back(PositionComponent<float>(0,1,0));
+
+	vc.normals.push_back(PositionComponent<float>(0,1,0));
+	vc.normals.push_back(PositionComponent<float>(0,1,0));
+	vc.normals.push_back(PositionComponent<float>(0,1,0));
+
+
+
+
+	vc.vertices_color.push_back(COLOR(0.5f, 0.5f, 0.5f, 1.0f));
+	vc.vertices_color.push_back(COLOR(0.5f, 0.5f, 0.5f, 1.0f));
+	vc.vertices_color.push_back(COLOR(0.5f, 0.5f, 0.5f, 1.0f));
+	vc.vertices_color.push_back(COLOR(0.5f, 0.5f, 0.5f, 1.0f));
+	vc.vertices_color.push_back(COLOR(0.5f, 0.5f, 0.5f, 1.0f));
+	vc.vertices_color.push_back(COLOR(0.5f, 0.5f, 0.5f, 1.0f));	
+
+	Shape::BuildTriangleShape(floorEntity, vc);
+	
+	Shape::CalculateVertexNormals(vc);
+	floorEntity->getComponent<DrawableComponent>()->shaderProgramID = basicShader->programID;
+	MyApplication::RegisterEntity(floorEntity);
+
 }
 
 

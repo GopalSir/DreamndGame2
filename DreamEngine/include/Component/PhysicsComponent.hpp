@@ -2,7 +2,7 @@
 #include <ECS_Core/Core.hpp>
 #include "../Vec3.hpp"
 
-
+namespace DREAM {
 /* Still figuring out how to use this lol*/
 class PhysicsComponent: public Component
 {
@@ -26,3 +26,5 @@ class PhysicsComponent: public Component
 
 
 };
+
+}

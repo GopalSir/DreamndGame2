@@ -1,6 +1,6 @@
 #include "../include/Entity/RectangleEntity.hpp"
 
-RectangleEntity::RectangleEntity(float _x, float _y, float _length,float _breadth)
+RectangleEntity::RectangleEntity(float _x, float _y, float _length,float _breadth) : Entity(DREAM::GetGUID())
 {
     this->addComponent(
         new PhysicsComponent(
