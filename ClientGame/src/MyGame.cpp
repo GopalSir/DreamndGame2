@@ -75,7 +75,7 @@ void MyGame::setupEntities(){
 
 	Shape::BuildTriangleShape(triangleEntity, vc);
 
-
+	
 
 	triangleEntity->addComponent(new DREAM::PhysicsComponent(Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
 															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
@@ -85,6 +85,36 @@ void MyGame::setupEntities(){
 	
 
 	MyApplication::RegisterEntity(triangleEntity);
+
+
+	//Setting up cube entity
+	Entity* cubeEntity = CreateEntity();
+	VerticesComponent<float> cubeVertices = VerticesComponent<float>();
+
+	//adding the vertices ony by one
+	cubeVertices.vertices.push_back(PositionComponent<float>(0,0,0));
+	cubeVertices.vertices.push_back(PositionComponent<float>(0,1,0));
+	cubeVertices.vertices.push_back(PositionComponent<float>(1,1,0));
+	cubeVertices.vertices.push_back(PositionComponent<float>(1,0,0));
+	cubeVertices.vertices.push_back(PositionComponent<float>(1,0,-1));
+	cubeVertices.vertices.push_back(PositionComponent<float>(1,1,-1));
+	cubeVertices.vertices.push_back(PositionComponent<float>(0,1,-1));
+	cubeVertices.vertices.push_back(PositionComponent<float>(0,0,-1));
+
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
+
+	Shape::BuildCubeShape(cubeEntity,cubeVertices);
+	RegisterEntity(cubeEntity);
+
+
+
 
 
 
@@ -123,7 +153,9 @@ void MyGame::setupFloorEntity()
 
 	Shape::BuildTriangleShape(floorEntity, vc);
 	
-	Shape::CalculateVertexNormals(vc);
+	//TODO: Shape::CalculateVertexNormals(vc) - never implemented. Would also be a no-op
+	//here: BuildTriangleShape already copied vc into the entity, so mutating the local
+	//vc afterwards can't reach it. Normals are hand-pushed above for now.
 	floorEntity->getComponent<DrawableComponent>()->shaderProgramID = basicShader->programID;
 	MyApplication::RegisterEntity(floorEntity);
 

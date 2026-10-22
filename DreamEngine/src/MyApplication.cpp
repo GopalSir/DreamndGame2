@@ -96,6 +96,7 @@ namespace DREAM
     void MyApplication::updateSystems()
     {
 
+        //Once user registers a system, it will be auto updated every frame. 
     for (auto i : gameSystems)
         {
             i->update();
@@ -304,7 +305,7 @@ namespace DREAM
     }
 	void MyApplication::completePostConstruct()
 	{
-        for (auto entity : cameraSystem->entities)
+        for (auto entity : gameEntities)
         {
 			entity->doPostConstruct();
         }
@@ -356,6 +357,26 @@ namespace DREAM
     void MyApplication::DestroyEntity(Entity* _entity)
     {
 
+    }
+
+    void MyApplication::RegisterEntity(Entity* _entity)
+    {
+
+        if(_entity->getComponent<PhysicsComponent>())
+        {
+            physicsSystem->addEntity(_entity);
+        }
+
+        if(_entity->getComponent<VerticesComponent<float>>())
+        {
+            int idx = renderSystem->addEntity(_entity);
+            renderSystem->initEntityBuffers(idx);
+        }
+
+        for (auto* system : gameSystems)
+        {
+            system->addEntity(_entity);
+        }
     }
 
     //Walk through all entities

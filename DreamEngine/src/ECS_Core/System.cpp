@@ -4,6 +4,11 @@
 int System::addEntity(Entity* _entity)
 {
     entities.push_back(_entity);
+    
+
+    //now call the overridden function to let the system know that an entity has been added.
+    onEntityAddition(_entity);
+
     return entities.size()-1;
 }
 

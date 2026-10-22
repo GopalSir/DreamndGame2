@@ -12,7 +12,7 @@ class CameraEntity: public Entity
     We will force the initialization to have certain components attached*/
     // let's say 10 pixels per second
     bool active;
-    CameraEntity(PhysicsComponent* _physicsComponent,MVPComponent* _mvpComponent);
+    CameraEntity(DREAM::PhysicsComponent* _physicsComponent,MVPComponent* _mvpComponent);
 
     /*
     Camera is just for holding model view projection matrix. 

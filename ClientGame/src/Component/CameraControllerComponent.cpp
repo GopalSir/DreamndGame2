@@ -53,7 +53,7 @@ namespace DREAM
                 
                 //Mat3<float> x_axis = 
                 //physicsComponent->rotation_velocity = Vec4<float>(0, 0.1, 0, 0);
-                physicsComponent->rotation_velocity = Vec4<float>(0,-100.0f,0,0);
+                physicsComponent->rotation_velocity = Vec4<float>(0,-20.0f,0,0);
 
 
             }
@@ -63,7 +63,7 @@ namespace DREAM
                 //now we add to rotational speed around the flat axis of the camera. 
 
 
-                physicsComponent->rotation_velocity = Vec4<float>(0, 100.0f, 0, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(0, 20.0f, 0, 0);
 
             }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == true && DREAM::KeyStates::KeyState[GLFW_KEY_UP].first == true)
@@ -71,7 +71,7 @@ namespace DREAM
                 //std::cout << "Left Control and up arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
-                physicsComponent->rotation_velocity = Vec4<float>(100.0f, 0, 0, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(20.0f, 0, 0, 0);
 
 
             }
@@ -80,7 +80,7 @@ namespace DREAM
                 //std::cout << "Left Control and down arrow Pressed" << std::endl;
                 //now we add to rotational speed around the flat axis of the camera. 
                 //for now let's experiment with global-y rotation
-                physicsComponent->rotation_velocity = Vec4<float>(-100.0f, 0, 0, 0);
+                physicsComponent->rotation_velocity = Vec4<float>(-20.0f, 0, 0, 0);
 
 
             }
@@ -90,7 +90,7 @@ namespace DREAM
                             // Move left locally, aka left of whereever youre looking. 
                             Vec3<float> x_axis(cameraComponent->cameraWorldTransform.r1.x, cameraComponent->cameraWorldTransform.r2.x, cameraComponent->cameraWorldTransform.r3.x);
                             x_axis = Vec3<float>::normalize(x_axis);
-                            physicsComponent->velocity = Vec4<float>(-x_axis.x * 100, -x_axis.y * 100, -x_axis.z * 100, 0);
+                            physicsComponent->velocity = Vec4<float>(-x_axis.x * 10, -x_axis.y * 10, -x_axis.z * 10, 0);
 
                         }
             else  if (DREAM::KeyStates::KeyState[GLFW_KEY_D].first == true)
@@ -98,7 +98,7 @@ namespace DREAM
                             // Move right
                             // Move left locally, aka left of whereever youre looking. 
 
-                            physicsComponent->velocity = Vec4<float>(x_axis.x * 100, x_axis.y * 100, x_axis.z * 100, 0);
+                            physicsComponent->velocity = Vec4<float>(x_axis.x * 10, x_axis.y * 10, x_axis.z * 10, 0);
                             
                         }
             else if (DREAM::KeyStates::KeyState[GLFW_KEY_S].first == true)
@@ -108,13 +108,13 @@ namespace DREAM
                 {
                     //S pressed and left control not pressed, so we move down
                     //std::cout << "Panning down" << std::endl;
-                    physicsComponent->velocity = Vec4<float>(-y_axis.x * 50, -y_axis.y * 50, -y_axis.z * 50, 0);
+                    physicsComponent->velocity = Vec4<float>(-y_axis.x * 5, -y_axis.y * 5, -y_axis.z * 5, 0);
                     
                 }
                 else
                 {
                     //Zoom Out
-                    physicsComponent->velocity = Vec4<float>(z_axis.x * 100, z_axis.y * 100, z_axis.z * 100, 0);
+                    physicsComponent->velocity = Vec4<float>(z_axis.x * 10, z_axis.y * 10, z_axis.z * 10, 0);
                     
                 }
                         }
@@ -124,12 +124,12 @@ namespace DREAM
                 if (DREAM::KeyStates::KeyState[GLFW_KEY_LEFT_CONTROL].first == false)
                 {
                     //std::cout << "Panning up" << std::endl;
-                    physicsComponent->velocity = Vec4<float>(y_axis.x * 50, y_axis.y * 50, y_axis.z * 50, 0);
+                    physicsComponent->velocity = Vec4<float>(y_axis.x * 5, y_axis.y * 5, y_axis.z * 5, 0);
                 }
                             else
                             {
                     //Zoom Out
-                    physicsComponent->velocity = Vec4<float>(-z_axis.x * 100, -z_axis.y * 100, -z_axis.z * 100, 0);
+                    physicsComponent->velocity = Vec4<float>(-z_axis.x * 10, -z_axis.y * 10, -z_axis.z * 10, 0);
                                 
                             }
 
@@ -137,12 +137,12 @@ namespace DREAM
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_E].first == true)
                         {
-                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, -100.f, 0);
+                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, -20.f, 0);
 
                         }
                         if (DREAM::KeyStates::KeyState[GLFW_KEY_Q].first == true)
                         {
-                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, 100.f, 0);
+                            physicsComponent->rotation_velocity = Vec4<float>(0, 0, 20.f, 0);
                         }
                     
                 

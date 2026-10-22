@@ -96,9 +96,13 @@ namespace DREAM {
         Entity* CreateEntity();
         void DestroyEntity(unsigned int _entityIndex);
         void DestroyEntity(Entity* _entity);
+        void RegisterEntity(Entity* _entity);  //iterates through all the systems and registers the entity to all the systems it has components for. 
+
+        
 
         //Stage Save function
         void SaveGame(std::string _saveLocation);
+
 
     };
 }

@@ -15,7 +15,7 @@ protected:
      DREAM::World*  world;
 
      //Called automatically from inside of //addEntity() function
-     virtual void onEntityAddition(Entity*) {};
+     virtual void onEntityAddition(Entity*) {std::cout<<"Base System onEntityAddition called. This should be overridden in derived class"<<std::endl;};
 
     public:
     /*adds the entity to "entities" vector and then
@@ -27,8 +27,11 @@ protected:
     /*Get Entity*/
     Entity* getEntity(int _index); 
 
-    /* Still thinking what to do with this*/
+    /* Systems own behaviour, so they get to react to game tick every frame */
     virtual void update()=0;
+
+    
+
     void setWorld( DREAM::World* const _world) { world = _world; };
 
     virtual ~System();

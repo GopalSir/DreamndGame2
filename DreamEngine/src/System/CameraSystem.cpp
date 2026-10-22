@@ -147,7 +147,7 @@ namespace DREAM
         
 		PhysicsComponent* physicsComponent = new PhysicsComponent(
 			Vec4<float>(0, 0, 0, 0), // velocity
-			Vec4<float>(0, 0, 100, 1), // position
+			Vec4<float>(0, 0, 10, 1), // position
 			Vec4<float>(0, 0, 0, 0), // rotation
 			Vec4<float>(0, 0, 0, 0)  // rotation_velocity
 		);

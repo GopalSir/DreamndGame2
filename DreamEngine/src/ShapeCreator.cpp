@@ -17,7 +17,7 @@ int ShapeCreator::handleEvent(DREAM::EventInfo* _eventInfo)
     return 0;
 }
 
-ShapeCreator::ShapeCreator(PhysicsComponent* _physicsComponent, DREAM::RenderSystem* _renderSystem, DREAM::CameraComponent* _cameraComponent)
+ShapeCreator::ShapeCreator(DREAM::PhysicsComponent* _physicsComponent, DREAM::RenderSystem* _renderSystem, DREAM::CameraComponent* _cameraComponent)
 {
     cameraPhysicsComponent = _physicsComponent;
     renderSystem = _renderSystem;

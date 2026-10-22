@@ -134,3 +134,96 @@ void Shape::BuildRectangleShape(Entity* _entity,DREAM::VerticesComponent<float>&
 
 }
 
+// Takes in pointer to entity and attaches the vertices component and drawable component to the entity. 
+void Shape::BuildCubeShape(Entity* _entity, DREAM::VerticesComponent<float>& _verticesComponent)
+{
+
+	//We will need a pointer to the vertices component
+	DREAM::VerticesComponent<float>* verticesComponent  = new DREAM::VerticesComponent<float>();
+	
+	VertexAttribPointer* vertexAttrib1 = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::VERTEX);
+	VertexAttribPointer* vertexAttrib2 = VertexAttribPointerGenerator::generateVertexAttribPoinnter(VertexAttribPointerGenerator::COLOR);
+
+	DrawableComponent* drbc = new DrawableComponent(DrawableComponent::DRAWABLE_TYPE::TRIANGLE);
+
+	//Vertices themselves will be passed in as 8 vertices, and we will need to generate 12 triangles out of them.
+	//The vertices will be passed in as follows:
+	
+	
+	//First I draw the first. Front using first 4 vertices.
+	//First Triangle: vertex[0], vertex[1], vertex[2]
+	 verticesComponent->vertices.push_back(_verticesComponent.vertices[0]);
+	 verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[0]);
+
+	 verticesComponent->vertices.push_back(_verticesComponent.vertices[1]);
+	 verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[1]);
+
+	 verticesComponent->vertices.push_back(_verticesComponent.vertices[2]);
+	 verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[2]);
+
+	 //Second Triangle: vertex[0], vertex[2], vertex[3]
+	 verticesComponent->vertices.push_back(_verticesComponent.vertices[0]);
+	 verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[0]);
+
+	 verticesComponent->vertices.push_back(_verticesComponent.vertices[2]);
+	 verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[2]);
+
+	 verticesComponent->vertices.push_back(_verticesComponent.vertices[3]);
+	 verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[3]);
+
+	//Now I draw the back using the last 4 vertices: vertex 4, vertex 5, vertex 6, vertex 7
+	//First Triangle
+	verticesComponent->vertices.push_back(_verticesComponent.vertices[4]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[4]);
+
+		 verticesComponent->vertices.push_back(_verticesComponent.vertices[5]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[5]);
+
+
+		 verticesComponent->vertices.push_back(_verticesComponent.vertices[6]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[6]);
+
+
+	//Second Triangle
+
+		 verticesComponent->vertices.push_back(_verticesComponent.vertices[4]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[4]);
+
+		 verticesComponent->vertices.push_back(_verticesComponent.vertices[6]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[6]);
+
+		 verticesComponent->vertices.push_back(_verticesComponent.vertices[7]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[7]);
+
+	//Right Face Vertex  3, vertex 2, vertex 5, vertex 4
+			 verticesComponent->vertices.push_back(_verticesComponent.vertices[3]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[3]);
+			 verticesComponent->vertices.push_back(_verticesComponent.vertices[2]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[2]);
+			 verticesComponent->vertices.push_back(_verticesComponent.vertices[5]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[5]);
+
+			 verticesComponent->vertices.push_back(_verticesComponent.vertices[3]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[3]);
+			 verticesComponent->vertices.push_back(_verticesComponent.vertices[5]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[5]);
+			 verticesComponent->vertices.push_back(_verticesComponent.vertices[4]);
+	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[4]);
+
+
+	verticesComponent->vertexAttributePointers.push_back(vertexAttrib1);
+	verticesComponent->vertexAttributePointers.push_back(vertexAttrib2);
+
+
+
+
+
+	_entity->addComponent(verticesComponent);
+	_entity->addComponent(drbc);
+	
+}
+
+void Shape::CalculateVertexNormals(const DREAM::VerticesComponent<float>& _vc )
+{
+	//Clockwise verti
+}

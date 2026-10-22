@@ -16,7 +16,7 @@ class ShapeCreator : public DREAM::IEventHandler
 {
 private:
 	
-	PhysicsComponent* cameraPhysicsComponent;
+	DREAM::PhysicsComponent* cameraPhysicsComponent;
 	DREAM::RenderSystem* renderSystem;
 	DREAM::CameraComponent* cameraComponent;
 	DREAM::VerticesComponent<float> vc;
@@ -31,6 +31,6 @@ private:
 	
 public:
 	int handleEvent(DREAM::EventInfo* _eventInfo) override;
-	ShapeCreator(PhysicsComponent* _physicsComponent, DREAM::RenderSystem* _renderSystem, DREAM::CameraComponent* _cameraSystem);
+	ShapeCreator(DREAM::PhysicsComponent* _physicsComponent, DREAM::RenderSystem* _renderSystem, DREAM::CameraComponent* _cameraSystem);
 
 };

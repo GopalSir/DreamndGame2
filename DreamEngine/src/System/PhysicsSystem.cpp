@@ -65,11 +65,29 @@ void PhysicsSystem::update()
     {
         //We will update the position based on velocity and rotation based on rotation (local rotation)
         PhysicsComponent* physicsComponent = tempEntity->getComponent<PhysicsComponent>();
-
+        if(physicsComponent == nullptr)
+        {
+            Log::LogMessage("Entity does not have a PhysicsComponent", LogLevel::ERROR_LEVEL);
+            continue;
+        }
         if (physicsComponent->isGravity)
         {
-            physicsComponent->velocity.y += -0.03f;
+            physicsComponent->force.y -= 9.81f * physicsComponent->mass; // Apply gravity force
         }
+
+        
+        //integrating the force to get acceleration 
+        if (physicsComponent->mass != 0.0f)
+        {
+            Vec4<float> acceleration = physicsComponent->force / physicsComponent->mass;
+
+            //calculating the new velocity based on the acceleration and the time step
+            physicsComponent->velocity = physicsComponent->velocity + acceleration * (*dt_pointer);
+
+        }
+
+        //Clearing the force after applying it to the velocity
+        physicsComponent->force = Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f); 
 
         //Updating Position
         physicsComponent->position = physicsComponent->position + physicsComponent->velocity * (*dt_pointer);
@@ -82,7 +100,7 @@ void PhysicsSystem::update()
 /*
 * Returns rotation matrix from the provided physics component 
 */
-Mat4<float> PhysicsSystem::GetModelMatrixfromComponent(PhysicsComponent* _physicsComponent)
+Mat4<float> PhysicsSystem::GetModelMatrixfromComponent(DREAM::PhysicsComponent* _physicsComponent)
 {
 
 

@@ -34,6 +34,10 @@ struct Vec4
 		return Vec4(x * scalar, y * scalar, z * scalar, w*scalar );
 	}
 
+	//Division operator overload to divide a Vec4<T> by a scalar
+	Vec4 operator/(const T scalar) const {
+		return Vec4(x / scalar, y / scalar, z / scalar, w/scalar);
+	}
 
 };
 
