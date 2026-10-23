@@ -14,6 +14,8 @@ struct Vec4
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z + v1.w * v2.w;
 	}
 
+
+
 	//Negation operator overlaod
 	Vec4 operator-() const {
 		return Vec4(-x, -y, -z, -w);
@@ -50,6 +52,11 @@ struct Vec3
 	Vec3(T _x, T _y, T _z) : x(_x), y(_y), z(_z) {};
 	static T dot(const Vec3<T>& v1, const Vec3<T>& v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
+	}
+
+	static Vec3 Cross(const Vec3<T>& _v1, const Vec3<T>& _v2)
+	{
+		return Vec3(_v1.y*_v2.z - _v1.z*_v2.y, -(_v1.x*_v2.z - _v1.z*_v2.x), _v1.x*_v2.y - _v1.y*_v2.x);
 	}
 
 	//Negation operator overlaod

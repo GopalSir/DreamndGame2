@@ -51,7 +51,7 @@ void MyGame::setupShaders(){
 	
 	//Set up shaders for the program
 	basicShader = new Shader("shaders/BasicVertexShader.glsl", "shaders/BasicFragmentShader.glsl");
-	basicShader->setUniform(basicShader->programID, "light_position", 0.0f, -0.0f, 0.0f, 1.0f);
+	basicShader->setUniform(basicShader->programID, "light_position", 0.0f, 20.0f, 0.0f, 1.0f);
 		
 
 
@@ -110,7 +110,11 @@ void MyGame::setupEntities(){
 	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
 	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
 
+
+
+
 	Shape::BuildCubeShape(cubeEntity,cubeVertices);
+	cubeEntity->getComponent<DrawableComponent>()->shaderProgramID = basicShader->programID;
 	RegisterEntity(cubeEntity);
 
 
