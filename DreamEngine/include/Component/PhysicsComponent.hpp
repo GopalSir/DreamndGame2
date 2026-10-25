@@ -28,6 +28,12 @@ class PhysicsComponent: public Component
   bool isGravity = false;
   bool isPhysics = true;
 
+  // Rotational counterpart of mass. For a CUBE the inertia tensor is isotropic
+  // (Ixx == Iyy == Izz), so one scalar is exact rather than an approximation:
+  //     inertia = (2/3) * mass * half_extent^2
+  // Stops being exact for a non-cube cuboid - that needs the real tensor.
+  float inertia = 1.0f;
+
   PhysicsComponent();
   PhysicsComponent(Vec4<float> _velocity, Vec4<float> _position, Vec4<float> _rotation, Vec4<float> _rotationVelocity,bool _isGravity=false){
     

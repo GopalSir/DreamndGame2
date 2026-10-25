@@ -96,15 +96,23 @@ namespace DREAM
     void MyApplication::fixedUpdate()
     {
 
-        //All systems update will happen once per physics tick. 
+        //All systems update will happen once per physics tick.
 
-        //Once user registers a system, it will be auto updated every physics tick. 
+        // Integrate FIRST, then let the game systems react to where things
+        // actually moved to. Collision has to resolve post-integration or it
+        // corrects stale positions and the body sinks a step at a time.
+        //
+        // NOTE: this ordering only holds while nothing in gameSystems APPLIES
+        // force. The moment a force-applier (PlayerSystem, thrusters, motors)
+        // goes back in, this needs splitting into two phases:
+        //   force appliers -> physicsSystem->update() -> collision
+        physicsSystem->update();
+
+        //Once user registers a system, it will be auto updated every physics tick.
         for (auto i : gameSystems)
         {
             i->update();
         }
-
-        physicsSystem->update();
     }
 
     

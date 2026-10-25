@@ -37,7 +37,7 @@ MyGame::MyGame()
 
 				//setup systems 
 		//MyApplication::addGameSystem(new PlayerSystem());
-		MyApplication::addGameSystem(new CollisionSystem());
+		MyApplication::addGameSystem(new DREAM::CollisionSystem());
 
 
 		setupEntities();
@@ -52,7 +52,14 @@ void MyGame::setupShaders(){
 	
 	//Set up shaders for the program
 	basicShader = new Shader("shaders/BasicVertexShader.glsl", "shaders/BasicFragmentShader.glsl");
-	basicShader->setUniform(basicShader->programID, "light_position", 0.0f, 20.0f, 0.0f, 1.0f);
+	basicShader->use();
+	// Off-axis rather than straight overhead - a light directly above leaves
+	// every side face at zero diffuse, so the cube reads as a flat blob.
+	basicShader->setUniform(basicShader->programID, "light_position", 25.0f, 35.0f, 40.0f, 1.0f);
+	// The fragment shader multiplies its ambient term by this. Leave it unset
+	// and it defaults to 0, which kills ambient entirely and only the faces
+	// aimed at the light light up at all.
+	basicShader->setUniform(basicShader->programID, "ambient_light", 0.45f, 0.45f, 0.45f, 1.0f);
 		
 
 
@@ -118,16 +125,22 @@ void MyGame::setupEntities(){
 
 	Shape::BuildCubeShape(cubeEntity,cubeVertices);
 
-	cubeEntity->addComponent(new DREAM::PhysicsComponent(Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
-															Vec4<float>(0.0f, 10.0f, 0.0f, 1.0f), 
-															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
-															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f),
-															true));
-	cubeEntity->addComponent(new ColliderComponent(
-		ColliderType::BOX,
+	cubeEntity->addComponent(new DREAM::PhysicsComponent(Vec4<float>(0.0f, 0.0f, 0.0f, 0.0f),   // velocity
+															Vec4<float>(0.0f, 14.0f, 0.0f, 1.0f),  // position
+															Vec4<float>(18.0f, 0.0f, 24.0f, 0.0f), // rotation - tilted so it lands on a corner
+															Vec4<float>(0.0f, 0.0f, 0.0f, 0.0f),   // rotation_velocity
+															true));                                 // isGravity
+	cubeEntity->addComponent(new DREAM::ColliderComponent(
+		DREAM::ColliderType::BOX,
 		Vec3<float>(1,1,1),
 		Vec3<float>(0,1,0),
 		0.0f));
+
+	// Rotational counterpart of mass. For a cube: (2/3) * mass * half_extent^2
+	// Leave it at the default 1.0 and a big cube spins far too fast.
+	DREAM::PhysicsComponent* cubePhysics = cubeEntity->getComponent<DREAM::PhysicsComponent>();
+	cubePhysics->mass    = 1.0f;
+	cubePhysics->inertia = (2.0f / 3.0f) * cubePhysics->mass * 1.0f * 1.0f;
 
 	cubeEntity->getComponent<DrawableComponent>()->shaderProgramID = basicShader->programID;
 	RegisterEntity(cubeEntity);

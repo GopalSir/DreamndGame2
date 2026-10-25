@@ -7,7 +7,7 @@
 #include "../include/Component/JointComponent.h"
 #include "../include/Component/LinkComponent.h"
 #include "../include/system/PlayerSystem.hpp"
-#include <../include/system/CollisionSystem.hpp>
+#include <System/CollisionSystem.hpp>
 
 
 

@@ -228,9 +228,10 @@ void Shape::BuildCubeShape(Entity* _entity, DREAM::VerticesComponent<float>& _ve
 	verticesComponent->vertices_color.push_back(_verticesComponent.vertices_color[6]);
 
 
+	 //Must match the triangle actually pushed above: 4, 7, 6
 	 PositionComponent<float> n4 = GetFaceNormalUnit(_verticesComponent.vertices[4],
 	 									_verticesComponent.vertices[7],
-	 									_verticesComponent.vertices[0]);
+	 									_verticesComponent.vertices[6]);
 
 
 
