@@ -10,6 +10,8 @@ class DrawableComponent: public Component
     GLuint VBO;
     GLuint VAO;
 	COLOR color;
+
+	//
 	GLuint shaderProgramID;
 	
 

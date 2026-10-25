@@ -36,7 +36,8 @@ MyGame::MyGame()
 
 
 				//setup systems 
-		MyApplication::addGameSystem(new PlayerSystem());
+		//MyApplication::addGameSystem(new PlayerSystem());
+		MyApplication::addGameSystem(new CollisionSystem());
 
 
 		setupEntities();
@@ -92,14 +93,16 @@ void MyGame::setupEntities(){
 	VerticesComponent<float> cubeVertices = VerticesComponent<float>();
 
 	//adding the vertices ony by one
-	cubeVertices.vertices.push_back(PositionComponent<float>(0,0,0));
-	cubeVertices.vertices.push_back(PositionComponent<float>(0,1,0));
-	cubeVertices.vertices.push_back(PositionComponent<float>(1,1,0));
-	cubeVertices.vertices.push_back(PositionComponent<float>(1,0,0));
-	cubeVertices.vertices.push_back(PositionComponent<float>(1,0,-1));
-	cubeVertices.vertices.push_back(PositionComponent<float>(1,1,-1));
-	cubeVertices.vertices.push_back(PositionComponent<float>(0,1,-1));
-	cubeVertices.vertices.push_back(PositionComponent<float>(0,0,-1));
+	//Centred on the origin so the visual cube and the box collider share the
+	//same frame: corners sit at +-1, matching half_extents of (1,1,1).
+	cubeVertices.vertices.push_back(PositionComponent<float>(-1,-1, 1));
+	cubeVertices.vertices.push_back(PositionComponent<float>(-1, 1, 1));
+	cubeVertices.vertices.push_back(PositionComponent<float>( 1, 1, 1));
+	cubeVertices.vertices.push_back(PositionComponent<float>( 1,-1, 1));
+	cubeVertices.vertices.push_back(PositionComponent<float>( 1,-1,-1));
+	cubeVertices.vertices.push_back(PositionComponent<float>( 1, 1,-1));
+	cubeVertices.vertices.push_back(PositionComponent<float>(-1, 1,-1));
+	cubeVertices.vertices.push_back(PositionComponent<float>(-1,-1,-1));
 
 	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
 	cubeVertices.vertices_color.push_back(COLOR(1,0,0,1));
@@ -114,8 +117,21 @@ void MyGame::setupEntities(){
 
 
 	Shape::BuildCubeShape(cubeEntity,cubeVertices);
+
+	cubeEntity->addComponent(new DREAM::PhysicsComponent(Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
+															Vec4<float>(0.0f, 10.0f, 0.0f, 1.0f), 
+															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f), 
+															Vec4<float>(0.0f, 0.0f, 0.0f, 1.0f),
+															true));
+	cubeEntity->addComponent(new ColliderComponent(
+		ColliderType::BOX,
+		Vec3<float>(1,1,1),
+		Vec3<float>(0,1,0),
+		0.0f));
+
 	cubeEntity->getComponent<DrawableComponent>()->shaderProgramID = basicShader->programID;
 	RegisterEntity(cubeEntity);
+
 
 
 

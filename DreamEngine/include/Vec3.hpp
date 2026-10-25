@@ -59,6 +59,7 @@ struct Vec3
 		return Vec3(_v1.y*_v2.z - _v1.z*_v2.y, -(_v1.x*_v2.z - _v1.z*_v2.x), _v1.x*_v2.y - _v1.y*_v2.x);
 	}
 
+
 	//Negation operator overlaod
 	Vec3 operator-() const {
 		return Vec3(-x, -y, -z);

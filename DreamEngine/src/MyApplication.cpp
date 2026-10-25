@@ -36,7 +36,7 @@ namespace DREAM
         setUpCameraSystem();
         /*Render System is expecting a camera active already. It won't search again once construcor is done. Will fix it later*/
         renderSystem = new RenderSystem(glfwWindow,programShader);
-		physicsSystem = new PhysicsSystem(&deltaTime);
+		physicsSystem = new PhysicsSystem(&dt_fixed_timestep);
 
 
 
@@ -93,16 +93,23 @@ namespace DREAM
         log.~Log();
     }
 
-    void MyApplication::updateSystems()
+    void MyApplication::fixedUpdate()
     {
 
-        //Once user registers a system, it will be auto updated every frame. 
-    for (auto i : gameSystems)
+        //All systems update will happen once per physics tick. 
+
+        //Once user registers a system, it will be auto updated every physics tick. 
+        for (auto i : gameSystems)
         {
             i->update();
         }
 
         physicsSystem->update();
+    }
+
+    
+    void MyApplication::updateSystems()
+    {
         cameraSystem->update();
         renderSystem->update();
     }
@@ -127,18 +134,32 @@ namespace DREAM
     {
         completePostConstruct();
         bridgeSystems();
+        frameStart = std::chrono::high_resolution_clock::now();
+        accumulator = 0.0f;
         while (gamestate)
         {
+            auto frameEnd = std::chrono::high_resolution_clock::now();
+            actualFrameTime = frameEnd - frameStart;
+            frameStart = std::chrono::high_resolution_clock::now();
+            deltaTime = std::chrono::duration<float>(actualFrameTime).count();
+
+
             glClearColor(backGroundColor.r,backGroundColor.g,backGroundColor.b,backGroundColor.a); // or your background color
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            frameStart = std::chrono::high_resolution_clock::now();
+
             if (glfwWindowShouldClose(glfwWindow))
             {
 
                 gamestate = false;
             }
 
+            accumulator += deltaTime;
+            while(accumulator >= dt_fixed_timestep)
+            {
+                fixedUpdate();
+                accumulator -= dt_fixed_timestep;
+            }
             updateSystems();
 
              //glClearColor(0.5f, 0.3f, 0.8f, 1.0f); // Purple color
@@ -148,17 +169,13 @@ namespace DREAM
             glfwSwapBuffers(glfwWindow);
             glfwPollEvents();
 
-            auto frameEnd = std::chrono::high_resolution_clock::now();
-            actualFrameTime = frameEnd - frameStart;
+
             //Time of last frame in seconds
-			deltaTime = std::chrono::duration<float>(actualFrameTime).count();
-            if (actualFrameTime < requiredFrameTime)
-            {
-                requiredSleepTime = requiredFrameTime - actualFrameTime;
-                std::this_thread::sleep_for(requiredSleepTime);
-            }
-            
-        }
+            auto workTime = std::chrono::high_resolution_clock::now() - frameStart;
+            if (workTime < requiredFrameTime)
+                std::this_thread::sleep_for(requiredFrameTime - workTime);
+                        
+                    }
 
     }
 
@@ -170,62 +187,8 @@ namespace DREAM
     }
 
     void  MyApplication::setTriangleEntity()
-    {/*
-        TriangleEntity* player = new TriangleEntity();
-        TriangleEntity* enemy = new TriangleEntity();
+    {
 
-        VerticesComponent<float>* playerVertexComponent = new VerticesComponent<float>;
-        VerticesComponent<float>* enemyVertexComponent = new VerticesComponent<float>;
-
-        DrawableComponent* playerDrawableComponent = new DrawableComponent();
-        DrawableComponent* enemyDrawableComponent = new DrawableComponent();
-
-
-        playerVertexComponent->vertices.push_back( PositionComponent<float>(20, 20, 0));
-        playerVertexComponent->vertices.push_back(PositionComponent<float>(40, 20, 0));
-        playerVertexComponent->vertices.push_back(PositionComponent<float>(40, 40, 0));
-
-
-
-        VertexAttribComponent* playerVertexAttribComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(
-            VertexAttribPointerGenerator::STYLE::DEFAULT
-        );
-
-
-
-        player->addComponent(playerVertexComponent);
-        player->addComponent(playerVertexAttribComponent);
-        player->addComponent(playerDrawableComponent);
-
-        enemyVertexComponent->vertices.push_back( PositionComponent<float>(100, 100, 0));
-        enemyVertexComponent->vertices.push_back( PositionComponent<float>(200, 100, 0));
-        enemyVertexComponent->vertices.push_back(PositionComponent<float>(200, 200, 0));
-
-
-        VertexAttribComponent* enemyVertexAttribComponent = VertexAttribPointerGenerator::generateVertexAttribPoinnter(
-            VertexAttribPointerGenerator::STYLE::DEFAULT
-        );
-
-        enemy->addComponent(enemyVertexComponent);
-        enemy->addComponent(enemyVertexAttribComponent);
-        enemy->addComponent(enemyDrawableComponent);
-
-        playerEntityID = renderSystem->addEntity(player);
-        enemyEntityID = renderSystem->addEntity(enemy);
-
-        renderSystem->initEntityBuffers(playerEntityID);
-        renderSystem->initEntityBuffers(enemyEntityID);
-
-
-        RectangleEntity* rectangle = new RectangleEntity(60, 60, 40, 100);
-
-        int rectangleEntityID = renderSystem->addEntity(rectangle);
-        renderSystem->initEntityBuffers(rectangleEntityID);
-
-        RectangleEntity* rectangle2 = new RectangleEntity(600, 600, 40, 100);
-
-        int rectangleEntityID2 = renderSystem->addEntity(rectangle2);
-        renderSystem->initEntityBuffers(rectangleEntityID2);*/
 
 
     };

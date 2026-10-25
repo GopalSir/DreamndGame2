@@ -29,12 +29,13 @@ class PhysicsComponent: public Component
   bool isPhysics = true;
 
   PhysicsComponent();
-  PhysicsComponent(Vec4<float> _velocity, Vec4<float> _position, Vec4<float> _rotation, Vec4<float> _rotationVelocity){
+  PhysicsComponent(Vec4<float> _velocity, Vec4<float> _position, Vec4<float> _rotation, Vec4<float> _rotationVelocity,bool _isGravity=false){
     
     velocity = _velocity;
     position = _position;
     rotation = _rotation;
     rotation_velocity = _rotationVelocity;
+    isGravity = _isGravity;
   } ;
   PhysicsComponent(PhysicsComponent *_physicsComponent);
   

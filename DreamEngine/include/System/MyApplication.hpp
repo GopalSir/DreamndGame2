@@ -51,7 +51,10 @@ namespace DREAM {
         std::chrono::nanoseconds actualFrameTime;
         std::chrono::nanoseconds requiredFrameTime;
         std::chrono::nanoseconds requiredSleepTime;
-		float deltaTime;
+		
+        float deltaTime;
+        float dt_fixed_timestep = 1.0f / 60.0f; //Physics will always advance by this amount
+        float  accumulator; // unsimulated time that physics system will drain one step at a time. 
 
         std::chrono::nanoseconds calculateRequiredFrameTime(int _gameFPS);
         int playerEntityID, enemyEntityID;
@@ -62,6 +65,7 @@ namespace DREAM {
         
         
         void updateSystems();
+        void fixedUpdate();
         void bridgeSystems();
         void completePostConstruct();
 
